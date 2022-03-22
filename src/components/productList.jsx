@@ -10,7 +10,11 @@ const ProductList = (props) => {
       {products.map((productRow, index) => (
         <Row id={index}>
           {productRow.map((product) => (
-            <ProductCard id={product.id} product={product} />
+            <ProductCard
+              id={product.id}
+              product={product}
+              onPurchase={props.onPurchase}
+            />
           ))}
         </Row>
       ))}

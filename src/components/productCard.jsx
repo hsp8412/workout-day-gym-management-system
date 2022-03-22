@@ -32,8 +32,13 @@ const ProductCard = (props) => {
         <div className="card-body d-flex flex-column">
           <h5 className="card-title mt-auto">{props.product.name}</h5>
           <p className="card-text mt-auto">{props.product.description}</p>
-          <a href="#" className="btn btn-primary mt-auto">
-            Add To Cart
+          <p className="card-text mt-auto">${props.product.price}</p>
+          <a
+            href="#"
+            className="btn btn-primary mt-auto"
+            onClick={() => props.onPurchase(props.product)}
+          >
+            Purchase Now
           </a>
         </div>
       </div>
