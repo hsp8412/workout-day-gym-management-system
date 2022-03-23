@@ -21,6 +21,20 @@ const products = [
     image: "energy-drink.jpeg",
     price: 10,
   },
+  {
+    _id: 4,
+    name: "One-month membership",
+    description: "One month membership to your nearest fitness center.",
+    image: "/member-card.png",
+    price: 100,
+  },
+  {
+    _id: 5,
+    name: "Themed mug",
+    description: "A mug with the gym's logo on it.",
+    image: "/mug.jpeg",
+    price: 100,
+  },
 ];
 
 export function getProducts() {
