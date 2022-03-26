@@ -13,6 +13,7 @@ class NavBar extends React.Component {
             <Nav.Link href="/products">Browse Products</Nav.Link>
             <Nav.Link href="/orders">My Orders</Nav.Link>
             <Nav.Link href="/profile">My Profile</Nav.Link>
+            <Nav.Link href="/Login"> Login</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
