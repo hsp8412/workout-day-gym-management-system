@@ -12,6 +12,7 @@ class NavBar extends React.Component {
           <Nav className="me-auto">
             <Nav.Link href="/product">Browse Products</Nav.Link>
             <Nav.Link href="/shoppingCart">Shopping Cart</Nav.Link>
+            <Nav.Link href="/orders">Orders</Nav.Link>
             <Nav.Link href="/profile">My Profile</Nav.Link>
             <Nav.Link href="/Login"> Login</Nav.Link>
           </Nav>

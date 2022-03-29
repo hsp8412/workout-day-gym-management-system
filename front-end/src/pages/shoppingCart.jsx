@@ -15,6 +15,14 @@ class ShoppingCart extends Component {
     });
   }
 
+  calculateTotal = () => {
+    let total = 0;
+    this.state.shoppingCartItems.forEach((item) => {
+      total += item.price * item.quantity;
+    });
+    return total;
+  };
+
   render() {
     return (
       <div className="d-flex">
@@ -24,6 +32,9 @@ class ShoppingCart extends Component {
               <ShoppingCartCard key={item._id} item={item} />
             ))}
           </Container>
+          <div className="container-fluid d-flex justify-content-center">
+            <p>Total: {this.calculateTotal()}</p>
+          </div>
           <div className="container-fluid d-flex justify-content-center">
             <Button variant="primary" className="mx-2">
               Place the order

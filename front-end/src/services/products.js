@@ -33,7 +33,7 @@ const products = [
     name: "Themed mug",
     description: "A mug with the gym's logo on it.",
     image: "/mug.jpeg",
-    price: 100,
+    price: 50,
   },
 ];
 
