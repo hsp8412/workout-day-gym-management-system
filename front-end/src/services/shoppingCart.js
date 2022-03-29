@@ -7,6 +7,7 @@ const shoppingCart = [
     branch: "Calgary center",
     ifFulfilled: false,
     image: "/mug.jpeg",
+    description: "A mug with the gym's logo on it.",
   },
   {
     _id: 2,
@@ -16,6 +17,7 @@ const shoppingCart = [
     branch: "Calgary NW",
     ifFulfilled: true,
     image: "energy-drink.jpeg",
+    description: "Power yourself up.",
   },
 ];
 
