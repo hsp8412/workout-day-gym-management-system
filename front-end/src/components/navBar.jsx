@@ -14,7 +14,8 @@ class NavBar extends React.Component {
             <Nav.Link href="/shoppingCart">Shopping Cart</Nav.Link>
             <Nav.Link href="/orders">Orders</Nav.Link>
             <Nav.Link href="/profile">My Profile</Nav.Link>
-            <Nav.Link href="/Login"> Login</Nav.Link>
+            <Nav.Link href="/appointment">My Appointments</Nav.Link>
+            <Nav.Link href="/login"> Login</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
