@@ -12,6 +12,8 @@ import Facility from "./pages/facility";
 import Staff from "./pages/staff";
 import Locker from "./pages/locker";
 import CommonFacility from "./pages/commonFacility";
+import Profile from "./pages/profile";
+
 
 function App() {
   return (
@@ -31,6 +33,7 @@ function App() {
           <Route path="/branch/facility/locker" element={<Locker />} />
           <Route path="/branch/facility/common" element={<CommonFacility />} />
           <Route path="/branch/staff" element={<Staff />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
     </div>
