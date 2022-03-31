@@ -5,13 +5,6 @@ import Products from "./pages/browseProducts";
 import Login from "./pages/login";
 import ShoppingCart from "./pages/shoppingCart";
 import Orders from "./pages/orders";
-import BranchManagement from "./pages/branchManagement";
-import Customer from "./pages/customer";
-import Product from "./pages/product";
-import Facility from "./pages/facility";
-import Staff from "./pages/staff";
-import Locker from "./pages/locker";
-import CommonFacility from "./pages/commonFacility";
 
 function App() {
   return (
@@ -24,13 +17,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/shoppingCart" element={<ShoppingCart />} />
           <Route path="/orders" element={<Orders />} />
-          <Route path="/branch" element={<BranchManagement />} />
-          <Route path="/branch/customer" element={<Customer />} />
-          <Route path="/branch/product" element={<Product />} />
-          <Route path="/branch/facility" element={<Facility />} />
-          <Route path="/branch/facility/locker" element={<Locker />} />
-          <Route path="/branch/facility/common" element={<CommonFacility />} />
-          <Route path="/branch/staff" element={<Staff />} />
         </Routes>
       </div>
     </div>
