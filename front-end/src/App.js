@@ -13,7 +13,8 @@ import Staff from "./pages/staff";
 import Locker from "./pages/locker";
 import CommonFacility from "./pages/commonFacility";
 import Profile from "./pages/profile";
-
+import ATable from "./components/atable";
+import Appointment from "./pages/appointments";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/branch/facility/common" element={<CommonFacility />} />
           <Route path="/branch/staff" element={<Staff />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/appointments" element={<Appointment />} />
         </Routes>
       </div>
     </div>

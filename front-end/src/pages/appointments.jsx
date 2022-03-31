@@ -14,6 +14,12 @@ class Appointment extends React.Component {
     });
   };
 
+  handleClose = () => {
+    this.setState({
+      modalVisibility: true,
+    });
+  };
+
   render() {
     return (
       <div>
@@ -28,7 +34,10 @@ class Appointment extends React.Component {
             New appointment
           </button>
         </Container>
-        <NewAppointment modalVisibility={this.state.modalVisibility} />
+        <NewAppointment
+          show={this.state.modalVisibility}
+          handleClose={this.handleClose}
+        />
       </div>
     );
   }

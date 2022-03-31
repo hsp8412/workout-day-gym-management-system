@@ -2,7 +2,7 @@ import React from "react";
 
 const AvailableSlotCard = () => {
   return (
-    <div className="card mx-2" style={{ width: "30rem" }}>
+    <div className="card mx-2 mt-3">
       <div className="card-body">
         <h5 className="card-title">Available coaches and time slot:</h5>
         <p className="card-text d-flex flex-column">
@@ -44,9 +44,6 @@ const AvailableSlotCard = () => {
           </div>
         </p>
       </div>
-      <a href="#" className="btn btn-primary align-self-start mb-3 mx-3">
-        Make an appointment
-      </a>
     </div>
   );
 };

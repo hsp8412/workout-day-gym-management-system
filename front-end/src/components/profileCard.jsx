@@ -11,9 +11,10 @@ const ProfileCard = (props) => {
               <Col className="d-flex flex-column">
                 <img
                   src="avatar.jpeg"
-                  style={{ width: "20rem", height: "15rem" }}
+                  style={{ width: "15rem", height: "15rem" }}
+                  className="align-self-center"
                 />
-                <p className="align-self-center mt-2 mb-0">Name: Li Junyi</p>
+                <p className="align-self-center mt-2 mb-0">Name: John Smith</p>
                 <p className="align-self-center mb-0">Member Id: 2333333333</p>
               </Col>
               <Col
@@ -21,10 +22,10 @@ const ProfileCard = (props) => {
                 style={{ height: "100%" }}
               >
                 <p>Gender: Male</p>
-                <p>Weight: 74 kg </p>
-                <p>Height: 173 cm</p>
+                <p>Weight: 75 kg </p>
+                <p>Height: 180 cm</p>
                 <p>BFP: 21 %</p>
-                <p>BMI: 24.7</p>
+                <p>BMI: 21.2</p>
                 <p>Latest update: 2021-3-30</p>
                 <button
                   type="button"
