@@ -15,6 +15,7 @@ import CommonFacility from "./pages/commonFacility";
 import Profile from "./pages/profile";
 import ATable from "./components/atable";
 import Appointment from "./pages/appointments";
+import Shopping from "./pages/shopping";
 
 function App() {
   return (
@@ -23,9 +24,9 @@ function App() {
       <div className="content">
         <Routes>
           <Route path="/" element={<Products />} />
-          <Route path="/product" element={<Products />} />
+          {/*<Route path="/product" element={<Products />} />*/}
           <Route path="/login" element={<Login />} />
-          <Route path="/shoppingCart" element={<ShoppingCart />} />
+          {/*<Route path="/shoppingCart" element={<ShoppingCart />} />*/}
           <Route path="/orders" element={<Orders />} />
           <Route path="/branch" element={<BranchManagement />} />
           <Route path="/branch/customer" element={<Customer />} />
@@ -36,6 +37,7 @@ function App() {
           <Route path="/branch/staff" element={<Staff />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/appointments" element={<Appointment />} />
+          <Route path="/shopping" element={<Shopping />} />
         </Routes>
       </div>
     </div>

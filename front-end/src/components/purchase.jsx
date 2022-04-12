@@ -9,6 +9,7 @@ const Purchase = (props) => {
     },
     onSubmit: (values) => {
       props.onMakePurchase(values.quantity, props.product);
+      console.log(props.product);
     },
     validationSchema: Yup.object({
       quantity: Yup.number()

@@ -4,47 +4,25 @@ import { getProducts } from "../services/products";
 import ProductList from "../components/productList";
 import Purchase from "../components/purchase";
 
-class Products extends React.Component {
-  state = { products: [], productPurchasing: null, ifPurchasing: false };
-
-  componentDidMount() {
-    this.setState({
-      products: getProducts(),
-    });
-  }
-
-  onPurchase = (product) => {
-    const ifPurchasing = true;
-    this.setState({ productPurchasing: product, ifPurchasing });
-  };
-
-  onCancelPurchase = () => {
-    const ifPurchasing = false;
-    this.setState({ productPurchasing: null, ifPurchasing });
-  };
-
-  onMakePurchase = (quantity, product) => {
-    console.log(product, quantity);
-    const ifPurchasing = false;
-    this.setState({ productPurchasing: null, ifPurchasing });
-  };
-
-  render() {
-    return (
-      <div>
-        <ProductList
-          products={this.state.products}
-          onPurchase={this.onPurchase}
-        />
-        <Purchase
-          product={this.state.productPurchasing}
-          ifPurchasing={this.state.ifPurchasing}
-          onCancelPurchase={this.onCancelPurchase}
-          onMakePurchase={this.onMakePurchase}
-        />
-      </div>
-    );
-  }
-}
+const Products = ({
+  products,
+  onPurchase,
+  productPurchasing,
+  ifPurchasing,
+  onCancelPurchase,
+  onMakePurchase,
+}) => {
+  return (
+    <div>
+      <ProductList products={products} onPurchase={onPurchase} />
+      <Purchase
+        product={productPurchasing}
+        ifPurchasing={ifPurchasing}
+        onCancelPurchase={onCancelPurchase}
+        onMakePurchase={onMakePurchase}
+      />
+    </div>
+  );
+};
 
 export default Products;

@@ -6,9 +6,9 @@ import { Container, Row } from "react-bootstrap";
 const ProductList = (props) => {
   const products = _.chunk(props.products, 3);
   return (
-    <Container className="mt-3">
+    <Container>
       {products.map((productRow, index) => (
-        <Row key={index}>
+        <Row key={index} className={index == 1 ? "mt-5" : "mt-2"}>
           {productRow.map((product) => (
             <ProductCard
               id={product.id}
