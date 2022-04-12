@@ -1,7 +1,13 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 
-const ShoppingCartCard = ({ item, calculateSubTotal, onDelete, onAddOne }) => {
+const ShoppingCartCard = ({
+  item,
+  calculateSubTotal,
+  onDelete,
+  onAddOne,
+  onRemoveOne,
+}) => {
   return (
     <div className="d-flex mt-3 mb-3 justify-content-center">
       <div className="card" style={{ width: "50rem" }}>
@@ -31,7 +37,11 @@ const ShoppingCartCard = ({ item, calculateSubTotal, onDelete, onAddOne }) => {
                   >
                     +
                   </button>
-                  <button type="button" className="btn btn-warning mx-2">
+                  <button
+                    type="button"
+                    className="btn btn-warning mx-2"
+                    onClick={() => onRemoveOne(item)}
+                  >
                     -
                   </button>
                 </div>

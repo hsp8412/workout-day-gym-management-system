@@ -35,25 +35,32 @@ class Shopping extends Component {
   };
 
   addToShoppingCart(quantity, product_id) {
-    const product = getProductsById(product_id);
-    let item = {
-      quantity: quantity,
-      _id: product_id,
-      image: product.image,
-      description: product.description,
-      name: product.name,
-      price: product.price,
-    };
-    const shoppingCartItems = [...this.state.shoppingCartItems];
-    shoppingCartItems.push(item);
-    this.setState({ shoppingCartItems });
+    let shoppingCartItems = [...this.state.shoppingCartItems];
+    const index = shoppingCartItems.findIndex((item) => {
+      return product_id == item._id;
+    });
+    if (index == -1) {
+      const product = getProductsById(product_id);
+      let item = {
+        quantity: quantity,
+        _id: product_id,
+        image: product.image,
+        description: product.description,
+        name: product.name,
+        price: product.price,
+      };
+      shoppingCartItems.push(item);
+      this.setState({ shoppingCartItems });
+    } else {
+      shoppingCartItems[index].quantity += parseInt(quantity);
+      this.setState({ shoppingCartItems });
+    }
   }
 
   onDelete = (item) => {
     const shoppingCartItems = this.state.shoppingCartItems.filter(
       (i) => i._id != item._id
     );
-    console.log(shoppingCartItems);
     this.setState({ shoppingCartItems });
   };
 
@@ -65,25 +72,26 @@ class Shopping extends Component {
   onPlaceOrder = () => {};
 
   onAddOne = (item) => {
-    let quantity = parseInt(item.quantity);
-    quantity += 1;
-    item.quantity = quantity;
-    let shoppingCartItems = this.state.shoppingCartItems.filter(
-      (i) => i._id != item._id
-    );
-    shoppingCartItems.push(item);
+    let shoppingCartItems = [...this.state.shoppingCartItems];
+    let index = shoppingCartItems.findIndex((shoppingCartItem) => {
+      return shoppingCartItem._id == item._id;
+    });
+    shoppingCartItems[index].quantity += 1;
     this.setState({ shoppingCartItems });
   };
 
   onRemoveOne = (item) => {
-    let quantity = parseInt(item.quantity);
-    quantity += 1;
-    item.quantity = quantity;
-    let shoppingCartItems = this.state.shoppingCartItems.filter(
-      (i) => i._id != item._id
-    );
-    shoppingCartItems.push(item);
-    this.setState({ shoppingCartItems });
+    let shoppingCartItems = [...this.state.shoppingCartItems];
+    let index = shoppingCartItems.findIndex((shoppingCartItem) => {
+      return shoppingCartItem._id == item._id;
+    });
+    shoppingCartItems[index].quantity -= 1;
+    if (shoppingCartItems[index].quantity > 0) {
+      this.setState({ shoppingCartItems });
+    } else {
+      shoppingCartItems.splice(index, 1);
+      this.setState({ shoppingCartItems });
+    }
   };
 
   calculateTotal = (items) => {
@@ -130,6 +138,7 @@ class Shopping extends Component {
                 onClear={this.onClear}
                 onPlaceOrder={this.onPlaceOrder}
                 onAddOne={this.onAddOne}
+                onRemoveOne={this.onRemoveOne}
               />
             </Tab>
           </Tabs>

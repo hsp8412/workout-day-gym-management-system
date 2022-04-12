@@ -12,6 +12,7 @@ const ShoppingCart = ({
   onClear,
   onPlaceOrder,
   onAddOne,
+  onRemoveOne,
 }) => {
   return (
     <div className="d-flex">
@@ -25,6 +26,7 @@ const ShoppingCart = ({
               onDelete={onDelete}
               onClear={onClear}
               onAddOne={onAddOne}
+              onRemoveOne={onRemoveOne}
             />
           ))}
         </Container>
