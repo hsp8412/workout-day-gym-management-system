@@ -38,7 +38,7 @@ const ProductCard = (props) => {
             className="btn btn-primary mt-auto"
             onClick={() => props.onPurchase(props.product)}
           >
-            Purchase Now
+            Add To Cart
           </a>
         </div>
       </div>

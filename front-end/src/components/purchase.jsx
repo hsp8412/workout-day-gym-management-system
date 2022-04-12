@@ -9,7 +9,7 @@ const Purchase = (props) => {
     },
     onSubmit: (values) => {
       props.onMakePurchase(values.quantity, props.product);
-      console.log(props.product);
+      values.quantity = 1;
     },
     validationSchema: Yup.object({
       quantity: Yup.number()
@@ -70,7 +70,7 @@ const Purchase = (props) => {
                 onClick={formik.handleSubmit}
                 className="mt-3"
               >
-                Place the Order
+                Add To Cart
               </Button>
               <Button
                 variant="secondary"
