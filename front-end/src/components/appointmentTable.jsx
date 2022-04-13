@@ -14,6 +14,7 @@ class AppointmentTable extends React.Component {
         </Link>
       ),
     },
+    { path: "branch", label: "Branch" },
     { path: "date", label: "Date " },
     {
       path: "time",

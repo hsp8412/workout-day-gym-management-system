@@ -5,6 +5,9 @@ import NewAppointment from "../components/newAppointment";
 import CancelAppointmentConfirm from "../components/cancelAppointmentConfirm";
 import app from "../App";
 import { getAppointments } from "../services/appointments";
+import { getCoachById } from "../services/coach";
+import appointmentTable from "../components/appointmentTable";
+import { getBranchById } from "../services/branch";
 
 class Appointment extends React.Component {
   state = {
@@ -15,9 +18,43 @@ class Appointment extends React.Component {
   };
 
   componentDidMount() {
+    let appointments = getAppointments();
+    let allAppointments = appointments.map((appointment) => ({
+      _id: appointment._id,
+      coach: getCoachById(appointment.coachId).name,
+      branch: getBranchById(appointment.branchId).name,
+      time: this.getAppointmentTime(appointment),
+      date:
+        appointment.startTime.getFullYear() +
+        "-" +
+        appointment.startTime.getMonth() +
+        "-" +
+        appointment.startTime.getDate(),
+    }));
     this.setState({
-      allAppointments: getAppointments(),
+      allAppointments,
     });
+    console.log(allAppointments);
+  }
+
+  getAppointmentTime(appointment) {
+    let startHour = appointment.startTime.getHours().toString();
+    let startMinute = appointment.startTime.getMinutes().toString();
+    let endHour = appointment.endTime.getHours().toString();
+    let endMinute = appointment.endTime.getMinutes().toString();
+    if (startHour === "0") {
+      startHour = "00";
+    }
+    if (startMinute === "0") {
+      startMinute = "00";
+    }
+    if (endHour === "0") {
+      endHour = "00";
+    }
+    if (endMinute === "0") {
+      endMinute = "00";
+    }
+    return startHour + ":" + startMinute + "-" + endHour + ":" + endMinute;
   }
 
   handleNewAppointment = () => {
