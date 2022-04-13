@@ -13,8 +13,9 @@ const Purchase = (props) => {
     },
     validationSchema: Yup.object({
       quantity: Yup.number()
-        .max(100, "Must be less than or equal to 100.")
-        .min(1, "Must be greater than or equal to 1.")
+        .integer("The input quantity should be an integer.")
+        .max(100, "The input quantity must be less than or equal to 100.")
+        .min(1, "The input quantity must be greater than or equal to 1.")
         .required(),
     }),
   });
@@ -57,9 +58,7 @@ const Purchase = (props) => {
                 onChange={formik.handleChange}
               />
               <p className="text-danger">
-                {formik.errors.quantity
-                  ? "The quantity should be between 1 and 100."
-                  : null}
+                {formik.errors.quantity ? formik.errors.quantity : null}
               </p>
             </div>
             <p className="mt-3">Total: ${calculateTotal()}</p>
