@@ -35,7 +35,7 @@ function App() {
           <Route path="/branch/facility/locker" element={<Locker />} />
           <Route path="/branch/facility/common" element={<CommonFacility />} />
           <Route path="/branch/staff" element={<Staff />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/fitnessProfiles" element={<Profile />} />
           <Route path="/appointments" element={<Appointment />} />
           <Route path="/shopping" element={<Shopping />} />
         </Routes>
