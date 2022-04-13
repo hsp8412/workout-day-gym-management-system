@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 const error = require("../middleware/error");
 const branchStaff = require('../routes/branchStaff');
+const facility = require('../routes/facility');
 
 module.exports = function (app) {
     app.use(cors());
@@ -14,5 +15,6 @@ module.exports = function (app) {
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, 'public')));
     app.use('/branch_staff', branchStaff)
+    app.use('/facility', facility)
     app.use(error);
 }
