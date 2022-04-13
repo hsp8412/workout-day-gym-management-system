@@ -1,20 +1,5 @@
-const { boolean, number } = require('joi');
 const joi = require('joi');
 const mongoose = require("mongoose");
-
-/*
-{"isEquipment":false,
-"isTemporaryLocker":true,
-"price":{"$numberDouble":"198.31"},
-"condition":{"$numberInt":"1"},
-"type":"Locker",
-"locker_number":{"$numberInt":"985"},
-"rental":{
-    "renterId":{"$oid":"6254ad89fc13ae3195000096"},
-"startDate":{"$date":{"$numberLong":"0"}},
-"endDate":{"$date":{"$numberLong":"0"}}}}
-*/ 
-
 
 const facilitySchema = new mongoose.Schema({
     isEquipment: {
@@ -42,26 +27,15 @@ const facilitySchema = new mongoose.Schema({
         required: false
     },
     rental: {
-       // rentalId: {type: Object, required: true},
+        renterId: {type: mongoose.Schema.Types.ObjectId, ref: 'Customer'},
         startDate: {type: Date, required: false},
         endDate: {type: Date, required: false}
     }
 });
 
-const facilities = mongoose.model('facilities', facilitySchema, "facility");
-/*
-{"isEquipment":false,
-"isTemporaryLocker":true,
-"price":{"$numberDouble":"198.31"},
-"condition":{"$numberInt":"1"},
-"type":"Locker",
-"locker_number":{"$numberInt":"985"},
-"rental":{
-    "renterId":{"$oid":"6254ad89fc13ae3195000096"},
-"startDate":{"$date":{"$numberLong":"0"}},
-"endDate":{"$date":{"$numberLong":"0"}}}}
-*/ 
-function validatefacility(faci) {
+const Facility = mongoose.model('Facility', facilitySchema, "facility");
+
+function validateFacility(facility) {
     const schema = joi.object({
         isEquipment: joi.boolean().required(),
         isTemporaryLocker: joi.boolean().required(),
@@ -70,14 +44,13 @@ function validatefacility(faci) {
         type: joi.string().required(),
         locker_number: joi.number().optional(),
         rental: {
-          //  renterId : joi.object().required(),
+            renterId: joi.string().optional(),
             startDate : joi.date().optional(),
             endDate: joi.date().optional()
         }
-        
     });
-    return schema.validate(faci);
+    return schema.validate(facility);
 }
 
-module.exports.facilities = facilities;
-module.exports.validatefacility = validatefacility;
+module.exports.Facility = Facility;
+module.exports.validateFacility = validateFacility;
