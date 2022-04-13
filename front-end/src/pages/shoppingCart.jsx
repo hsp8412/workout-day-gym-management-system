@@ -3,6 +3,7 @@ import { getProducts, getProductsById } from "../services/products";
 import { getShoppingCart } from "../services/shoppingCart";
 import { Button, Container } from "react-bootstrap";
 import ShoppingCartCard from "../components/shoppingCartCard";
+import OrderConfirm from "../components/orderConfirm";
 
 const ShoppingCart = ({
   shoppingCartItems,
@@ -10,9 +11,12 @@ const ShoppingCart = ({
   calculateSubTotal,
   onDelete,
   onClear,
-  onPlaceOrder,
   onAddOne,
   onRemoveOne,
+  orderConfirmVisible,
+  onOrderConfirmOpen,
+  onOrderConfirm,
+  onOrderConfirmClose,
 }) => {
   return (
     <div className="d-flex">
@@ -34,14 +38,23 @@ const ShoppingCart = ({
           <p>Total: {calculateTotal(shoppingCartItems)}</p>
         </div>
         <div className="container-fluid d-flex justify-content-center">
-          <Button variant="primary" className="mx-2" onClick={onPlaceOrder}>
+          <Button
+            variant="primary"
+            className="mx-2"
+            onClick={onOrderConfirmOpen}
+          >
             Place the order
           </Button>
-          <Button variant="warning" onClick={() => onClear()}>
+          <Button variant="warning" onClick={onClear}>
             Clear
           </Button>
         </div>
       </div>
+      <OrderConfirm
+        onClose={onOrderConfirmClose}
+        onConfirm={onOrderConfirm}
+        ifVisible={orderConfirmVisible}
+      />
     </div>
   );
 };

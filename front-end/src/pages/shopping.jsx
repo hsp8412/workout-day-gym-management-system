@@ -10,6 +10,7 @@ class Shopping extends Component {
     productPurchasing: null,
     ifPurchasing: false,
     shoppingCartItems: [],
+    orderConfirmVisible: false,
   };
 
   componentDidMount() {
@@ -69,8 +70,6 @@ class Shopping extends Component {
     this.setState({ shoppingCartItems });
   };
 
-  onPlaceOrder = () => {};
-
   onAddOne = (item) => {
     let shoppingCartItems = [...this.state.shoppingCartItems];
     let index = shoppingCartItems.findIndex((shoppingCartItem) => {
@@ -108,9 +107,29 @@ class Shopping extends Component {
     return subTotal;
   };
 
+  handleOrderConfirmClose = () => {
+    this.setState({ orderConfirmVisible: false });
+  };
+
+  handleOrderConfirmOpen = () => {
+    this.setState({ orderConfirmVisible: true });
+  };
+
+  handleOrderConfirm = () => {
+    console.log(this.state.shoppingCartItems);
+    const shoppingCartItems = [];
+    this.setState({ shoppingCartItems });
+    this.setState({ orderConfirmVisible: false });
+  };
+
   render() {
-    let { products, productPurchasing, ifPurchasing, shoppingCartItems } =
-      this.state;
+    let {
+      products,
+      productPurchasing,
+      ifPurchasing,
+      shoppingCartItems,
+      orderConfirmVisible,
+    } = this.state;
     return (
       <div>
         <Container className="mt-3">
@@ -136,9 +155,12 @@ class Shopping extends Component {
                 calculateSubTotal={this.calculateSubTotal}
                 onDelete={this.onDelete}
                 onClear={this.onClear}
-                onPlaceOrder={this.onPlaceOrder}
                 onAddOne={this.onAddOne}
                 onRemoveOne={this.onRemoveOne}
+                orderConfirmVisible={orderConfirmVisible}
+                onOrderConfirmClose={this.handleOrderConfirmClose}
+                onOrderConfirmOpen={this.handleOrderConfirmOpen}
+                onOrderConfirm={this.handleOrderConfirm}
               />
             </Tab>
           </Tabs>
