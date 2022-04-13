@@ -25,7 +25,7 @@ class AppointmentTable extends React.Component {
         <Button
           variant="danger"
           size="sm"
-          onClick={() => this.props.onDelete(appointment._id)}
+          onClick={() => this.props.onDelete(appointment)}
         >
           Cancel
         </Button>

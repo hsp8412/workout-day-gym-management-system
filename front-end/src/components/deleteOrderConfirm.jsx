@@ -30,10 +30,10 @@ const DeleteOrderConfirm = ({ order, ifVisible, onClose, onConfirm }) => {
           </Modal.Header>
           <Modal.Body>Are you sure you want to cancel this order?</Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={onConfirm}>
+            <Button variant="primary" onClick={onConfirm}>
               Confirm
             </Button>
-            <Button variant="primary" onClick={onClose}>
+            <Button variant="secondary" onClick={onClose}>
               Close
             </Button>
           </Modal.Footer>
