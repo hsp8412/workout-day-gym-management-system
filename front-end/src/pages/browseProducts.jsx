@@ -11,6 +11,7 @@ const Products = ({
   ifPurchasing,
   onCancelPurchase,
   onMakePurchase,
+  shoppingCartItems,
 }) => {
   return (
     <div>
@@ -20,6 +21,7 @@ const Products = ({
         ifPurchasing={ifPurchasing}
         onCancelPurchase={onCancelPurchase}
         onMakePurchase={onMakePurchase}
+        shoppingCartItems={shoppingCartItems}
       />
     </div>
   );

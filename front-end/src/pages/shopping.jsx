@@ -59,8 +59,6 @@ class Shopping extends Component {
     }
   };
 
-  addToShoppingCart(quantity, product_id) {}
-
   onDelete = (item) => {
     const shoppingCartItems = this.state.shoppingCartItems.filter(
       (i) => i._id != item._id
@@ -149,6 +147,7 @@ class Shopping extends Component {
                 ifPurchasing={ifPurchasing}
                 onCancelPurchase={this.onCancelPurchase}
                 onMakePurchase={this.onMakePurchase}
+                shoppingCartItems={shoppingCartItems}
               />
             </Tab>
             <Tab eventKey="shoppingCart" title="Shopping Cart">
