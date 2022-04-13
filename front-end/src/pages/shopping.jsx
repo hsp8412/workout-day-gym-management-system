@@ -30,33 +30,36 @@ class Shopping extends Component {
   };
 
   onMakePurchase = (quantity, product) => {
-    const ifPurchasing = false;
-    this.setState({ productPurchasing: null, ifPurchasing });
-    this.addToShoppingCart(quantity, product._id);
-  };
-
-  addToShoppingCart(quantity, product_id) {
     let shoppingCartItems = [...this.state.shoppingCartItems];
     const index = shoppingCartItems.findIndex((item) => {
-      return product_id == item._id;
+      return product._id == item._id;
     });
     if (index == -1) {
-      const product = getProductsById(product_id);
       let item = {
         quantity: quantity,
-        _id: product_id,
+        _id: product._id,
         image: product.image,
         description: product.description,
         name: product.name,
         price: product.price,
       };
       shoppingCartItems.push(item);
-      this.setState({ shoppingCartItems });
+      this.setState({
+        shoppingCartItems,
+        productPurchasing: null,
+        ifPurchasing: false,
+      });
     } else {
       shoppingCartItems[index].quantity += parseInt(quantity);
-      this.setState({ shoppingCartItems });
+      this.setState({
+        shoppingCartItems,
+        productPurchasing: null,
+        ifPurchasing: false,
+      });
     }
-  }
+  };
+
+  addToShoppingCart(quantity, product_id) {}
 
   onDelete = (item) => {
     const shoppingCartItems = this.state.shoppingCartItems.filter(
