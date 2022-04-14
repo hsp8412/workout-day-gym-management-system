@@ -1,18 +1,18 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const OrderConfirm = ({ ifVisible, onConfirm, onClose }) => {
+const EmptyCart = ({ ifVisible, onClose }) => {
   return (
     <div>
       <Modal show={ifVisible} onHide={onClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Order Confirm</Modal.Title>
+          <Modal.Title>Empty Shopping Cart</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to place the order?</Modal.Body>
+        <Modal.Body>
+          Your shopping cart is empty. Please add some items before placing the
+          order.
+        </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={onConfirm}>
-            Confirm
-          </Button>
           <Button variant="secondary" onClick={onClose}>
             Close
           </Button>
@@ -22,4 +22,4 @@ const OrderConfirm = ({ ifVisible, onConfirm, onClose }) => {
   );
 };
 
-export default OrderConfirm;
+export default EmptyCart;

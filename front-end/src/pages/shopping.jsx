@@ -3,6 +3,7 @@ import Products from "./browseProducts";
 import ShoppingCart from "./shoppingCart";
 import { Container, Tab, Tabs } from "react-bootstrap";
 import { getProducts, getProductsById } from "../services/products";
+import emptyCart from "../components/emptyCart";
 
 class Shopping extends Component {
   state = {
@@ -11,6 +12,7 @@ class Shopping extends Component {
     ifPurchasing: false,
     shoppingCartItems: [],
     orderConfirmVisible: false,
+    emptyCartVisibility: false,
   };
 
   componentDidMount() {
@@ -113,14 +115,23 @@ class Shopping extends Component {
   };
 
   handleOrderConfirmOpen = () => {
-    this.setState({ orderConfirmVisible: true });
+    if (this.state.shoppingCartItems.length === 0) {
+      console.log(this.state.shoppingCartItems.length);
+      this.setState({ emptyCartVisibility: true });
+    } else {
+      this.setState({ orderConfirmVisible: true });
+    }
+    console.log(this.state.emptyCartVisibility);
   };
 
   handleOrderConfirm = () => {
-    console.log(this.state.shoppingCartItems);
     const shoppingCartItems = [];
     this.setState({ shoppingCartItems });
     this.setState({ orderConfirmVisible: false });
+  };
+
+  handleCloseEmptyCart = () => {
+    this.setState({ emptyCartVisibility: false });
   };
 
   render() {
@@ -130,6 +141,7 @@ class Shopping extends Component {
       ifPurchasing,
       shoppingCartItems,
       orderConfirmVisible,
+      emptyCartVisibility,
     } = this.state;
     return (
       <div>
@@ -163,6 +175,8 @@ class Shopping extends Component {
                 onOrderConfirmClose={this.handleOrderConfirmClose}
                 onOrderConfirmOpen={this.handleOrderConfirmOpen}
                 onOrderConfirm={this.handleOrderConfirm}
+                emptyCartVisibility={emptyCartVisibility}
+                onCloseEmptyCart={this.handleCloseEmptyCart}
               />
             </Tab>
           </Tabs>

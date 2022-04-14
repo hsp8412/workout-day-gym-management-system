@@ -4,6 +4,7 @@ import { getShoppingCart } from "../services/shoppingCart";
 import { Button, Container } from "react-bootstrap";
 import ShoppingCartCard from "../components/shoppingCartCard";
 import OrderConfirm from "../components/orderConfirm";
+import EmptyCart from "../components/emptyCart";
 
 const ShoppingCart = ({
   shoppingCartItems,
@@ -17,6 +18,8 @@ const ShoppingCart = ({
   onOrderConfirmOpen,
   onOrderConfirm,
   onOrderConfirmClose,
+  emptyCartVisibility,
+  onCloseEmptyCart,
 }) => {
   return (
     <div className="d-flex">
@@ -55,6 +58,7 @@ const ShoppingCart = ({
         onConfirm={onOrderConfirm}
         ifVisible={orderConfirmVisible}
       />
+      <EmptyCart ifVisible={emptyCartVisibility} onClose={onCloseEmptyCart} />
     </div>
   );
 };
