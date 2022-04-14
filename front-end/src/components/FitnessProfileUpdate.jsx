@@ -15,7 +15,6 @@ const FitnessProfileUpdate = ({ isVisible, onClose, onSubmitUpdate }) => {
     },
     onSubmit: (values) => {
       onSubmitUpdate(values);
-      onClose();
     },
     validationSchema: Yup.object({
       weight: Yup.number()
@@ -59,6 +58,9 @@ const FitnessProfileUpdate = ({ isVisible, onClose, onSubmitUpdate }) => {
                 value={formik.values.weight}
                 onChange={formik.handleChange}
               />
+              <p className="text-danger">
+                {formik.errors.weight ? formik.errors.weight : null}
+              </p>
             </div>
             <div className="mb-3">
               <label htmlFor="exampleInputPassword1" className="form-label">
@@ -74,6 +76,9 @@ const FitnessProfileUpdate = ({ isVisible, onClose, onSubmitUpdate }) => {
                 value={formik.values.height}
                 onChange={formik.handleChange}
               />
+              <p className="text-danger">
+                {formik.errors.height ? formik.errors.height : null}
+              </p>
             </div>
             <div className="mb-3">
               <label htmlFor="exampleInputPassword1" className="form-label">
@@ -89,6 +94,9 @@ const FitnessProfileUpdate = ({ isVisible, onClose, onSubmitUpdate }) => {
                 value={formik.values.BFP}
                 onChange={formik.handleChange}
               />
+              <p className="text-danger">
+                {formik.errors.BFP ? formik.errors.BFP : null}
+              </p>
             </div>
             <div className="mb-3">
               <label htmlFor="exampleInputPassword1" className="form-label">
@@ -104,6 +112,9 @@ const FitnessProfileUpdate = ({ isVisible, onClose, onSubmitUpdate }) => {
                 value={formik.values.BMI}
                 onChange={formik.handleChange}
               />
+              <p className="text-danger">
+                {formik.errors.BMI ? formik.errors.BMI : null}
+              </p>
             </div>
           </Modal.Body>
           <Modal.Footer>

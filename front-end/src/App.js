@@ -16,18 +16,23 @@ import Profile from "./pages/profile";
 import ATable from "./components/atable";
 import Appointment from "./pages/appointments";
 import Shopping from "./pages/shopping";
+import Register from "./components/register";
 
 function App() {
+  let jwt = localStorage.getItem("token");
+  jwt = 1;
+  console.log(jwt == null);
   return (
     <div>
       <NavBar />
       <div className="content">
         <Routes>
-          <Route path="/" element={<Products />} />
-          {/*<Route path="/product" element={<Products />} />*/}
+          <Route path="/" element={jwt != null ? <Products /> : <Login />} />
           <Route path="/login" element={<Login />} />
-          {/*<Route path="/shoppingCart" element={<ShoppingCart />} />*/}
-          <Route path="/orders" element={<Orders />} />
+          <Route
+            path="/orders"
+            element={jwt != null ? <Orders /> : <Login />}
+          />
           <Route path="/branch" element={<BranchManagement />} />
           <Route path="/branch/customer" element={<Customer />} />
           <Route path="/branch/product" element={<Product />} />
@@ -35,9 +40,16 @@ function App() {
           <Route path="/branch/facility/locker" element={<Locker />} />
           <Route path="/branch/facility/common" element={<CommonFacility />} />
           <Route path="/branch/staff" element={<Staff />} />
-          <Route path="/fitnessProfiles" element={<Profile />} />
-          <Route path="/appointments" element={<Appointment />} />
+          <Route
+            path="/fitnessProfiles"
+            element={jwt != null ? <Profile /> : <Login />}
+          />
+          <Route
+            path="/appointments"
+            element={jwt != null ? <Appointment /> : <Login />}
+          />
           <Route path="/shopping" element={<Shopping />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </div>

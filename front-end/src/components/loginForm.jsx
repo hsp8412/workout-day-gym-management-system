@@ -2,6 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Container } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const LoginForm = (props) => {
   const formik = useFormik({
@@ -68,6 +69,9 @@ const LoginForm = (props) => {
           <button type="submit" className="btn btn-primary">
             Submit
           </button>
+          <Link className="btn btn-primary mx-2" to="/register">
+            Register
+          </Link>
         </form>
       </Container>
     </div>

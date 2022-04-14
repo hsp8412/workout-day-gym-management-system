@@ -6,7 +6,7 @@ class NavBar extends React.Component {
     return (
       <Navbar bg="light" variant="light">
         <Container>
-          <Navbar.Brand href="/products">
+          <Navbar.Brand href="/shopping">
             <img src="/gym-logo.svg" height="60" width="60"></img> Workout Day
           </Navbar.Brand>
           <Nav className="me-auto">
