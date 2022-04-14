@@ -7,7 +7,7 @@ const error = require("../middleware/error");
 const branchStaff = require('../routes/branchStaff');
 const facility = require('../routes/facility');
 const product = require('../routes/product');
-const cust = require('../routes/customer');
+const customer = require('../routes/customer');
 
 /*  
 
@@ -23,9 +23,8 @@ module.exports = function (app) {
     app.use(express.static(path.join(__dirname, 'public')));
     app.use('/branch_staff', branchStaff)
     app.use('/facility', facility)
-    app.use('/customer', cust);
     app.use('/product',product);
-    app.use('/customer', cust);
+    app.use('/customer', customer);
     // app.use('/branch_staff/{stfid}', branchStaff);
     // app.use('/customer/{customerMember}', cust);
     // app.use('/facility{renterId}',faci);
