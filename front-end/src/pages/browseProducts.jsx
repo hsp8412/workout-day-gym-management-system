@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { Container, Card, Button, Row } from "react-bootstrap";
-import { getProducts } from "../services/products";
 import ProductList from "../components/productList";
 import Purchase from "../components/purchase";
 

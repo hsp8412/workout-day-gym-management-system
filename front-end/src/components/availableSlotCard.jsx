@@ -1,10 +1,7 @@
 import React from "react";
 import getTimeSlots from "../services/availableTimeSlot";
-import allViews from "react-calendar/dist/umd/Calendar";
 import { getCoachById } from "../services/coach";
 import { getBranchById } from "../services/branch";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 
 const AvailableSlotCard = ({ dateSelected, setSlotSelected, slotSelected }) => {
   function getTimeSlotEntry(timeSlot) {

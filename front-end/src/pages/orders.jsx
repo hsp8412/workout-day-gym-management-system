@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import { getShoppingCart } from "../services/shoppingCart";
 import { getOrders } from "../services/orders";
-import orderCard from "../components/orderCard";
 import OrderCard from "../components/orderCard";
-import { Container, Row } from "react-bootstrap";
 import DeleteOrderConfirm from "../components/deleteOrderConfirm";
 
 class Orders extends Component {

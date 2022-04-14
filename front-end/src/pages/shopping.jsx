@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Products from "./browseProducts";
 import ShoppingCart from "./shoppingCart";
 import { Container, Tab, Tabs } from "react-bootstrap";
-import { getProducts, getProductsById } from "../services/products";
+import { getProducts } from "../services/products";
 import LoginPrompt from "../components/loginPrompt";
 class Shopping extends Component {
   state = {

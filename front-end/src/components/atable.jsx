@@ -3,7 +3,6 @@ import { paginate } from "../utils/paginate";
 import Pagi from "./pagination";
 import { Button, Table, Col, Row, Container } from "react-bootstrap";
 import _ from "lodash";
-import { getAppointments } from "../services/appointments";
 import AppointmentTable from "./appointmentTable";
 
 class ATable extends React.Component {

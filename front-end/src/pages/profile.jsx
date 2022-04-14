@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import ProfileCard from "../components/profileCard";
 import FitnessProfileUpdate from "../components/FitnessProfileUpdate";
 

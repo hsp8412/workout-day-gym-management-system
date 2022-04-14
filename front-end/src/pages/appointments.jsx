@@ -3,10 +3,8 @@ import ATable from "../components/atable";
 import { Container } from "react-bootstrap";
 import NewAppointment from "../components/newAppointment";
 import CancelAppointmentConfirm from "../components/cancelAppointmentConfirm";
-import app from "../App";
 import { getAppointments } from "../services/appointments";
 import { getCoachById } from "../services/coach";
-import appointmentTable from "../components/appointmentTable";
 import { getBranchById } from "../services/branch";
 import NoAppSelection from "../components/newAppNoSelectionModal";
 
