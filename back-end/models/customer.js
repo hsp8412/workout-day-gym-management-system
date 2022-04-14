@@ -1,5 +1,7 @@
 const joi = require('joi');
-const mongoose = require("mongoose");
+const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const customerSchema = new mongoose.Schema({
     gender: {
@@ -22,6 +24,10 @@ const customerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    email: {
+        type: String,
+        required: true
+    },
     password: {
         type: String,
         required: true
@@ -38,6 +44,8 @@ const customerSchema = new mongoose.Schema({
     }
 });
 
+customerSchema.methods.generateJWTToken = () => jwt.sign({id: this._id, }, process.env.JWT_KEY);
+
 const Customer = mongoose.model('Customer', customerSchema, "customer");
 
 function validateCustomer(customer) {
@@ -47,6 +55,7 @@ function validateCustomer(customer) {
         midName: joi.optional(),
         lastName: joi.string().required().max(30),
         phoneNumber: joi.string().required().max(10).min(10),
+        email: joi.string().email().required(),
         password: joi.string().required(),
         emergencyContact:{
             contact_name : joi.string().optional(),

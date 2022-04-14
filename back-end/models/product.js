@@ -1,5 +1,5 @@
 const joi = require('joi');
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 /*
 {"_id":{"$oid":"6254d36f4984178dc4ea59e2"},

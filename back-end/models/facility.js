@@ -1,5 +1,5 @@
 const joi = require('joi');
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const facilitySchema = new mongoose.Schema({
     isEquipment: {

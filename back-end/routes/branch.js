@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { Branch, validateBranch } = require('../models/branch');
+const auth = require('../middleware/auth');
 
-router.get('/', async (req, res) => {
+router.get('/', auth,async (req, res) => {
     const result = await Branch.find();
     res.send(result);
 });

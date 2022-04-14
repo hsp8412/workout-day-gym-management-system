@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.7",
     "cookie-parser": "~1.4.4",
@@ -16,6 +17,7 @@
     "http-errors": "~1.6.3",
     "install": "^0.13.0",
     "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
     "logger": "^0.0.1",
     "mongodb": "^4.5.0",
     "mongoose": "^6.2.10",

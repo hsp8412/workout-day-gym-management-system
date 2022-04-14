@@ -8,6 +8,8 @@ const branchStaff = require('../routes/branchStaff');
 const facility = require('../routes/facility');
 const product = require('../routes/product');
 const customer = require('../routes/customer');
+const branch = require('../routes/branch');
+const auth = require('../routes/auth');
 
 /*  
 
@@ -25,6 +27,8 @@ module.exports = function (app) {
     app.use('/facility', facility)
     app.use('/product',product);
     app.use('/customer', customer);
+    app.use('/branch', branch)
+    app.use('/auth', auth);
     // app.use('/branch_staff/{stfid}', branchStaff);
     // app.use('/customer/{customerMember}', cust);
     // app.use('/facility{renterId}',faci);

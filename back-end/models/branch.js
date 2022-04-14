@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const joi = require("joi");
+const joi = require('joi');
 
 const branchSchema = new mongoose.Schema({
     location: {
