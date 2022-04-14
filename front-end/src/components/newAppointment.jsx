@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Modal, Col, Button, Row } from "react-bootstrap";
 import DateCalendar from "./dateCalendar";
 import AvailableSlotCard from "./availableSlotCard";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 
 const NewAppointment = ({ show, handleClose, onSubmit }) => {
   const [dateSelected, setDateSelected] = useState(new Date());
@@ -19,7 +17,7 @@ const NewAppointment = ({ show, handleClose, onSubmit }) => {
         <Modal.Title>New appointment</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Row class="d-flex justify-content-center">
+        <Row className="d-flex justify-content-center">
           <DateCalendar onChange={setDateSelected} value={dateSelected} />
         </Row>
         <Row>
