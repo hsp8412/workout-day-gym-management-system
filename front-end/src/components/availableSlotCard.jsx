@@ -60,33 +60,40 @@ const AvailableSlotCard = ({ dateSelected, setSlotSelected, slotSelected }) => {
       timeSlot.isBooked == false
     );
   });
+
+  function renderRadio() {
+    const radios = filtered.map((timeSlot) => (
+      <div className="form-check">
+        <input
+          className="form-check-input"
+          type="radio"
+          name="exampleRadios"
+          id="exampleRadios1"
+          value={timeSlot._id}
+          checked={slotSelected ? slotSelected._id == timeSlot._id : false}
+          onChange={() => {
+            setSlotSelected(timeSlot);
+          }}
+        />
+        <label className="form-check-label" htmlFor="exampleRadios1">
+          {getTimeSlotEntry(timeSlot)}
+        </label>
+      </div>
+    ));
+    return radios;
+  }
   // console.log(filtered);
   return (
-    <div className="card mx-2 mt-3">
+    <div className="card mt-3">
       <div className="card-body">
         <h5 className="card-title">Available coaches and time slot:</h5>
         <form>
           <div role="group" className="card-text d-flex flex-column">
-            {filtered.map((timeSlot) => (
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="exampleRadios"
-                  id="exampleRadios1"
-                  value={timeSlot._id}
-                  checked={
-                    slotSelected ? slotSelected._id == timeSlot._id : false
-                  }
-                  onChange={() => {
-                    setSlotSelected(timeSlot);
-                  }}
-                />
-                <label className="form-check-label" htmlFor="exampleRadios1">
-                  {getTimeSlotEntry(timeSlot)}
-                </label>
-              </div>
-            ))}
+            {filtered.length > 0 ? (
+              renderRadio()
+            ) : (
+              <p>No available slot for the selected day.</p>
+            )}
           </div>
         </form>
       </div>

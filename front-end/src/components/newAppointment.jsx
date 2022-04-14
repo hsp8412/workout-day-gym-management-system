@@ -18,17 +18,18 @@ const NewAppointment = ({ show, handleClose, onSubmit }) => {
       <Modal.Header closeButton>
         <Modal.Title>New appointment</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="d-flex flex-column">
-        <DateCalendar
-          className="align-self-center"
-          onChange={setDateSelected}
-          value={dateSelected}
-        />
-        <AvailableSlotCard
-          dateSelected={dateSelected}
-          slotSelected={slotSelected}
-          setSlotSelected={setSlotSelected}
-        />
+      <Modal.Body>
+        <Row class="d-flex justify-content-center">
+          <DateCalendar onChange={setDateSelected} value={dateSelected} />
+        </Row>
+        <Row>
+          <AvailableSlotCard
+            className="align-self-center"
+            dateSelected={dateSelected}
+            slotSelected={slotSelected}
+            setSlotSelected={setSlotSelected}
+          />
+        </Row>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
