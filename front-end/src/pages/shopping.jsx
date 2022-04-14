@@ -3,8 +3,7 @@ import Products from "./browseProducts";
 import ShoppingCart from "./shoppingCart";
 import { Container, Tab, Tabs } from "react-bootstrap";
 import { getProducts, getProductsById } from "../services/products";
-import emptyCart from "../components/emptyCart";
-
+import LoginPrompt from "../components/loginPrompt";
 class Shopping extends Component {
   state = {
     products: [],
@@ -13,6 +12,7 @@ class Shopping extends Component {
     shoppingCartItems: [],
     orderConfirmVisible: false,
     emptyCartVisibility: false,
+    loginPromptVisibility: false,
   };
 
   componentDidMount() {
@@ -22,8 +22,13 @@ class Shopping extends Component {
   }
 
   onPurchase = (product) => {
-    const ifPurchasing = true;
-    this.setState({ productPurchasing: product, ifPurchasing });
+    let jwt = localStorage.getItem("token");
+    if (jwt != null) {
+      const ifPurchasing = true;
+      this.setState({ productPurchasing: product, ifPurchasing });
+    } else {
+      this.setState({ loginPromptVisibility: true });
+    }
   };
 
   onCancelPurchase = () => {
@@ -134,6 +139,10 @@ class Shopping extends Component {
     this.setState({ emptyCartVisibility: false });
   };
 
+  handleCloseLoginPrompt = () => {
+    this.setState({ loginPromptVisibility: false });
+  };
+
   render() {
     let {
       products,
@@ -142,6 +151,7 @@ class Shopping extends Component {
       shoppingCartItems,
       orderConfirmVisible,
       emptyCartVisibility,
+      loginPromptVisibility,
     } = this.state;
     return (
       <div>
@@ -181,6 +191,10 @@ class Shopping extends Component {
             </Tab>
           </Tabs>
         </Container>
+        <LoginPrompt
+          ifVisible={loginPromptVisibility}
+          onClose={this.handleCloseLoginPrompt}
+        />
       </div>
     );
   }

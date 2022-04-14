@@ -22,8 +22,6 @@ import AlreadyLoggedIn from "./pages/alreadyLoggedIn";
 
 function App() {
   let jwt = localStorage.getItem("token");
-  jwt = 1;
-  console.log(jwt == null);
   return (
     <div>
       <NavBar />
