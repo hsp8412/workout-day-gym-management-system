@@ -1,32 +1,80 @@
 const express = require('express');
 const router = express.Router();
-const { cust, validateCust } = require('../models/cust');
-const joi = require("joi");
+const bcrypt = require('bcrypt');
+const { Customer, validateCustomer } = require('../models/customer');
 
 router.get('/', async (req, res) => {
-    const customer = await cust.find();
-    res.send(customer);
+    const result = await Customer.find();
+    res.send(result);
+});
+
+router.get('/:id', async (req, res) => {
+    try {
+        const result = await Customer.findById(req.params.id);
+        res.send(result);
+    } catch (e) {
+        res.status(400).send("Bad Request");
+    }
 });
 
 router.post('/', async (req, res) => {
-    console.log(req.body);
-    const { error } = validateCust(req.body);
+    const { error } = validateCustomer(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-    const { gender, firstName, middleName, lastName, phoneNumber,
-        password,
-        emergencyContact: { contact_name, contactPhoneNumber },
-        fitnessProfile: { height, weight, BFP, BMI } } = req.body;
-    // const request = req.body; 
 
-    const customerrr = new cust({
-        gender, firstName, middleName, lastName, phoneNumber, password,
+    const { gender, firstName, middleName, lastName, phoneNumber, password, email,
+        emergencyContact: { contact_name, contactPhoneNumber },
+        fitnessProfile: { height, weight, BFP, BMI }} = req.body;
+
+    const customerInDB = await Customer.findOne({email: req.body.email});
+    if (customerInDB) return res.status(400).send("Email already exists");
+
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+
+    const customer = new Customer({
+        gender, firstName, middleName, lastName, phoneNumber, password: passwordHash, email,
         emergencyContact: { contact_name, contactPhoneNumber }, fitnessProfile: { height, weight, BFP, BMI }
     });
-    //const customerrr = new cust({request});
-    const result = await customerrr.save();
-    res.send(result);
-}
-);
 
+    try {
+        const result = await customer.save();
+        const {_id} = result;
+        const token = customer.generateJWTToken();
+        res.header('x-token', token).send({_id})
+    } catch (e) {
+        console.log(e);
+        res.status(500).send("Internal Error");
+    }
+});
+
+router.put('/:id', async (req, res) => {
+    const { error } = validateCustomer(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
+    const { gender, firstName, middleName, lastName, phoneNumber, password,
+        emergencyContact: { contact_name, contactPhoneNumber },
+        fitnessProfile: { height, weight, BFP, BMI },email } = req.body;
+
+    const customer = {
+        gender, firstName, middleName, lastName, phoneNumber, password,
+        emergencyContact: { contact_name, contactPhoneNumber }, fitnessProfile: { height, weight, BFP, BMI },
+        email
+    };
+
+    try {
+        const result = await Customer.findByIdAndUpdate(req.params.id, customer, { new: true });
+        res.send(result);
+    } catch (e) {
+        res.status(400).send("Bad Request");
+    }
+});
+
+router.get('/:id', async (req, res) => {
+    try {
+        const result = await Customer.findByIdAndDelete(req.params.id);
+        res.send(result);
+    } catch (e) {
+        res.status(400).send("Bad Request");
+    }
+});
 
 module.exports = router;

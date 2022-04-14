@@ -1,15 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { BranchStaff, validateBranchStaff } = require('../models/branchStaff');
+const { Branch, validateBranch } = require('../models/branch');
+const auth = require('../middleware/auth');
 
-router.get('/', async (req, res) => {
-    const result = await BranchStaff.find();
+router.get('/', auth,async (req, res) => {
+    const result = await Branch.find();
     res.send(result);
 });
 
 router.get('/:id', async (req, res) => {
     try {
-        const result = await BranchStaff.findById(req.params.id);
+        const result = await Branch.findById(req.params.id);
         res.send(result);
     } catch (e) {
         res.status(400).send("Bad Request")
@@ -17,11 +18,11 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const { error } = validateBranchStaff(req.body);
+    const { error } = validateBranch(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-    const { firstName, middleName, lastName, phone, address, email, ssn, salary } = req.body;
-    const branchStaff = new BranchStaff({
-        firstName, middleName, lastName, phone, address, email, ssn, salary
+    const { location, numberOfMembers, yearlyProfit, managerId } = req.body;
+    const branchStaff = new Branch({
+        location, numberOfMembers, yearlyProfit, managerId
     });
     try {
         const result = await branchStaff.save();
@@ -32,12 +33,12 @@ router.post('/', async (req, res) => {
 );
 
 router.put('/:id', async (req, res) => {
-    const { error } = validateBranchStaff(req.body);
+    const { error } = validateBranch(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-    const { firstName, middleName, lastName, phone, address, email, ssn, salary } = req.body;
+    const { location, numberOfMembers, yearlyProfit, managerId } = req.body;
     try {
-        const result = await BranchStaff.findByIdAndUpdate(req.params.id, {
-            firstName, middleName, lastName, phone, address, email, ssn, salary
+        const result = await Branch.findByIdAndUpdate(req.params.id, {
+            location, numberOfMembers, yearlyProfit, managerId
         }, { new: true });
         res.send(result);
     } catch (e) {
@@ -47,7 +48,7 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
     try {
-        const result = await BranchStaff.findByIdAndDelete(req.params.id);
+        const result = await Branch.findByIdAndDelete(req.params.id);
         res.send(result);
     } catch (e) {
         res.status(400).send("Bad Request")
