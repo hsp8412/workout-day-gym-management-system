@@ -17,6 +17,8 @@ import ATable from "./components/atable";
 import Appointment from "./pages/appointments";
 import Shopping from "./pages/shopping";
 import Register from "./components/register";
+import RegisterPage from "./pages/registerPage";
+import AlreadyLoggedIn from "./pages/alreadyLoggedIn";
 
 function App() {
   let jwt = localStorage.getItem("token");
@@ -28,7 +30,10 @@ function App() {
       <div className="content">
         <Routes>
           <Route path="/" element={jwt != null ? <Products /> : <Login />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/login"
+            element={jwt != null ? <AlreadyLoggedIn /> : <Login />}
+          />
           <Route
             path="/orders"
             element={jwt != null ? <Orders /> : <Login />}
@@ -49,7 +54,10 @@ function App() {
             element={jwt != null ? <Appointment /> : <Login />}
           />
           <Route path="/shopping" element={<Shopping />} />
-          <Route path="/register" element={<Register />} />
+          <Route
+            path="/register"
+            element={jwt != null ? <AlreadyLoggedIn /> : <RegisterPage />}
+          />
         </Routes>
       </div>
     </div>

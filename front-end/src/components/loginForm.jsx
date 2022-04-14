@@ -17,8 +17,8 @@ const LoginForm = (props) => {
     validationSchema: Yup.object({
       email: Yup.string()
         .email("Please enter a valid email address.")
-        .required("The email is required."),
-      password: Yup.string(),
+        .required("Email is required."),
+      password: Yup.string("Password is required."),
       rememberMe: Yup.boolean(),
     }),
   });
@@ -39,6 +39,9 @@ const LoginForm = (props) => {
               value={formik.values.email}
               onChange={formik.handleChange}
             />
+            <p className="text-danger">
+              {formik.errors.email ? formik.errors.email : null}
+            </p>
           </div>
           <div className="mb-3">
             <label htmlFor="exampleInputPassword1" className="form-label">
@@ -52,6 +55,9 @@ const LoginForm = (props) => {
               value={formik.values.password}
               onChange={formik.handleChange}
             />
+            <p className="text-danger">
+              {formik.errors.password ? formik.errors.password : null}
+            </p>
           </div>
           <div className="mb-3 form-check">
             <input
