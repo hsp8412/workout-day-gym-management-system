@@ -5,6 +5,7 @@ import { Container, Row } from "react-bootstrap";
 import Pagi from "../components/pagination";
 import { getBranches } from "../services/branch";
 import BranchTable from "../components/branchTable";
+import BranchDeleteConfirm from "../components/branchDeleteConfirm";
 
 class ExecutiveManager extends Component {
   state = {
@@ -35,8 +36,29 @@ class ExecutiveManager extends Component {
     });
   };
 
+  handleDeleteClose = () => {
+    this.setState({ branchDeleting: null, deleteBranchVisibility: false });
+  };
+
+  handleDeleteConfirm = () => {
+    const branches = this.state.branches.filter((branch) => {
+      return branch._id != this.state.branchDeleting._id;
+    });
+    this.setState({
+      branches,
+      deleteBranchVisibility: false,
+      branchDeleting: null,
+    });
+  };
+
   render() {
-    const { pageSize, currentPage, sortColumn, branches } = this.state;
+    const {
+      pageSize,
+      currentPage,
+      sortColumn,
+      branches,
+      deleteBranchVisibility,
+    } = this.state;
     let allBranches = branches;
 
     const sorted = _.orderBy(allBranches, sortColumn.path, sortColumn.order);
@@ -63,6 +85,11 @@ class ExecutiveManager extends Component {
             />
           </Row>
         </Container>
+        <BranchDeleteConfirm
+          ifVisible={deleteBranchVisibility}
+          onConfirm={this.handleDeleteConfirm}
+          onClose={this.handleDeleteClose}
+        />
       </div>
     );
   }
