@@ -40,7 +40,3 @@ const products = [
 export function getProducts() {
   return products;
 }
-
-export function getProductsById(_id) {
-  return products[_id - 1];
-}

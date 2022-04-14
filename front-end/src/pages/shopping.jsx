@@ -4,6 +4,7 @@ import ShoppingCart from "./shoppingCart";
 import { Container, Tab, Tabs } from "react-bootstrap";
 import { getProducts } from "../services/products";
 import LoginPrompt from "../components/loginPrompt";
+import axios from "axios";
 class Shopping extends Component {
   state = {
     products: [],
@@ -15,9 +16,14 @@ class Shopping extends Component {
     loginPromptVisibility: false,
   };
 
-  componentDidMount() {
-    this.setState({
-      products: getProducts(),
+  async componentDidMount() {
+    axios.get("http://localhost:4000/product").then((res) => {
+      const products = res.data;
+      products.forEach((product) => {
+        product.image = "/gym-logo.svg";
+        product.description = "This is a product provided by the gym.";
+      });
+      this.setState({ products });
     });
   }
 
