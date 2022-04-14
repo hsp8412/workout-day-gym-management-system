@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
 
     const { gender, firstName, middleName, lastName, phoneNumber, password, email,
         emergencyContact: { contact_name, contactPhoneNumber },
-        fitnessProfile: { height, weight, BFP, BMI } } = req.body;
+        fitnessProfile: { height, weight, BFP, BMI }} = req.body;
 
     const customerInDB = await Customer.findOne({email: req.body.email});
     if (customerInDB) return res.status(400).send("Email already exists");
@@ -52,11 +52,12 @@ router.put('/:id', async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
     const { gender, firstName, middleName, lastName, phoneNumber, password,
         emergencyContact: { contact_name, contactPhoneNumber },
-        fitnessProfile: { height, weight, BFP, BMI } } = req.body;
+        fitnessProfile: { height, weight, BFP, BMI },email } = req.body;
 
     const customer = {
         gender, firstName, middleName, lastName, phoneNumber, password,
-        emergencyContact: { contact_name, contactPhoneNumber }, fitnessProfile: { height, weight, BFP, BMI }
+        emergencyContact: { contact_name, contactPhoneNumber }, fitnessProfile: { height, weight, BFP, BMI },
+        email
     };
 
     try {
