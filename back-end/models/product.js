@@ -1,22 +1,6 @@
 const joi = require('joi');
 const mongoose = require("mongoose");
 
-/*
-{"_id":{"$oid":"6254d36f4984178dc4ea59e2"},
-"stock":{"branchId":{"$oid":"6254bed2fc13ae724a0000c3"},
-"InStock":{"$numberInt":"552"}},
-"price":{"$numberDouble":"257.73"},
-"name":"Basic Cardio",
-"isCourse":true,
-"isMeal":false,
-"isGoods":false,
-"startTime":"10:00 AM",
-"endTime":"10:50 AM",
-"courseCoachId":{"$oid":"6254972d4984178dc4c7a6f4"},
-"allergies":null,
-"calories":{"$numberInt":"453"}}
-*/
-
 const productSchema = new mongoose.Schema({
     stock: {
        branchId: {type: String, required: true},
@@ -44,54 +28,29 @@ const productSchema = new mongoose.Schema({
     },
     startTime: {
         type: String,
-        required: function() {return this.isCourse == true;}
+        required: false
     },
     endTime: {
         type: String,
-        required: function() {return this.isCourse == true;}
+        required: false
     },
     courseCoachId:{
-        type: String, 
-        required: function() {return this.isCourse == true;}
+        type: String,
+        required: false
     },
     allergies: {
-        type:Array,
-        required: function() {return this.isMeal == true;}
+        type: Array,
+        required: false
     },
     calories: {
         type: Number,
-        required: function() {return this.isMeal == true;}
+        required: false
     }
 });
 
-// new Schema({
-//     a: String,
-//     b: {
-//       type: String,
-//       required: function() { return this.a === 'test'; } // Only required if a equals 'test'
-//     }
-//   });
-
-/*
-{"_id":{"$oid":"6254d36f4984178dc4ea59e2"},
-"stock":{"branchId":{"$oid":"6254bed2fc13ae724a0000c3"},
-"InStock":{"$numberInt":"552"}},
-"price":{"$numberDouble":"257.73"},
-"name":"Basic Cardio",
-"isCourse":true,
-"isMeal":false,
-"isGoods":false,
-"startTime":"10:00 AM",
-"endTime":"10:50 AM",
-"courseCoachId":{"$oid":"6254972d4984178dc4c7a6f4"},
-"allergies":null,
-"calories":{"$numberInt":"453"}}
-*/
 const product = mongoose.model('product', productSchema, "product");
 
-
 function validateProduct(product) {
-
     const schema = joi.object({
         stock: {
             branchId: joi.string().required(),

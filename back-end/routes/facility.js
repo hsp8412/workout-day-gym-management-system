@@ -50,7 +50,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const result = await Facility.findByIdAndDelete(req.params.id);
         res.send(result);
