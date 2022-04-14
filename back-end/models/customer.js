@@ -35,6 +35,10 @@ const customerSchema = new mongoose.Schema({
         weight: { type: Number, required: false },
         BFP: { type: Number, required: false},
         BMI: { type: Number, required: false }
+    },
+    email: {
+        type: String,
+        required: true
     }
 });
 
@@ -57,7 +61,8 @@ function validateCustomer(customer) {
             weight : joi.number().optional(),
             BFP : joi.number().optional(),
             BMI : joi.number().optional()
-        }
+        },
+        email: joi.string().email().required().max(50)
     });
     return schema.validate(customer);
 }
