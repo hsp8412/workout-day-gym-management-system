@@ -8,6 +8,7 @@ import { getAppointments } from "../services/appointments";
 import { getCoachById } from "../services/coach";
 import appointmentTable from "../components/appointmentTable";
 import { getBranchById } from "../services/branch";
+import NoAppSelection from "../components/newAppNoSelectionModal";
 
 class Appointment extends React.Component {
   state = {
@@ -15,6 +16,7 @@ class Appointment extends React.Component {
     newAppVisibility: false,
     cancelAppVisibility: false,
     appointmentDeleting: null,
+    noSelectionVisibility: false,
   };
 
   componentDidMount() {
@@ -90,6 +92,19 @@ class Appointment extends React.Component {
     });
   };
 
+  handleMakeNewApp = (timeSlot) => {
+    if (timeSlot === null) {
+      this.setState({ noSelectionVisibility: true });
+    } else {
+      console.log(timeSlot);
+      this.setState({ newAppVisibility: false });
+    }
+  };
+
+  handleNoSelectionClose = () => {
+    this.setState({ noSelectionVisibility: false });
+  };
+
   render() {
     return (
       <div>
@@ -110,11 +125,16 @@ class Appointment extends React.Component {
         <NewAppointment
           show={this.state.newAppVisibility}
           handleClose={this.handleCloseNewApp}
+          onSubmit={this.handleMakeNewApp}
         />
         <CancelAppointmentConfirm
           onClose={this.handleCloseCancelApp}
           ifVisible={this.state.cancelAppVisibility}
           onConfirmDelete={this.handleConfirmDelete}
+        />
+        <NoAppSelection
+          ifVisible={this.state.noSelectionVisibility}
+          onClose={this.handleNoSelectionClose}
         />
       </div>
     );
