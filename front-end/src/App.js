@@ -20,6 +20,7 @@ import Register from "./components/register";
 import RegisterPage from "./pages/registerPage";
 import AlreadyLoggedIn from "./pages/alreadyLoggedIn";
 import ExecutiveManager from "./pages/executiveManager";
+import ExecutiveLoginForm from "./components/executiveLoginForm";
 
 function App() {
   let jwt = localStorage.getItem("token");
@@ -37,7 +38,12 @@ function App() {
             path="/orders"
             element={jwt != null ? <Orders /> : <Login />}
           />
-          <Route path="/executive" element={<ExecutiveManager />} />
+          <Route
+            path="/executive"
+            element={
+              jwt != null ? <ExecutiveManager /> : <ExecutiveLoginForm />
+            }
+          />
           <Route path="/branch" element={<BranchManagement />} />
           <Route path="/branch/customer" element={<Customer />} />
           <Route path="/branch/product" element={<Product />} />
