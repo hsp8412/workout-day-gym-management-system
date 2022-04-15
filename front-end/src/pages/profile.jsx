@@ -21,37 +21,9 @@ class Profile extends React.Component {
     console.log(values);
     const { BMI, BFP, height, weight } = values;
     const id = localStorage.getItem("id");
-    let req = await axios.get(`http://localhost:4000/customer/${id}`);
-    const {
-      gender,
-      firstName,
-      middleName,
-      lastName,
-      phoneNumber,
-      password,
-      emergencyContact,
-      email,
-    } = req.data;
-    let fitnessProfile = {
-      BMI,
-      BFP,
-      height,
-      weight,
-      lastUpdateDate: Date.now(),
-    };
-    const data = {
-      gender,
-      firstName,
-      middleName,
-      lastName,
-      phoneNumber,
-      password,
-      emergencyContact,
-      email,
-      fitnessProfile,
-    };
-    const result = await axios.put(
-      `http://localhost:4000/customer/${id}`,
+    const data = { BMI, BFP, height, weight };
+    let req = await axios.patch(
+      `http://localhost:4000/profile/:id'/${id}`,
       data
     );
     this.setState({ updateVisible: false });

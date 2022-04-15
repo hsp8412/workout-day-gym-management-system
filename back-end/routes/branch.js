@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Branch, validateBranch } = require("../models/branch");
 const auth = require("../middleware/managerAuth");
+const { Customer } = require("../models/customer");
 
 router.get("/", async (req, res) => {
   const result = await Branch.find();
@@ -56,6 +57,18 @@ router.put("/:id", async (req, res) => {
     res.send(result);
   } catch (e) {
     return res.status(400).send("Bad Request");
+  }
+});
+
+router.patch("/:id", async (req, res) => {
+  const { name, location, yearlyProfit, numberOfMembers } = req.body;
+  try {
+    const result = await Branch.findByIdAndUpdate(req.params.id, {
+      $set: { name, location, yearlyProfit, numberOfMembers },
+    });
+    res.send(result);
+  } catch (e) {
+    res.status(400).send("Bad request");
   }
 });
 

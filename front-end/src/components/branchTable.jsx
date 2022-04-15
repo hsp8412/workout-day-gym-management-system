@@ -17,6 +17,18 @@ class BranchTable extends React.Component {
     { path: "yearlyProfit", label: "Yearly Profit" },
     { path: "location", label: "Location " },
     {
+      key: "edit",
+      content: (branch) => (
+        <Button
+          variant="danger"
+          size="sm"
+          onClick={() => this.props.onEdit(branch)}
+        >
+          Edit
+        </Button>
+      ),
+    },
+    {
       key: "delete",
       content: (branch) => (
         <Button
