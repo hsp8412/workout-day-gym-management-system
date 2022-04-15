@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row, Card, Container } from "react-bootstrap";
+import { Col, Row, Card, Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPeopleGroup, faCartShopping, faDumbbell, faClipboardUser } from "@fortawesome/free-solid-svg-icons";
@@ -30,6 +30,9 @@ const BranchManagement = () => {
         <Container>
             <Row className="py-5">
                 {getCards()}
+            </Row>
+            <Row>
+                <Button variant="danger" onClick={() => {localStorage.removeItem("manager_token");window.location = "/branch"}}>Logout</Button>
             </Row>
         </Container>
     );

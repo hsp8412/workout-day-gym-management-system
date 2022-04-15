@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Container, FloatingLabel, Form, Modal, Pagination, Table } from "react-bootstrap";
+import { Button, Card, Container, FloatingLabel, Form, Modal, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import http from "../services/httpService"
 import MyPagination from "../utils/pagination";
 
 const empty = {
@@ -27,10 +27,10 @@ const Staff = () => {
     const handleClose = () => setShow(false);
     const handleSave = async () => {
         if (adding)
-            await axios.post(uri, staff);
+            await http.post(uri, staff);
         else
-            await axios.put(uri + staff._id, staff);
-        const data = await axios.get(uri);
+            await http.put(uri + staff._id, staff);
+        const data = await http.get(uri);
         setAllStaff(data.data);
         handleClose();
     };
@@ -45,8 +45,8 @@ const Staff = () => {
         setShow(true);
     };
     const handleDelete = async () => {
-        await axios.delete(uri + staff._id);
-        const data = await axios.get(uri);
+        await http.delete(uri + staff._id);
+        const data = await http.get(uri);
         setAllStaff(data.data);
         handleClose();
     };
@@ -56,7 +56,7 @@ const Staff = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const data = await axios.get(uri);
+            const data = await http.get(uri);
             setAllStaff(data.data);
         }
         fetchData();
@@ -106,7 +106,7 @@ const Staff = () => {
 
                         <MyPagination  currentPage={currentPage} onPageChange={setPage} itemsPerPage={itemsPerPage} totalItems={allStaff.length}/>
 
-                        <Button as={Link} to="/branch">Back</Button>
+                        <Button as={Link} to="/branch/manage">Back</Button>
                         <Button onClick={handleAdd} className="mx-3">Add</Button>
                     </Card.Body>
                 </Card>

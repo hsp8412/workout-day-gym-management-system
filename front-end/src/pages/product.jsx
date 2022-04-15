@@ -191,7 +191,7 @@ const Product = () => {
                                       currentPage={currentPage}
                                       itemsPerPage={itemsPerPage}
                                       totalItems={products.length}/>
-                        <Button as={Link} to="/branch">Back</Button>
+                        <Button as={Link} to="/branch/manage">Back</Button>
                         <Button className="mx-2" onClick={handleAdd}>Add</Button>
                     </Card.Body>
                 </Card>

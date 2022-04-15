@@ -4,6 +4,7 @@ const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const error = require("../middleware/error");
+const branchManager = require('../routes/branchManagerAuth');
 const branchStaff = require("../routes/branchStaff");
 const facility = require("../routes/facility");
 const product = require("../routes/product");
@@ -21,6 +22,7 @@ TODO
 add product and customer and remter {id} query
 */
 module.exports = function (app) {
+
   app.use(cors());
   app.use(logger("dev"));
   app.use(express.json());
@@ -37,9 +39,12 @@ module.exports = function (app) {
   app.use("/timeslot", timeslot);
   app.use("/executive", executiveManager);
   app.use("/executiveLogin", executiveManagerLogin);
+  app.use('/branch_manager', branchManager);
+
   // app.use('/branch_staff/{stfid}', branchStaff);
   // app.use('/customer/{customerMember}', cust);
   // app.use('/facility{renterId}',faci);
   // app.use('/product{productId}',product);
   app.use(error);
 };
+

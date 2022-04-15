@@ -116,7 +116,7 @@ const Locker = () => {
                                       currentPage={currentPage}
                                       onPageChange={setPage}/>
 
-                        <Button as={Link} to="/branch">Back</Button>
+                        <Button as={Link} to="/branch/manage">Back</Button>
                         <Button onClick={handleAdd} className="mx-3">Add</Button>
                     </Card.Body>
                 </Card>
