@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-function auth(req, res, next) {
+function managerAuth(req, res, next) {
     const token = req.header('x-manager-token');
     if (!token) return res.status(401).send("Access denied");
     try {
@@ -11,4 +11,4 @@ function auth(req, res, next) {
     }
 }
 
-module.exports = auth;
+module.exports = managerAuth;

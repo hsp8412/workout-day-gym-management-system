@@ -37,9 +37,9 @@ const Product = () => {
     const handleClose = () => setShow(false);
     const handleSave = async () => {
         if (adding)
-            await axios.post(uri, product, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
+            await axios.post(uri, product);
         else
-            await axios.put(uri + product._id, product, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
+            await axios.put(uri + product._id, product);
         const data = await axios.get(uri);
         setProducts(data.data);
         handleClose();
@@ -58,7 +58,7 @@ const Product = () => {
         setShow(true);
     };
     const handleDelete = async () => {
-        await axios.delete(uri + product._id, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
+        await axios.delete(uri + product._id);
         const data = await axios.get(uri);
         setProducts(data.data);
         handleClose();

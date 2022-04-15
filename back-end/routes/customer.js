@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const { Customer, validateCustomer } = require("../models/customer");
-const auth = require("../middleware/auth");
+const managerAuth = require("../middleware/managerAuth");
 
-router.get("/", auth, async (req, res) => {
+router.get("/", managerAuth, async (req, res) => {
   const result = await Customer.find();
   res.send(result);
 });
@@ -13,12 +13,13 @@ router.get("/:id", async (req, res) => {
   try {
     const result = await Customer.findById(req.params.id);
     res.send(result);
+
   } catch (e) {
     res.status(400).send("Bad Request");
   }
 });
 
-router.post("/", auth, async (req, res) => {
+router.post("/", async (req, res) => {
   const { error } = validateCustomer(req.body);
   if (error) {
     console.log(error.details[0].message);
@@ -69,7 +70,7 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-router.put("/:id", auth, async (req, res) => {
+router.put("/:id", managerAuth, async (req, res) => {
   const { error } = validateCustomer(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const {
@@ -100,7 +101,7 @@ router.put("/:id", auth, async (req, res) => {
   }
 });
 
-router.patch('/profile/:id', auth, async (req, res) => {
+router.patch('/profile/:id', async (req, res) => {
     const { height, weight, BFP, BMI } = req.body
     const lastUpdateDate = Date.now();
     try {
@@ -112,7 +113,7 @@ router.patch('/profile/:id', auth, async (req, res) => {
 });
 
 
-router.patch('/password/:id', auth, async (req, res) => {
+router.patch('/password/:id', async (req, res) => {
     const { password } = req.body;
     if (!password) return res.status(400).send("Bad Request");
     try {
@@ -125,7 +126,7 @@ router.patch('/password/:id', auth, async (req, res) => {
     }
 });
 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', managerAuth, async (req, res) => {
     try {
         const result = await Customer.findByIdAndDelete(req.params.id);
         res.send(result);

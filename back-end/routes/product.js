@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Product, validateProduct} = require('../models/product');
-const auth = require('../middleware/auth');
+const managerAuth = require('../middleware/managerAuth');
 
 router.get('/', async (req, res) => {
     const prod = await Product.find();
@@ -17,7 +17,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', auth, async (req, res) => {
+router.post('/', managerAuth, async (req, res) => {
     const { error } = validateProduct(req.body);
     if (error) {
         console.log(error.details[0].message);
@@ -42,7 +42,7 @@ router.post('/', auth, async (req, res) => {
     res.send(result);
 });
 
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', managerAuth, async (req, res) => {
     const { error } = validateProduct(req.body);
     if (error) {
         console.log(error.details[0].message);
@@ -72,7 +72,7 @@ router.put('/:id', auth, async (req, res) => {
 });
 
 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', managerAuth, async (req, res) => {
     try {
         const result = await Product.findByIdAndDelete(req.params.id);
         res.send(result);

@@ -28,10 +28,10 @@ const Customer = () => {
     const handleClose = () => setShow(false);
     const handleSave = async () => {
         if (adding)
-            await http.post(uri, customer, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
+            await http.post(uri, customer);
         else
-            await http.put(uri + customer._id, customer, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
-        const data = await http.get(uri, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
+            await http.put(uri + customer._id, customer);
+        const data = await http.get(uri);
         setCustomers(data.data);
         handleClose();
     };
@@ -46,8 +46,8 @@ const Customer = () => {
         setShow(true);
     };
     const handleDelete = async () => {
-        await http.delete(uri + customer._id, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
-        const data = await http.get(uri, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
+        await http.delete(uri + customer._id);
+        const data = await http.get(uri);
         setCustomers(data.data);
         handleClose();
     };
@@ -57,7 +57,7 @@ const Customer = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const data = await http.get(uri, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
+            const data = await http.get(uri);
             setCustomers(data.data);
         }
         fetchData();

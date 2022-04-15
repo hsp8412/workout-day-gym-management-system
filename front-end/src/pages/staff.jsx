@@ -27,9 +27,9 @@ const Staff = () => {
     const handleClose = () => setShow(false);
     const handleSave = async () => {
         if (adding)
-            await http.post(uri, staff, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
+            await http.post(uri, staff);
         else
-            await http.put(uri + staff._id, staff, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
+            await http.put(uri + staff._id, staff);
         const data = await http.get(uri);
         setAllStaff(data.data);
         handleClose();
@@ -45,7 +45,7 @@ const Staff = () => {
         setShow(true);
     };
     const handleDelete = async () => {
-        await http.delete(uri + staff._id, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
+        await http.delete(uri + staff._id);
         const data = await http.get(uri);
         setAllStaff(data.data);
         handleClose();
