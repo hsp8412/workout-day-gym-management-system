@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const { Customer, validateCustomer } = require('../models/customer');
-const joi = require("joi");
 
 router.get('/', async (req, res) => {
     const result = await Customer.find();
@@ -56,11 +55,8 @@ router.put('/:id', async (req, res) => {
     const { gender, firstName, middleName, lastName, phoneNumber, password,
         emergencyContact, fitnessProfile, email } = req.body;
 
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(password, salt);
-
     const customer = {
-        gender, firstName, middleName, lastName, phoneNumber, password: passwordHash,
+        gender, firstName, middleName, lastName, phoneNumber, password,
         emergencyContact, fitnessProfile, email};
 
     try {
@@ -70,6 +66,19 @@ router.put('/:id', async (req, res) => {
         res.status(400).send("Bad Request");
     }
 });
+
+router.patch('/password/:id', async (req, res) => {
+    const { password } = req.body;
+    if (!password) return res.status(400).send("Bad Request");
+    try {
+        const salt = await bcrypt.genSalt();
+        const passwordHash = await bcrypt.hash(password, salt);
+        const result = await Customer.findByIdAndUpdate(req.params.id, {$set: {password: passwordHash}});
+        res.send(result);
+    } catch (e) {
+        res.status(400).send("Bad request");
+    }
+})
 
 router.delete('/:id', async (req, res) => {
     try {
