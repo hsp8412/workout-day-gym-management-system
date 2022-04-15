@@ -24,8 +24,6 @@ router.post("/", async (req, res) => {
     console.log(error.details[0].message);
     return res.status(400).send(error.details[0].message);
   }
-
-
   let { gender, firstName, middleName, lastName, phoneNumber, password, email,
       emergencyContact} = req.body;
 
@@ -102,6 +100,17 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+router.patch('/profile/:id', async (req, res) => {
+    const { height, weight, BFP, BMI } = req.body
+    const lastUpdateDate = Date.now();
+    try {
+        const result = await Customer.findByIdAndUpdate(req.params.id, {$set: {fitnessProfile: {height, weight, BFP, BMI, lastUpdateDate}}});
+        res.send(result);
+    } catch (e) {
+        res.status(400).send("Bad request");
+    }
+});
+
 
 router.patch('/password/:id', async (req, res) => {
     const { password } = req.body;
@@ -114,7 +123,7 @@ router.patch('/password/:id', async (req, res) => {
     } catch (e) {
         res.status(400).send("Bad request");
     }
-})
+});
 
 router.delete('/:id', async (req, res) => {
     try {
