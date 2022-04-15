@@ -19,14 +19,11 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   const { error } = validateOrder(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-  const {
-    products: [{ name, price, quantity }],
-    customerId,
-  } = req.body;
-  const createDate = new Date.now();
+  const { products, customerId } = req.body;
+  const createDate = Date.now();
   const isFulfilled = false;
   const order = new Order({
-    products: [{ name, price, quantity }],
+    products,
     customerId,
     createDate,
     isFulfilled,

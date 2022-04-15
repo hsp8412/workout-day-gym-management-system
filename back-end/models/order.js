@@ -19,17 +19,15 @@ const Order = mongoose.model("Order", orderSchema, "order");
 
 function validateOrder(order) {
   const schema = joi.object({
-    products: [
-      {
-        name: joi.string().required(),
-        price: joi.number().required(),
-        quantity: joi.number().max(100).min(1).required(),
-      },
-    ],
-    createDate: joi.date().required(),
+    products: joi.array().items({
+      name: joi.string().required(),
+      price: joi.number().required(),
+      quantity: joi.number().max(100).min(1).required(),
+    }),
+    createDate: joi.date(),
     branchId: joi.string(),
     customerId: joi.string().required(),
-    isFulfilled: joi.string().required(),
+    isFulfilled: joi.string(),
   });
   return schema.validate(order);
 }
