@@ -1,13 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const { Order, validateOrder } = require("../models/order");
+const customerAuth = require("../middleware/customerAuth");
+const { custom } = require("joi");
 
 router.get("/", async (req, res) => {
   const result = await Order.find();
   res.send(result);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", customerAuth, async (req, res) => {
   try {
     const result = await Order.findById(req.params.id);
     res.send(result);
@@ -16,7 +18,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", customerAuth, async (req, res) => {
   const { error } = validateOrder(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const { products, customerId } = req.body;
@@ -36,7 +38,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", customerAuth, async (req, res) => {
   try {
     const result = await Order.findByIdAndDelete(req.params.id);
     res.send(result);

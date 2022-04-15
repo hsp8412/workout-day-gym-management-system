@@ -3,15 +3,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Container } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-// const handleSubmit = async (email, password, rememberMe) => {
-//   // console.log(email);
-//   // console.log(password);
-//   // console.log(rememberMe);
-//
-// };
+import http from "../services/httpService";
 
 const LoginForm = (props) => {
   const navigate = useNavigate();
@@ -22,7 +15,7 @@ const LoginForm = (props) => {
       rememberMe: false,
     },
     onSubmit: async ({ email, password }) => {
-      await axios
+      await http
         .post("http://localhost:4000/auth", { email, password })
         .then((res) => {
           localStorage.setItem("token", res.data.token);
@@ -40,6 +33,8 @@ const LoginForm = (props) => {
       password: Yup.string("Password is required."),
       rememberMe: Yup.boolean(),
     }),
+    validateOnChange: false,
+    validateOnBlur: true,
   });
   return (
     <div className="mt-3">

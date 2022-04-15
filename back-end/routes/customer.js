@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const { Customer, validateCustomer } = require("../models/customer");
 const managerAuth = require("../middleware/managerAuth");
+const customerAuth = require("../middleware/customerAuth");
 
 router.get("/", managerAuth, async (req, res) => {
   const result = await Customer.find();
@@ -13,7 +14,6 @@ router.get("/:id", async (req, res) => {
   try {
     const result = await Customer.findById(req.params.id);
     res.send(result);
-
   } catch (e) {
     res.status(400).send("Bad Request");
   }
@@ -25,17 +25,25 @@ router.post("/", async (req, res) => {
     console.log(error.details[0].message);
     return res.status(400).send(error.details[0].message);
   }
-  let { gender, firstName, middleName, lastName, phoneNumber, password, email,
-      emergencyContact} = req.body;
+  let {
+    gender,
+    firstName,
+    middleName,
+    lastName,
+    phoneNumber,
+    password,
+    email,
+    emergencyContact,
+  } = req.body;
 
   if (!emergencyContact) {
-      emergencyContact = {
-          name: "",
-          phoneNumber: ""
-      }
+    emergencyContact = {
+      name: "",
+      phoneNumber: "",
+    };
   }
 
-  const customerInDB = await Customer.findOne({email: req.body.email});
+  const customerInDB = await Customer.findOne({ email: req.body.email });
   if (customerInDB) return res.status(400).send("Email already exists");
 
   const salt = await bcrypt.genSalt();
@@ -86,10 +94,17 @@ router.put("/:id", managerAuth, async (req, res) => {
     lastUpdateDate,
   } = req.body;
 
-  
   const customer = {
-      gender, firstName, middleName, lastName, phoneNumber, password,
-      emergencyContact, fitnessProfile, email};
+    gender,
+    firstName,
+    middleName,
+    lastName,
+    phoneNumber,
+    password,
+    emergencyContact,
+    fitnessProfile,
+    email,
+  };
 
   try {
     const result = await Customer.findByIdAndUpdate(req.params.id, customer, {
@@ -101,38 +116,41 @@ router.put("/:id", managerAuth, async (req, res) => {
   }
 });
 
-router.patch('/profile/:id', async (req, res) => {
-    const { height, weight, BFP, BMI } = req.body
-    const lastUpdateDate = Date.now();
-    try {
-        const result = await Customer.findByIdAndUpdate(req.params.id, {$set: {fitnessProfile: {height, weight, BFP, BMI, lastUpdateDate}}});
-        res.send(result);
-    } catch (e) {
-        res.status(400).send("Bad request");
-    }
+router.patch("/profile/:id", customerAuth, async (req, res) => {
+  const { height, weight, BFP, BMI } = req.body;
+  const lastUpdateDate = Date.now();
+  try {
+    const result = await Customer.findByIdAndUpdate(req.params.id, {
+      $set: { fitnessProfile: { height, weight, BFP, BMI, lastUpdateDate } },
+    });
+    res.send(result);
+  } catch (e) {
+    res.status(400).send("Bad request");
+  }
 });
 
-
-router.patch('/password/:id', async (req, res) => {
-    const { password } = req.body;
-    if (!password) return res.status(400).send("Bad Request");
-    try {
-        const salt = await bcrypt.genSalt();
-        const passwordHash = await bcrypt.hash(password, salt);
-        const result = await Customer.findByIdAndUpdate(req.params.id, {$set: {password: passwordHash}});
-        res.send(result);
-    } catch (e) {
-        res.status(400).send("Bad request");
-    }
+router.patch("/password/:id", async (req, res) => {
+  const { password } = req.body;
+  if (!password) return res.status(400).send("Bad Request");
+  try {
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+    const result = await Customer.findByIdAndUpdate(req.params.id, {
+      $set: { password: passwordHash },
+    });
+    res.send(result);
+  } catch (e) {
+    res.status(400).send("Bad request");
+  }
 });
 
-router.delete('/:id', managerAuth, async (req, res) => {
-    try {
-        const result = await Customer.findByIdAndDelete(req.params.id);
-        res.send(result);
-    } catch (e) {
-        res.status(400).send("Bad Request");
-    }
+router.delete("/:id", managerAuth, async (req, res) => {
+  try {
+    const result = await Customer.findByIdAndDelete(req.params.id);
+    res.send(result);
+  } catch (e) {
+    res.status(400).send("Bad Request");
+  }
 });
 
 module.exports = router;

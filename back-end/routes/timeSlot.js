@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Timeslot, validateTimeslot } = require("../models/timeslot");
 const joi = require("joi");
+const customerAuth = require("../middleware/customerAuth");
 
 router.get("/", async (req, res) => {
   const result = await Timeslot.find();
@@ -39,7 +40,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", customerAuth, async (req, res) => {
   const { error } = validateTimeslot(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const { startTime, endTime, coachId, branchId, isBooked, customerId } =

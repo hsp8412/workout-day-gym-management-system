@@ -1,7 +1,7 @@
 import React from "react";
 import ProfileCard from "../components/profileCard";
 import FitnessProfileUpdate from "../components/FitnessProfileUpdate";
-import axios from "axios";
+import http from "../services/httpService";
 
 class Profile extends React.Component {
   state = {
@@ -11,19 +11,19 @@ class Profile extends React.Component {
 
   async componentDidMount() {
     const id = localStorage.getItem("id");
-    const res = await axios.get(`http://localhost:4000/customer/${id}`);
+    const res = await http.get(`http://localhost:4000/customer/${id}`);
     const profile = res.data;
     console.log(profile);
     this.setState({ profile });
   }
 
   handleSubmitUpdate = async (values) => {
-    console.log(values);
     const { BMI, BFP, height, weight } = values;
     const id = localStorage.getItem("id");
     const data = { BMI, BFP, height, weight };
-    let req = await axios.patch(
-      `http://localhost:4000/profile/:id'/${id}`,
+    console.log(data);
+    let req = await http.patch(
+      `http://localhost:4000/customer/profile/${id}`,
       data
     );
     this.setState({ updateVisible: false });
