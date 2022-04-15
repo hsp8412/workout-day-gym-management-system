@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import LoginForm from "../components/loginForm";
 import axios from "axios";
 import InvalidCredential from "../components/invalidCredential";
+import AlreadyLoggedIn from "./alreadyLoggedIn";
 
 class Login extends Component {
   state = { invalidCredential: false };
@@ -17,10 +18,7 @@ class Login extends Component {
     await axios
       .post("http://localhost:4000/auth", { email, password })
       .then((res) => {
-        console.log(res.headers.data);
-        console.log(res.headers.data["x-token"]);
-        console.log(email);
-        console.log(password);
+        localStorage.setItem("token", res.data.token);
       })
       .catch(() => {
         console.log("Invalid credential");
@@ -30,16 +28,25 @@ class Login extends Component {
       });
   };
 
+  handleLogOut = () => {
+    console.log("Hi");
+    localStorage.clear();
+  };
+
   render() {
-    return (
-      <div>
-        <LoginForm onSubmit={this.handleSubmit} />
-        <InvalidCredential
-          ifVisible={this.state.invalidCredential}
-          onClose={this.handleInvalidClose}
-        />
-      </div>
-    );
+    if (localStorage.getItem("token")) {
+      return <AlreadyLoggedIn onLogOut={this.handleLogOut} />;
+    } else {
+      return (
+        <div>
+          <LoginForm onSubmit={this.handleSubmit} />
+          <InvalidCredential
+            ifVisible={this.state.invalidCredential}
+            onClose={this.handleInvalidClose}
+          />
+        </div>
+      );
+    }
   }
 }
 

@@ -30,10 +30,7 @@ function App() {
       <div className="content">
         <Routes>
           <Route path="/" element={jwt != null ? <Products /> : <Login />} />
-          <Route
-            path="/login"
-            element={jwt != null ? <AlreadyLoggedIn /> : <Login />}
-          />
+          <Route path="/login" element={<Login />} />
           <Route
             path="/orders"
             element={jwt != null ? <Orders /> : <Login />}
