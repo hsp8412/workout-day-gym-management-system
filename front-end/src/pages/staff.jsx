@@ -1,70 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card, Container, FloatingLabel, Form, Modal, Pagination, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
-const allStaff = [
-    {
-        firstName: "Jack",
-        lastName: "Smith",
-        ssn: "12332412",
-        email: "jack1@gmail.com",
-        address: "10 Brentwood Common NW, Calgary, AB",
-        phone: "823-231-0234",
-        salary: "52231.3",
-        isCoach: "Yes"
-    },
-    {
-        firstName: "Andy",
-        lastName: "Dufresne",
-        ssn: "15233242",
-        email: "andyd1@gmail.com",
-        address: "3840 Brentwood Common NW, Calgary, AB",
-        phone: "821-311-4254",
-        salary: "432324.2",
-        isCoach: "No"
-    },
-    {
-        firstName: "Carey",
-        lastName: "Williamson",
-        ssn: "23122123",
-        email: "carey2@gmail.com",
-        address: "102 Morley Trail NW, Calgary, AB",
-        phone: "821-341-6434",
-        salary: "42437.6",
-        isCoach: "No"
-    },
-    {
-        firstName: "Ryan",
-        lastName: "Hamilton",
-        ssn: "132552321",
-        email: "ryann@hotmail.com",
-        address: "113 Banff Trail NW, Calgary, AB",
-        phone: "823-312-4531",
-        salary: "63221.5",
-        isCoach: "Yes"
-    },
-    {
-        firstName: "Tony",
-        lastName: "Stark",
-        ssn: "12324212",
-        email: "tonyrich@gmail.com",
-        address: "Stark Industrial Building, New York City, NY",
-        phone: "888-888-8888",
-        salary: "52231.3",
-        isCoach: "Yes"
-    },
-    {
-        firstName: "Amir",
-        lastName: "Ahmed",
-        ssn: "23451232",
-        email: "amirahmed@gmail.com",
-        address: "4031 Charleswood Drive NW, Calgary, AB",
-        phone: "811-8321-9246",
-        salary: "63334.9",
-        isCoach: "Yes"
-    },
-
-];
+import axios from "axios";
+import MyPagination from "../utils/pagination";
 
 const empty = {
     firstName: "",
@@ -73,20 +11,58 @@ const empty = {
     email: "",
     address: "",
     phone: "",
-    salary: "",
-    isCoach: ""
+    salary: 0,
+    isCoach: false
 };
 
+const uri = process.env.REACT_APP_API_ENDPOINT + "/branch_staff/";
+const itemsPerPage = 10;
+
 const Staff = () => {
+    const [allStaff, setAllStaff] = useState([]);
     const [show, setShow] = useState(false);
     const [staff, setStaff] = useState(empty);
+    const [adding, setAdding] = useState(true);
+    const [currentPage, setPage] = useState(1);
     const handleClose = () => setShow(false);
-    const handleShow = (c) => {
-        setShow(true)
+    const handleSave = async () => {
+        if (adding)
+            await axios.post(uri, staff);
+        else
+            await axios.put(uri + staff._id, staff);
+        const data = await axios.get(uri);
+        setAllStaff(data.data);
+        handleClose();
+    };
+    const handleEdit = (c) => {
+        setAdding(false);
         setStaff(c);
+        setShow(true);
+    }
+    const handleAdd = () => {
+        setAdding(true);
+        setStaff(empty);
+        setShow(true);
+    };
+    const handleDelete = async () => {
+        await axios.delete(uri + staff._id);
+        const data = await axios.get(uri);
+        setAllStaff(data.data);
+        handleClose();
+    };
+    const getPagedItems = (items) => {
+        return items.filter(item => (items.indexOf(item) >= (currentPage - 1) * itemsPerPage) && (items.indexOf(item) < currentPage * itemsPerPage));
     };
 
-    const getTableContent = () => {
+    useEffect(() => {
+        async function fetchData() {
+            const data = await axios.get(uri);
+            setAllStaff(data.data);
+        }
+        fetchData();
+    }, []);
+
+    const getTableContent = (allStaff) => {
         return allStaff.map(c =>
             <tr key={c.ssn}>
                 <td>{c.firstName}</td>
@@ -96,8 +72,8 @@ const Staff = () => {
                 <td>{c.phone}</td>
                 <td>{c.address}</td>
                 <td>{c.salary}</td>
-                <td>{c.isCoach}</td>
-                <td><Button className="pb-0 pt-0" variant="danger" onClick={() => handleShow(c)}>Edit</Button></td>
+                <td>{c.isCoach ? "Yes" : "No"}</td>
+                <td><Button className="pb-0 pt-0" variant="danger" onClick={() => handleEdit(c)}>Edit</Button></td>
             </tr>)
     };
 
@@ -122,32 +98,21 @@ const Staff = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {getTableContent()}
+                            {getTableContent(getPagedItems(allStaff))}
                             </tbody>
                         </Table>
 
-                        {/* Implement this (this causes error) !!!!!!!!*/}
-                        <Pagination s>
-                            <Pagination.Item>
-                                {"<"}
-                            </Pagination.Item>
-                            <Pagination.Item active>
-                                1
-                            </Pagination.Item>
-                            <Pagination.Item>
-                                {">"}
-                            </Pagination.Item>
-                        </Pagination>
+                        <MyPagination  currentPage={currentPage} onPageChange={setPage} itemsPerPage={itemsPerPage} totalItems={allStaff.length}/>
 
                         <Button as={Link} to="/branch">Back</Button>
-                        <Button onClick={() => handleShow(empty)} className="mx-3">Add</Button>
+                        <Button onClick={handleAdd} className="mx-3">Add</Button>
                     </Card.Body>
                 </Card>
             </Container>
 
             <Modal show={show} onHide={handleClose} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>{staff === empty ? "Add a staff" : "Edit a staff"}</Modal.Title>
+                    <Modal.Title>{adding ? "Add a staff" : "Edit a staff"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -208,8 +173,8 @@ const Staff = () => {
                             </FloatingLabel>
                         </Form.Group>
                         <Form.Group className="mb-2">
-                            <Form.Select value={staff.isCoach}
-                                         onChange={(e) => {setStaff({...staff, isCoach: e.currentTarget.value})}}
+                            <Form.Select value={staff.isCoach ? "Yes" : "No"}
+                                         onChange={(e) => {setStaff({...staff, isCoach: e.currentTarget.value === "Yes"})}}
                                          size="lg"
                                          style={{fontSize: "16px", paddingLeft: "12px", paddingTop: "16px", paddingBottom: "16px"}}>
                                 <option>Select</option>
@@ -223,9 +188,12 @@ const Staff = () => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        {staff === empty ? "Add" : "Save changes"}
+                    <Button variant="primary" onClick={handleSave}>
+                        {adding ? "Add" : "Save Changes"}
                     </Button>
+                    {!adding && <Button variant="danger" onClick={handleDelete}>
+                        Delete
+                    </Button>}
                 </Modal.Footer>
             </Modal>
         </div>

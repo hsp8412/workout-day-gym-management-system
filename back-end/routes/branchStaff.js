@@ -18,26 +18,30 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const { error } = validateBranchStaff(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-    const { firstName, middleName, lastName, phone, address, email, ssn, salary } = req.body;
+    if (error) {
+        return res.status(400).send(error.details[0].message);
+    }
+    const { firstName, middleName, lastName, phone, address, email, ssn, salary, isCoach } = req.body;
     const branchStaff = new BranchStaff({
-        firstName, middleName, lastName, phone, address, email, ssn, salary
+        firstName, middleName, lastName, phone, address, email, ssn, salary, isCoach
     });
     try {
         const result = await branchStaff.save();
+        res.send(result);
     } catch (e) {
         res.status(500).send("Internal Error");
-    }
-    res.send(result);}
+    }}
 );
 
 router.put('/:id', async (req, res) => {
     const { error } = validateBranchStaff(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-    const { firstName, middleName, lastName, phone, address, email, ssn, salary } = req.body;
+    if (error) {
+        return res.status(400).send(error.details[0].message);
+    }
+    const { firstName, middleName, lastName, phone, address, email, ssn, salary, isCoach } = req.body;
     try {
         const result = await BranchStaff.findByIdAndUpdate(req.params.id, {
-            firstName, middleName, lastName, phone, address, email, ssn, salary
+            firstName, middleName, lastName, phone, address, email, ssn, salary, isCoach
         }, { new: true });
         res.send(result);
     } catch (e) {
