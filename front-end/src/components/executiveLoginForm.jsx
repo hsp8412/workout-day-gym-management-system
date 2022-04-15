@@ -1,61 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Container } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import InvalidCredential from "./invalidCredential";
 
-// const handleSubmit = async (email, password, rememberMe) => {
-//   // console.log(email);
-//   // console.log(password);
-//   // console.log(rememberMe);
-//
-// };
-
-const LoginForm = (props) => {
-  const navigate = useNavigate();
+const MyComponent = () => {
+  const [invalidCredentialVisibility, setInvalidCredentialVisibility] =
+    useState(false);
   const formik = useFormik({
     initialValues: {
-      email: "",
+      username: "",
       password: "",
-      rememberMe: false,
     },
-    onSubmit: async ({ email, password }) => {
+    onSubmit: async (values) => {
+      const username = values.username;
+      const password = values.password;
+      console.log(values);
       await axios
-        .post("http://localhost:4000/auth", { email, password })
+        .post(`http://localhost:4000/executiveLogin`, {
+          username,
+          password,
+        })
         .then((res) => {
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("id", res.data.id);
-          navigate("/shopping");
+          localStorage.setItem("eToken", res.data.token);
+          localStorage.setItem("eId", res.data.id);
+          window.location.reload();
         })
         .catch(() => {
-          props.onInvalidCredential();
+          setInvalidCredentialVisibility(true);
         });
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email("Please enter a valid email address.")
-        .required("Email is required."),
-      password: Yup.string("Password is required."),
-      rememberMe: Yup.boolean(),
+      username: Yup.string().required("Username is required."),
+      password: Yup.string().required("Password is required."),
     }),
   });
   return (
     <div className="mt-3">
       <Container className="px-5">
+        <h3 className="mb-3">Login as executive manager</h3>
         <form onSubmit={formik.handleSubmit}>
           <div className="mb-3">
             <label htmlFor="exampleInputEmail1" className="form-label">
-              Email address
+              Username
             </label>
             <input
-              type="email"
+              type="text"
               className="form-control"
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
-              name="email"
-              value={formik.values.email}
+              name="username"
+              value={formik.values.username}
               onChange={formik.handleChange}
             />
             <p className="text-danger">
@@ -78,29 +75,17 @@ const LoginForm = (props) => {
               {formik.errors.password ? formik.errors.password : null}
             </p>
           </div>
-          <div className="mb-3 form-check">
-            <input
-              type="checkbox"
-              name="rememberMe"
-              className="form-check-input"
-              id="exampleCheck1"
-              checked={formik.values.rememberMe}
-              onChange={formik.handleChange}
-            />
-            <label className="form-check-label" htmlFor="exampleCheck1">
-              Remember me
-            </label>
-          </div>
           <button type="submit" className="btn btn-primary">
             Submit
           </button>
-          <Link className="btn btn-primary mx-2" to="/register">
-            Register
-          </Link>
         </form>
       </Container>
+      <InvalidCredential
+        ifVisible={invalidCredentialVisibility}
+        onClose={() => setInvalidCredentialVisibility(false)}
+      />
     </div>
   );
 };
 
-export default LoginForm;
+export default MyComponent;

@@ -1,17 +1,34 @@
 import React, { Component } from "react";
 import LoginForm from "../components/loginForm";
+import axios from "axios";
+import InvalidCredential from "../components/invalidCredential";
+import AlreadyLoggedIn from "./alreadyLoggedIn";
 
 class Login extends Component {
-  state = {};
+  state = { invalidCredential: false };
 
-  handleSubmit = (email, password, rememberMe) => {
-    console.log(email);
-    console.log(password);
-    console.log(rememberMe);
+  handleInvalidClose = () => {
+    this.setState({ invalidCredential: false });
+  };
+
+  handleInvalidCredential = () => {
+    this.setState({ invalidCredential: true });
   };
 
   render() {
-    return <LoginForm onSubmit={this.handleSubmit} />;
+    if (localStorage.getItem("token")) {
+      return <AlreadyLoggedIn />;
+    } else {
+      return (
+        <div>
+          <LoginForm onInvalidCredential={this.handleInvalidCredential} />
+          <InvalidCredential
+            ifVisible={this.state.invalidCredential}
+            onClose={this.handleInvalidClose}
+          />
+        </div>
+      );
+    }
   }
 }
 

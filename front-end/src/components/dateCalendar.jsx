@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import Calendar from "react-calendar";
 
-const DateCalendar = (props) => {
-  const [value, onChange] = useState(new Date());
-
+const DateCalendar = ({ onChange, value }) => {
   return (
     <Calendar
       onChange={onChange}

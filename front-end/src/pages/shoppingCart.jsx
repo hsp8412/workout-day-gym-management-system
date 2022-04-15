@@ -1,50 +1,64 @@
 import React, { Component } from "react";
-import { getProducts } from "../services/products";
-import { getShoppingCart } from "../services/shoppingCart";
 import { Button, Container } from "react-bootstrap";
 import ShoppingCartCard from "../components/shoppingCartCard";
+import OrderConfirm from "../components/orderConfirm";
+import EmptyCart from "../components/emptyCart";
 
-class ShoppingCart extends Component {
-  state = {
-    shoppingCartItems: [],
-  };
-
-  componentDidMount() {
-    this.setState({
-      shoppingCartItems: getShoppingCart(),
-    });
-  }
-
-  calculateTotal = () => {
-    let total = 0;
-    this.state.shoppingCartItems.forEach((item) => {
-      total += item.price * item.quantity;
-    });
-    return total;
-  };
-
-  render() {
-    return (
-      <div className="d-flex">
-        <div className="d-flex align-items-start flex-column container-fluid">
-          <Container>
-            {this.state.shoppingCartItems.map((item) => (
-              <ShoppingCartCard key={item._id} item={item} />
-            ))}
-          </Container>
-          <div className="container-fluid d-flex justify-content-center">
-            <p>Total: {this.calculateTotal()}</p>
-          </div>
-          <div className="container-fluid d-flex justify-content-center">
-            <Button variant="primary" className="mx-2">
-              Place the order
-            </Button>
-            <Button variant="warning">Clear</Button>
-          </div>
+const ShoppingCart = ({
+  shoppingCartItems,
+  calculateTotal,
+  calculateSubTotal,
+  onDelete,
+  onClear,
+  onAddOne,
+  onRemoveOne,
+  orderConfirmVisible,
+  onOrderConfirmOpen,
+  onOrderConfirm,
+  onOrderConfirmClose,
+  emptyCartVisibility,
+  onCloseEmptyCart,
+}) => {
+  return (
+    <div className="d-flex">
+      <div className="d-flex align-items-start flex-column container-fluid">
+        <Container>
+          {shoppingCartItems.map((item) => (
+            <ShoppingCartCard
+              key={item._id}
+              item={item}
+              calculateSubTotal={calculateSubTotal}
+              onDelete={onDelete}
+              onClear={onClear}
+              onAddOne={onAddOne}
+              onRemoveOne={onRemoveOne}
+            />
+          ))}
+        </Container>
+        <div className="container-fluid d-flex justify-content-center">
+          <p>Total: {calculateTotal(shoppingCartItems)}</p>
+        </div>
+        <div className="container-fluid d-flex justify-content-center">
+          <Button
+            variant="primary"
+            className="mx-2"
+            onClick={onOrderConfirmOpen}
+          >
+            Place the order
+          </Button>
+          <Button variant="warning" onClick={onClear}>
+            Clear
+          </Button>
         </div>
       </div>
-    );
-  }
-}
+      <OrderConfirm
+        onClose={onOrderConfirmClose}
+        onConfirm={onOrderConfirm}
+        ifVisible={orderConfirmVisible}
+      />
+      <EmptyCart ifVisible={emptyCartVisibility} onClose={onCloseEmptyCart} />
+    </div>
+  );
+};
 
 export default ShoppingCart;

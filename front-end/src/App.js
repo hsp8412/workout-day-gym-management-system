@@ -18,22 +18,37 @@ import ATable from "./components/atable";
 import Appointment from "./pages/appointments";
 import MangerLogin from "./pages/mangerLogin";
 import NotFound from "./pages/notFound";
-import 'react-toastify/dist/ReactToastify.css';
 import ProtectedRoute from "./utils/protectedRoute";
+import Shopping from "./pages/shopping";
+import Register from "./components/register";
+import RegisterPage from "./pages/registerPage";
+import AlreadyLoggedIn from "./pages/alreadyLoggedIn";
+import ExecutiveManager from "./pages/executiveManager";
+import ExecutiveLoginForm from "./components/executiveLoginForm";
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function App() {
+  let jwt = localStorage.getItem("token");
+  let ejwt = localStorage.getItem("eToken");
   return (
     <div>
       <ToastContainer />
       <NavBar />
       <div className="content">
         <Routes>
-          <Route path="/" element={<Products />} />
-          <Route path="/product" element={<Products />} />
+          <Route path="/" element={jwt != null ? <Products /> : <Login />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/shoppingCart" element={<ShoppingCart />} />
-          <Route path="/orders" element={<Orders />} />
+          <Route
+            path="/orders"
+            element={jwt != null ? <Orders /> : <Login />}
+          />
+          <Route
+            path="/executive"
+            element={
+              ejwt != null ? <ExecutiveManager /> : <ExecutiveLoginForm />
+            }
+          />
           <Route path="/branch" element={<MangerLogin />} />
           <Route exact path="/branch/manage" element={<ProtectedRoute/>}>
             <Route exact path="/branch/manage" element={<BranchManagement/>}/>
@@ -56,9 +71,22 @@ function App() {
           <Route exact path="/branch/staff" element={<ProtectedRoute/>}>
             <Route exact path="/branch/staff" element={<Staff />}/>
           </Route>
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/appointments" element={<Appointment />} />
+          <Route
+            path="/fitnessProfiles"
+            element={jwt != null ? <Profile /> : <Login />}
+          />
+          <Route
+            path="/appointments"
+            element={jwt != null ? <Appointment /> : <Login />}
+          />
+          <Route path="/shopping" element={<Shopping />} />
+          <Route
+            path="/register"
+            element={jwt != null ? <AlreadyLoggedIn /> : <RegisterPage />}
+          />
           <Route path="/not_found" element={<NotFound />} />
+              
+
         </Routes>
       </div>
     </div>

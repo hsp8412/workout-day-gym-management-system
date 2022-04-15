@@ -3,32 +3,17 @@ import { paginate } from "../utils/paginate";
 import Pagi from "./pagination";
 import { Button, Table, Col, Row, Container } from "react-bootstrap";
 import _ from "lodash";
-import { getAppointments } from "../services/appointments";
 import AppointmentTable from "./appointmentTable";
 
 class ATable extends React.Component {
   state = {
-    allAppointments: [],
     pageSize: 4,
     currentPage: 1,
     sortColumn: { path: "name", order: "asc" },
   };
 
-  componentDidMount() {
-    this.setState({
-      allAppointments: getAppointments(),
-    });
-  }
-
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
-  };
-
-  handleDelete = (id) => {
-    const appointments = this.state.allAppointments.filter(
-      (appointment) => appointment._id !== id
-    );
-    this.setState({ allAppointments: appointments });
   };
 
   handleSort = (sortColumn) => {
@@ -36,7 +21,8 @@ class ATable extends React.Component {
   };
 
   render() {
-    const { allAppointments, pageSize, currentPage, sortColumn } = this.state;
+    const { pageSize, currentPage, sortColumn } = this.state;
+    let allAppointments = this.props.allAppointments;
 
     const sorted = _.orderBy(
       allAppointments,
@@ -53,7 +39,7 @@ class ATable extends React.Component {
             <AppointmentTable
               appointmentsToDisplay={appointmentsToDisplay}
               totalCount={allAppointments.length}
-              onDelete={this.handleDelete}
+              onDelete={this.props.onDelete}
               onSort={this.handleSort}
               sortColumn={sortColumn}
             />

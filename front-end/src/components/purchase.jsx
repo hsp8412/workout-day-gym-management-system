@@ -2,18 +2,41 @@ import React, { Component } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-const Purchase = (props) => {
+import shopping from "../pages/shopping";
+const Purchase = ({
+  product,
+  ifPurchasing,
+  onCancelPurchase,
+  onMakePurchase,
+  shoppingCartItems,
+}) => {
   const formik = useFormik({
     initialValues: {
       quantity: "1",
     },
     onSubmit: (values) => {
-      props.onMakePurchase(values.quantity, props.product);
+      onMakePurchase(parseInt(values.quantity), product);
+      values.quantity = 1;
     },
     validationSchema: Yup.object({
       quantity: Yup.number()
-        .max(100, "Must be less than or equal to 100.")
-        .min(1, "Must be greater than or equal to 1.")
+        .integer("The input quantity should be an integer.")
+        .max(100, "The input quantity must be less than or equal to 100.")
+        .min(1, "The input quantity must be greater than or equal to 1.")
+        .test(
+          "testOverload",
+          "Exceeding quantity Limitation.",
+          function testOverload(value) {
+            let item = shoppingCartItems.find((item) => {
+              return item._id == product._id;
+            });
+            if (item == null) {
+              return true;
+            } else {
+              return parseInt(item.quantity) + parseInt(value) <= 100;
+            }
+          }
+        )
         .required(),
     }),
   });
@@ -23,27 +46,22 @@ const Purchase = (props) => {
     if (
       formik.values.quantity > 0 &&
       formik.values.quantity <= 100 &&
-      props.ifPurchasing
+      ifPurchasing
     )
-      value = formik.values.quantity * props.product.price;
+      value = formik.values.quantity * product.price;
     return value;
   }
 
   return (
-    <Modal
-      show={props.ifPurchasing ? true : false}
-      onHide={props.onCancelPurchase}
-    >
+    <Modal show={ifPurchasing} onHide={onCancelPurchase}>
       <Modal.Header closeButton>
-        <Modal.Title>
-          {props.ifPurchasing ? props.product.name : " "}
-        </Modal.Title>
+        <Modal.Title>{ifPurchasing ? product.name : " "}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {props.ifPurchasing ? props.product.description : " "}
+        {ifPurchasing ? product.description : " "}
         <div>
           <br />
-          <p>Price: ${props.ifPurchasing ? props.product.price : " "}</p>
+          <p>Price: ${ifPurchasing ? product.price : " "}</p>
           <form>
             <div className="form-group">
               <label htmlFor="quantityInput">Quantity:</label>
@@ -56,9 +74,7 @@ const Purchase = (props) => {
                 onChange={formik.handleChange}
               />
               <p className="text-danger">
-                {formik.errors.quantity
-                  ? "The quantity should be between 1 and 100."
-                  : null}
+                {formik.errors.quantity ? formik.errors.quantity : null}
               </p>
             </div>
             <p className="mt-3">Total: ${calculateTotal()}</p>
@@ -69,11 +85,11 @@ const Purchase = (props) => {
                 onClick={formik.handleSubmit}
                 className="mt-3"
               >
-                Place the Order
+                Add To Cart
               </Button>
               <Button
                 variant="secondary"
-                onClick={() => props.onCancelPurchase()}
+                onClick={() => onCancelPurchase()}
                 className="mt-3 mx-4"
               >
                 Cancel
