@@ -7,25 +7,22 @@ router.get('/', async (req, res) => {
     res.send(result);
 });
 
-router.get('/:id', async (req, res) => {
-   try {
-       const result = await Facility.findById(req.params.id);
-       res.send(result);
-   } catch (e) {
-       res.status(400).send("Bad Request");
-   }
+router.get('/common', async (req, res) => {
+    const result = await Facility.find({isEquipment: true});
+    res.send(result);
 });
 
-router.post('/', async (req, res) => {
+router.get('/locker', async (req, res) => {
+    const result = await Facility.find({isEquipment: false});
+    res.send(result);
+});
+
+router.post('/common', async (req, res) => {
     const { error } = validateFacility(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-    const { isEquipment, isTemporaryLocker, price, condition, type, locker_number,
-        rental: { renterId, startDate, endDate } } = req.body;
-    const facility = new Facility({
-        isEquipment, isTemporaryLocker, price, condition, type, locker_number,
-        rental: { renterId, startDate, endDate }
-    });
-    try{
+    const { isEquipment, price, condition, type } = req.body;
+    const facility = new Facility({ isEquipment, isTemporaryLocker: false, price, condition, type });
+    try {
         const result = await facility.save();
         res.send(result);
     } catch (e) {
@@ -33,15 +30,31 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.post('/locker', async (req, res) => {
     const { error } = validateFacility(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
-    const { isEquipment, isTemporaryLocker, price, condition, type, locker_number,
-        rental: { renterId, startDate, endDate } } = req.body;
-    const facility = {
-        isEquipment, isTemporaryLocker, price, condition, type, locker_number,
-        rental: { renterId, startDate, endDate }
-    };
+    if (error) {
+        console.log(error.details[0].message);
+        return res.status(400).send(error.details[0].message);
+    }
+    const { isEquipment, isTemporaryLocker, price, condition, type, locker_number, rental } = req.body;
+    const facility = new Facility({isEquipment, isTemporaryLocker, price, condition, type, locker_number,
+        rental: isTemporaryLocker ? {renterId: null, startDate: null, endDate: null} : rental});
+    try {
+        const result = await facility.save();
+        res.send(result);
+    } catch (e) {
+        res.status(500).send("Internal Error");
+    }
+});
+
+router.put('/common/:id', async (req, res) => {
+    const { error } = validateFacility(req.body);
+    if (error) {
+        console.log(error.details[0].message);
+        return res.status(400).send(error.details[0].message);
+    }
+    const { isEquipment, price, condition, type } = req.body;
+    const facility = { isEquipment, isTemporaryLocker: false, price, condition, type };
     try{
         const result = await Facility.findByIdAndUpdate(req.params.id, facility, { new: true});
         res.send(result);
@@ -50,7 +63,33 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.put('/locker/:id', async (req, res) => {
+    const { error } = validateFacility(req.body);
+    if (error) {
+        console.log(error.details[0].message);
+        return res.status(400).send(error.details[0].message);
+    }
+    const { isEquipment, isTemporaryLocker, price, condition, type, locker_number, rental } = req.body;
+    const facility = { isEquipment, isTemporaryLocker, price, condition, type, locker_number,
+        rental: isTemporaryLocker ? {renterId: null, startDate: null, endDate: null} : rental};
+    try{
+        const result = await Facility.findByIdAndUpdate(req.params.id, facility, { new: true});
+        res.send(result);
+    } catch (e) {
+        res.status(400).send("Bad Request");
+    }
+});
+
+router.delete('/common/:id', async (req, res) => {
+    try {
+        const result = await Facility.findByIdAndDelete(req.params.id);
+        res.send(result);
+    } catch (e) {
+        res.status(400).send("Bad Request");
+    }
+});
+
+router.delete('/locker/:id', async (req, res) => {
     try {
         const result = await Facility.findByIdAndDelete(req.params.id);
         res.send(result);

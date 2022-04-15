@@ -65,6 +65,7 @@ const Staff = () => {
     const getTableContent = (allStaff) => {
         return allStaff.map(c =>
             <tr key={c.ssn}>
+                <td>{c._id}</td>
                 <td>{c.firstName}</td>
                 <td>{c.lastName}</td>
                 <td>{c.ssn}</td>
@@ -86,6 +87,7 @@ const Staff = () => {
                         <Table striped bordered hover>
                             <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>First Name</th>
                                 <th>Last Name</th>
                                 <th>SSN</th>

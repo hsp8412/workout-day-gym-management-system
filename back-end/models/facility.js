@@ -43,12 +43,7 @@ function validateFacility(facility) {
         condition: joi.number().required().max(10),
         type: joi.string().required(),
         locker_number: joi.number().optional(),
-        rental: {
-            renterId: joi.string().optional(),
-            startDate : joi.date().optional(),
-            endDate: joi.date().optional()
-        }
-    });
+    }).unknown(true);
     return schema.validate(facility);
 }
 

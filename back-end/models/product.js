@@ -18,10 +18,8 @@ const mongoose = require('mongoose');
 */
 
 const productSchema = new mongoose.Schema({
-    stock: {
-       branchId: {type: String, required: true},
-       // renterId: {type: mongoose.Schema.Types.ObjectId, ref: 'Customer'},
-       InStock : {type: Number, required: true}
+    InStock : {
+        type: Number, required: true
     },
     price: {
         type: Number,
@@ -99,21 +97,13 @@ const Product = mongoose.model('product', productSchema, "product");
 function validateProduct(product) {
 
     const schema = joi.object({
-        stock: {
-            branchId: joi.string().optional(),
-            InStock: joi.number().required().min(0)
-        },
+        InStock: joi.number().required().min(0),
         price: joi.number().required(),
         name: joi.string().required().max(30),
         isCourse: joi.boolean().required(),
         isMeal: joi.boolean().required(),
         isGoods: joi.boolean().required(),
-        startTime: joi.string().optional(),
-        endTime: joi.string().optional(),
-        courseCoachId: joi.optional(),
-        allergies: joi.array().optional(),
-        calories: joi.number().optional()
-    });
+    }).unknown(true);
     return schema.validate(product);
 }
 

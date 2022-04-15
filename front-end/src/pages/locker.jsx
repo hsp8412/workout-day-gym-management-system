@@ -1,79 +1,88 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card, Container, FloatingLabel, Form, Modal, Pagination, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
-
-const lockers = [
-    {
-        facilityId: "54",
-        lockerNo: "1",
-        isReserved: "Yes",
-        renterId: "3",
-        renterName: "Arthur",
-        startDate: "2022-02-12",
-        endDate: "2022-03-12"
-    },
-    {
-        facilityId: "55",
-        lockerNo: "2",
-        isReserved: "No"
-    },
-    {
-        facilityId: "56",
-        lockerNo: "3",
-        isReserved: "No"
-    },
-    {
-        facilityId: "57",
-        lockerNo: "4",
-        isReserved: "No"
-    },
-    {
-        facilityId: "58",
-        lockerNo: "5",
-        isReserved: "Yes",
-        renterId: "2",
-        renterName: "John",
-        startDate: "2022-03-10",
-        endDate: "2022-04-10"
-    },
-    {
-        facilityId: "59",
-        lockerNo: "6",
-        isReserved: "No",
-    },
-
-];
+import axios from "axios";
+import MyPagination from "../utils/pagination";
 
 const empty = {
     facilityId: "",
-    lockerNo: "",
-    isReserved: "",
-    renterId: "",
-    renterName: "",
-    startDate: "",
-    endDate: ""
+    locker_number: "",
+    isTemporaryLocker: false,
+    isEquipment: false,
+    type: "Locker",
+    price: 0,
+    condition: 0,
+    rental: {
+        renterId: null,
+        startDate: null,
+        endDate: null
+    }
 };
 
+const uri = process.env.REACT_APP_API_ENDPOINT + "/facility/locker/";
+const itemsPerPage = 10;
+
 const Locker = () => {
+    const [lockers, setLockers] = useState([]);
     const [show, setShow] = useState(false);
     const [locker, setLocker] = useState(empty);
+    const [adding, setAdding] = useState(true);
+    const [currentPage, setPage] = useState(1);
     const handleClose = () => setShow(false);
-    const handleShow = (c) => {
-        setShow(true)
+    const handleSave = async () => {
+        if (adding)
+            await axios.post(uri, locker);
+        else
+            await axios.put(uri + locker._id, locker);
+        const data = await axios.get(uri);
+        setLockers(data.data);
+        handleClose();
+    };
+    const handleEdit = (c) => {
+        setAdding(false);
         setLocker(c);
+        setShow(true);
+    }
+    const handleAdd = () => {
+        setAdding(true);
+        setLocker(empty);
+        setShow(true);
+    };
+    const handleDelete = async () => {
+        await axios.delete(uri + locker._id);
+        const data = await axios.get(uri);
+        setLockers(data.data);
+        handleClose();
+    };
+    const getPagedItems = (items) => {
+        return items.filter(item => (items.indexOf(item) >= (currentPage - 1) * itemsPerPage) && (items.indexOf(item) < currentPage * itemsPerPage));
     };
 
-    const getTableContent = () => {
+    const getOptions = (num) => {
+        const arr = Array.from(Array(num).keys())
+        return arr.map(num => <option value={num} key={num}>{num}</option> )
+    }
+
+    useEffect(() => {
+        async function fetchData() {
+            const data = await axios.get(uri);
+            setLockers(data.data);
+        }
+        fetchData();
+    }, []);
+
+    const getTableContent = (lockers) => {
         return lockers.map(c =>
-            <tr key={c.facilityId}>
-                <td>{c.facilityId}</td>
-                <td>{c.lockerNo}</td>
-                <td>{c.isReserved}</td>
-                <td>{c.renterId}</td>
-                <td>{c.renterName}</td>
-                <td>{c.startDate}</td>
-                <td>{c.endDate}</td>
-                <td><Button className="pb-0 pt-0" variant="danger" onClick={() => handleShow(c)}>Edit</Button></td>
+            <tr key={c._id}>
+                <td>{c._id}</td>
+                <td>{c.locker_number}</td>
+                <td>{c.isTemporaryLocker ? "Yes" : "No"}</td>
+                <td>{c.price}</td>
+                <td>{c.condition}</td>
+                <td>{c.rental.renterId}</td>
+                <td>{c.rental.startDate ? c.rental.startDate.slice(0, 10) : null}</td>
+                <td>{c.rental.endDate ? c.rental.startDate.slice(0, 10) : null}</td>
+                <td><Button className="pb-0 pt-0" variant="danger" onClick={() => handleEdit(c)}>Edit</Button></td>
             </tr>)
     };
 
@@ -88,41 +97,34 @@ const Locker = () => {
                             <tr>
                                 <th>Facility ID</th>
                                 <th>Locker Number</th>
-                                <th>Is Reserved</th>
+                                <th>Is Temporary Locker</th>
+                                <th>Price</th>
+                                <th>Condition</th>
                                 <th>Renter ID</th>
-                                <th>Renter Name</th>
                                 <th>Start Date</th>
                                 <th>End Date</th>
                                 <th>Edit</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {getTableContent()}
+                            {getTableContent(getPagedItems(lockers))}
                             </tbody>
                         </Table>
 
-                        {/* Implement this (this causes error) !!!!!!!!*/}
-                        <Pagination s>
-                            <Pagination.Item>
-                                {"<"}
-                            </Pagination.Item>
-                            <Pagination.Item active>
-                                1
-                            </Pagination.Item>
-                            <Pagination.Item>
-                                {">"}
-                            </Pagination.Item>
-                        </Pagination>
+                        <MyPagination totalItems={lockers.length}
+                                      itemsPerPage={itemsPerPage}
+                                      currentPage={currentPage}
+                                      onPageChange={setPage}/>
 
                         <Button as={Link} to="/branch">Back</Button>
-                        <Button onClick={() => handleShow(empty)} className="mx-3">Add</Button>
+                        <Button onClick={handleAdd} className="mx-3">Add</Button>
                     </Card.Body>
                 </Card>
             </Container>
 
             <Modal show={show} onHide={handleClose} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>{locker === empty ? "Add a locker" : "Edit a locker"}</Modal.Title>
+                    <Modal.Title>{adding ? "Add a locker" : "Edit a locker"}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -130,55 +132,63 @@ const Locker = () => {
                             <FloatingLabel label="Locker Number">
                                 <Form.Control type="text"
                                               placeholder=" "
-                                              value={locker.lockerNo}
-                                              onChange={(e) => {setLocker({...locker, lockerNo: e.currentTarget.value})}}/>
+                                              value={locker.locker_number}
+                                              onChange={(e) => {setLocker({...locker, locker_number: e.currentTarget.value})}}/>
                             </FloatingLabel>
                         </Form.Group>
                         <Form.Group className="mb-2">
-                            <Form.Select value={locker.isReserved}
-                                         onChange={(e) => {setLocker({...locker, isReserved: e.currentTarget.value})}}
+                            <FloatingLabel label="Price">
+                                <Form.Control type="text"
+                                              placeholder=" "
+                                              value={locker.price}
+                                              onChange={(e) => {setLocker({...locker, price: e.currentTarget.value})}}/>
+                            </FloatingLabel>
+                        </Form.Group>
+                        <Form.Group className="mb-2">
+                            <Form.Select value={locker.condition}
+                                         onChange={(e) => {setLocker({...locker, condition: e.currentTarget.value})}}
+                                         size="lg"
+                                         style={{fontSize: "16px", paddingLeft: "12px", paddingTop: "16px", paddingBottom: "16px"}}>
+                                <option>Select Condition</option>
+                                {getOptions(11)}
+                            </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="mb-2">
+                            <Form.Select value={locker.isTemporaryLocker ? "Yes" : "No"}
+                                         onChange={(e) => {setLocker({...locker, isTemporaryLocker: e.currentTarget.value === "Yes"})}}
                                          size="lg"
                                          style={{fontSize: "16px", paddingLeft: "12px", paddingTop: "16px", paddingBottom: "16px"}}>
                                 <option>Select</option>
-                                <option value="Yes">Reserved</option>
-                                <option value="No">Not reserved</option>
+                                <option value="Yes">Is Temporary</option>
+                                <option value="No">Not Temporary</option>
                             </Form.Select>
                         </Form.Group>
-                        {locker.isReserved === "Yes" &&
+                        {!locker.isTemporaryLocker &&
                             <div>
                             <Form.Group className="mb-2">
                                 <FloatingLabel label="Renter ID">
                                     <Form.Control type="text"
                                                   placeholder=" "
-                                                  value={locker.renterId}
-                                                  onChange={(e) => {setLocker({...locker, renterId: e.currentTarget.value})}}/>
+                                                  value={locker.rental.renterId}
+                                                  onChange={(e) => {setLocker({...locker, rental: {...locker.rental, renterId:e.currentTarget.value} })}}/>
                                 </FloatingLabel>
                             </Form.Group>
-                                <Form.Group className="mb-2">
-                                    <FloatingLabel label="Renter Name">
-                                        <Form.Control type="text"
-                                                      placeholder=" "
-                                                      value={locker.renterName}
-                                                      onChange={(e) => {setLocker({...locker, renterName: e.currentTarget.value})}}/>
-                                    </FloatingLabel>
-                                </Form.Group>
                                 <Form.Group className="mb-2">
                                     <FloatingLabel label="Start Date">
                                         <Form.Control type="text"
                                                       placeholder=" "
-                                                      value={locker.startDate}
-                                                      onChange={(e) => {setLocker({...locker, startDate: e.currentTarget.value})}}/>
+                                                      value={locker.rental.startDate}
+                                                      onChange={(e) => {setLocker({...locker, rental: {...locker.rental, startDate: e.currentTarget.value}})}}/>
                                     </FloatingLabel>
                                 </Form.Group>
                                 <Form.Group className="mb-2">
                                     <FloatingLabel label="End Date">
                                         <Form.Control type="text"
                                                       placeholder=" "
-                                                      value={locker.endDate}
-                                                      onChange={(e) => {setLocker({...locker, endDate: e.currentTarget.value})}}/>
+                                                      value={locker.rental.endDate}
+                                                      onChange={(e) => {setLocker({...locker, rental: {...locker.rental, endDate: e.currentTarget.value}})}}/>
                                     </FloatingLabel>
                                 </Form.Group>
-
                         </div>}
                     </Form>
                 </Modal.Body>
@@ -186,9 +196,12 @@ const Locker = () => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        {locker === empty ? "Add" : "Save changes"}
+                    <Button variant="primary" onClick={handleSave}>
+                        {adding ? "Add" : "Save changes"}
                     </Button>
+                    {!adding && <Button variant="danger" onClick={handleDelete}>
+                        Delete
+                    </Button>}
                 </Modal.Footer>
             </Modal>
         </div>
