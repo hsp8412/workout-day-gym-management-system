@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { getOrders } from "../services/orders";
 import OrderCard from "../components/orderCard";
 import DeleteOrderConfirm from "../components/deleteOrderConfirm";
+import axios from "axios";
 
 class Orders extends Component {
   state = {
@@ -11,8 +12,13 @@ class Orders extends Component {
   };
 
   componentDidMount() {
-    this.setState({
-      orders: getOrders(),
+    const userId = localStorage.getItem("id");
+    axios.get("http://localhost:4000/order").then((res) => {
+      const allOrders = res.data;
+      const orders = allOrders.filter((order) => {
+        return order.customerId == userId;
+      });
+      this.setState({ orders });
     });
   }
 
