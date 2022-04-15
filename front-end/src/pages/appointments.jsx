@@ -126,14 +126,24 @@ class Appointment extends React.Component {
     });
   };
 
-  handleConfirmDelete = () => {
-    const appointments = this.state.allAppointments.filter(
-      (appointment) => appointment._id !== this.state.appointmentDeleting._id
-    );
-    this.setState({
-      allAppointments: appointments,
-      cancelAppVisibility: false,
+  handleConfirmDelete = async () => {
+    const id = this.state.appointmentDeleting._id;
+    let res = await axios.get(`http://localhost:4000/timeslot/${id}`);
+    console.log(res.data);
+    const { branchId, coachId, startTime, endTime } = res.data;
+    const customerId = null;
+    const isBooked = false;
+    const result = await axios.put(`http://localhost:4000/timeslot/${id}`, {
+      branchId,
+      coachId,
+      startTime,
+      endTime,
+      customerId,
+      isBooked,
     });
+    console.log(result.data);
+    this.setState({ cancelAppVisibility: false });
+    window.location.reload();
   };
 
   handleMakeNewApp = async (timeSlot) => {
@@ -159,8 +169,8 @@ class Appointment extends React.Component {
           isBooked,
         }
       );
-      console.log(result);
       this.setState({ newAppVisibility: false });
+      window.location.reload();
     }
   };
 

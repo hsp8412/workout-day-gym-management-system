@@ -19,7 +19,7 @@ function validateTimeslot(timeslot) {
     coachId: joi.string().required(),
     branchId: joi.string().required(),
     isBooked: joi.boolean(),
-    customerId: joi.string(),
+    customerId: joi.string().allow(null),
   });
   return schema.validate(timeslot);
 }
