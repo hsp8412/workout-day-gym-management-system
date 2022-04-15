@@ -6,9 +6,11 @@ import {
   getFitnessProfileById,
 } from "../services/fitnessProfiles";
 
-const ProfileCard = ({ onSubmitUpdate, onUpdate }) => {
-  const profile = getProfileById(1);
-  const fitnessProfile = getFitnessProfileById(1);
+const ProfileCard = ({ onSubmitUpdate, onUpdate, profile }) => {
+  if (profile == null) {
+    return <div></div>;
+  }
+  console.log(profile);
   return (
     <div>
       <Container className="d-flex flex-column justify-content-center">
@@ -24,23 +26,47 @@ const ProfileCard = ({ onSubmitUpdate, onUpdate }) => {
                 <p className="align-self-center mt-2 mb-0">
                   Name: {profile.firstName} {profile.lastName}
                 </p>
-                <p className="align-self-center mb-0">
-                  Member Id: {profile.member_id}
-                </p>
               </Col>
               <Col
                 className="container-fluid d-flex flex-column"
                 style={{ height: "100%" }}
               >
                 <p>Gender: {profile.gender}</p>
-                <p>Weight: {fitnessProfile.weight} kg </p>
-                <p>Height: {fitnessProfile.height} cm</p>
-                <p>BFP: {fitnessProfile.BFP} %</p>
-                <p>BMI: {fitnessProfile.BMI}</p>
+                <p>
+                  Weight:{" "}
+                  {profile.fitnessProfile.weight != 0
+                    ? profile.fitnessProfile.weight
+                    : "no data"}{" "}
+                  kg{" "}
+                </p>
+                <p>
+                  Height:{" "}
+                  {profile.fitnessProfile.height != 0
+                    ? profile.fitnessProfile.height
+                    : "no data"}{" "}
+                  cm
+                </p>
+                <p>
+                  BFP:{" "}
+                  {profile.fitnessProfile.BFP != 0
+                    ? profile.fitnessProfile.BFP
+                    : "no data"}{" "}
+                  %
+                </p>
+                <p>
+                  BMI:{" "}
+                  {profile.fitnessProfile.BMI != 0
+                    ? profile.fitnessProfile.BMI
+                    : "no data"}
+                </p>
                 <p>
                   Latest update:{" "}
-                  {fitnessProfile.updateDate.toLocaleDateString()}{" "}
-                  {fitnessProfile.updateDate.toLocaleTimeString()}
+                  {new Date(
+                    profile.fitnessProfile.lastUpdateDate
+                  ).toLocaleDateString()}{" "}
+                  {new Date(
+                    profile.fitnessProfile.lastUpdateDate
+                  ).toLocaleTimeString()}
                 </p>
                 <button
                   type="button"

@@ -39,7 +39,7 @@ class AppointmentTable extends React.Component {
       this.props;
 
     if (totalCount === 0)
-      return <p className="text">There is no appointment to be shown.</p>;
+      return <h4 className="text">There is no appointment to be shown.</h4>;
     return (
       <React.Fragment>
         <p className="text">Showing {totalCount} appointment(s). </p>

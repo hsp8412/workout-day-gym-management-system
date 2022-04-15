@@ -1,26 +1,19 @@
 import React, { Component } from "react";
 import { Card, Button, Col } from "react-bootstrap";
+import product from "../pages/product";
+
 const ProductCard = (props) => {
+  function productType() {
+    if (props.product.isCourse == true) {
+      return "This product is a course.";
+    } else if (props.product.isMeal == true) {
+      return "This product is a meal.";
+    } else {
+      return "This product is a normal good.";
+    }
+  }
+
   return (
-    // <Col>
-    //   <Card
-    //     className="d-flex justify-content-center"
-    //     style={{ width: "18rem", height: "30rem" }}
-    //   >
-    //     <Card.Img
-    //       variant="top"
-    //       src={props.product.image}
-    //       style={{ width: "15rem", height: "15rem" }}
-    //     />
-    //     <Card.Body className="d-flex flex-column">
-    //       <Card.Title className="mt-auto">{props.product.name}</Card.Title>
-    //       <Card.Text className="mt-auto">{props.product.description}</Card.Text>
-    //       <Button className="mt-auto" variant="primary">
-    //         Add To Cart
-    //       </Button>
-    //     </Card.Body>
-    //   </Card>
-    // </Col>
     <Col className="d-flex justify-content-center">
       <div className="card d-flex" style={{ width: "18rem", height: "30rem" }}>
         <img
@@ -32,6 +25,7 @@ const ProductCard = (props) => {
         <div className="card-body d-flex flex-column">
           <h5 className="card-title mt-auto">{props.product.name}</h5>
           <p className="card-text mt-auto">{props.product.description}</p>
+          <p className="card-text mt-auto">{productType()}</p>
           <p className="card-text mt-auto">${props.product.price}</p>
           <a
             href="#"
