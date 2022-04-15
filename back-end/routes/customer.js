@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const { Customer, validateCustomer } = require('../models/customer');
+const joi = require("joi");
 
 router.get('/', async (req, res) => {
     const result = await Customer.find();
@@ -19,11 +20,13 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const { error } = validateCustomer(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) {
+        console.log(error.details[0].message);
+        return res.status(400).send(error.details[0].message);
+    }
 
     const { gender, firstName, middleName, lastName, phoneNumber, password, email,
-        emergencyContact: { contact_name, contactPhoneNumber },
-        fitnessProfile: { height, weight, BFP, BMI }} = req.body;
+        emergencyContact} = req.body;
 
     const customerInDB = await Customer.findOne({email: req.body.email});
     if (customerInDB) return res.status(400).send("Email already exists");
@@ -33,7 +36,7 @@ router.post('/', async (req, res) => {
 
     const customer = new Customer({
         gender, firstName, middleName, lastName, phoneNumber, password: passwordHash, email,
-        emergencyContact: { contact_name, contactPhoneNumber }, fitnessProfile: { height, weight, BFP, BMI }
+        emergencyContact, fitnessProfile: {},
     });
 
     try {
@@ -54,8 +57,11 @@ router.put('/:id', async (req, res) => {
         emergencyContact: { contact_name, contactPhoneNumber },
         fitnessProfile: { height, weight, BFP, BMI },email } = req.body;
 
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+
     const customer = {
-        gender, firstName, middleName, lastName, phoneNumber, password,
+        gender, firstName, middleName, lastName, phoneNumber, password: passwordHash,
         emergencyContact: { contact_name, contactPhoneNumber }, fitnessProfile: { height, weight, BFP, BMI },
         email
     };
@@ -68,7 +74,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const result = await Customer.findByIdAndDelete(req.params.id);
         res.send(result);

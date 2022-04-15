@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
     if (!validLogin) res.status(400).send('Invalid email or password');
 
     const token = customer.generateJWTToken();
-    res.header('x-token', token).send({id: customer._id})
+    res.send({id: customer._id, token})
 });
 
 module.exports = router;

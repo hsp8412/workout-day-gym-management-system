@@ -33,6 +33,10 @@ const branchStaffSchema = new mongoose.Schema({
     salary: {
         type: Number,
         required: true
+    },
+    isCoach: {
+        type: Boolean,
+        required: true
     }
 });
 
@@ -40,15 +44,16 @@ const BranchStaff = mongoose.model('BranchStaff', branchStaffSchema, "branch_sta
 
 function validateBranchStaff(staff) {
     const schema = joi.object({
-        ssn: joi.string().required().max(9).min(9),
+        ssn: joi.string().required().max(11).min(11),
         firstName: joi.string().required().max(30),
         middleName: joi.optional(),
         lastName: joi.string().required().max(30),
         phone: joi.string().required().max(10).min(10),
         address: joi.string().required().max(100),
         email: joi.string().email().required().max(50),
-        salary: joi.number()
-    });
+        salary: joi.number(),
+        isCoach: joi.bool()
+    }).unknown();
     return schema.validate(staff);
 }
 

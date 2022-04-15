@@ -33,8 +33,8 @@ const customerSchema = new mongoose.Schema({
         required: true
     },
     emergencyContact: {
-        contact_name: { type: String, required: false },
-        contactPhoneNumber: { type: String, required: false }
+        name: { type: String, required: false },
+        phoneNumber: { type: String, required: false }
     },
     fitnessProfile: {
         height: { type: Number, required: false},
@@ -62,8 +62,8 @@ function validateCustomer(customer) {
         email: joi.string().email().required(),
         password: joi.string().required(),
         emergencyContact:{
-            contact_name : joi.string().optional(),
-            contactPhoneNumber : joi.string().optional()
+            name : joi.string().optional(),
+            phoneNumber : joi.string().optional()
         },
         fitnessProfile: {
             height: joi.number().optional(),
