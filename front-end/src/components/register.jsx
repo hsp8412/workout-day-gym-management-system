@@ -33,6 +33,42 @@ const Register = () => {
           <div className="card-body">
             <h3 className="card-title">Register</h3>
             <form>
+              <div className="row">
+                <div className="col">
+                  <label htmlFor="exampleInputEmail1">First name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="First name"
+                  />
+                </div>
+                <div className="col">
+                  <label htmlFor="exampleInputEmail1">Last name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Last name"
+                  />
+                </div>
+              </div>
+              <div className="row mt-4">
+                <div className="col">
+                  <label htmlFor="exampleInputEmail1">Phone number</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Phone number"
+                  />
+                </div>
+                <div className="col">
+                  <label htmlFor="exampleInputEmail1">Gender</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Gender"
+                  />
+                </div>
+              </div>
               <div className="form-group mt-4">
                 <label htmlFor="exampleInputEmail1">Email address</label>
                 <input
