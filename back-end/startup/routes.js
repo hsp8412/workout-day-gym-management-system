@@ -10,6 +10,7 @@ const product = require('../routes/product');
 const customer = require('../routes/customer');
 const branch = require('../routes/branch');
 const auth = require('../routes/auth');
+const branchManager = require('../routes/branchManagerAuth');
 
 /*  
 
@@ -23,12 +24,13 @@ module.exports = function (app) {
     app.use(express.urlencoded({ extended: false }));
     app.use(cookieParser());
     app.use(express.static(path.join(__dirname, 'public')));
-    app.use('/branch_staff', branchStaff)
-    app.use('/facility', facility)
+    app.use('/branch_staff', branchStaff);
+    app.use('/facility', facility);
     app.use('/product',product);
     app.use('/customer', customer);
     app.use('/branch', branch)
     app.use('/auth', auth);
+    app.use('/branch_manager', branchManager);
     // app.use('/branch_staff/{stfid}', branchStaff);
     // app.use('/customer/{customerMember}', cust);
     // app.use('/facility{renterId}',faci);

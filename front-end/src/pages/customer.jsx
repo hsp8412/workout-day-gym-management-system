@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Container, Button, Modal, Form, FloatingLabel, Card, Pagination } from "react-bootstrap";
+import { Table, Container, Button, Modal, Form, FloatingLabel, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import http from "../services/httpService"
 import MyPagination from "../utils/pagination";
 
 const empty = {
@@ -28,10 +28,10 @@ const Customer = () => {
     const handleClose = () => setShow(false);
     const handleSave = async () => {
         if (adding)
-            await axios.post(uri, customer);
+            await http.post(uri, customer);
         else
-            await axios.put(uri + customer._id, customer);
-        const data = await axios.get(uri);
+            await http.put(uri + customer._id, customer);
+        const data = await http.get(uri);
         setCustomers(data.data);
         handleClose();
     };
@@ -46,8 +46,8 @@ const Customer = () => {
         setShow(true);
     };
     const handleDelete = async () => {
-        await axios.delete(uri + customer._id);
-        const data = await axios.get(uri);
+        await http.delete(uri + customer._id);
+        const data = await http.get(uri);
         setCustomers(data.data);
         handleClose();
     };
@@ -57,7 +57,7 @@ const Customer = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const data = await axios.get(uri);
+            const data = await http.get(uri);
             setCustomers(data.data);
         }
         fetchData();
@@ -108,7 +108,7 @@ const Customer = () => {
                                       currentPage={currentPage}
                                       onPageChange={setPage} />
 
-                        <Button as={Link} to="/branch">Back</Button>
+                        <Button as={Link} to="/branch/manage">Back</Button>
                         <Button onClick={handleAdd} className="mx-3">Add</Button>
                     </Card.Body>
                 </Card>
@@ -163,14 +163,16 @@ const Customer = () => {
                                               onChange={(e) => {setCustomer({...customer, email: e.currentTarget.value})}}/>
                             </FloatingLabel>
                         </Form.Group>
-                        <Form.Group className="mb-2">
+                        {adding && <Form.Group className="mb-2">
                             <FloatingLabel label="Password">
                                 <Form.Control type="password"
                                               placeholder="password"
                                               value={customer.password}
-                                              onChange={(e) => {setCustomer({...customer, password: e.currentTarget.value})}}/>
+                                              onChange={(e) => {
+                                                  setCustomer({...customer, password: e.currentTarget.value})
+                                              }}/>
                             </FloatingLabel>
-                        </Form.Group>
+                        </Form.Group>}
                         <Form.Group className="mb-2">
                             <FloatingLabel label="Emergency Contact Name">
                                 <Form.Control type="text"

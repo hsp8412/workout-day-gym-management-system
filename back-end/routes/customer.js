@@ -24,8 +24,15 @@ router.post('/', async (req, res) => {
         return res.status(400).send(error.details[0].message);
     }
 
-    const { gender, firstName, middleName, lastName, phoneNumber, password, email,
+    let { gender, firstName, middleName, lastName, phoneNumber, password, email,
         emergencyContact} = req.body;
+
+    if (!emergencyContact) {
+        emergencyContact = {
+            name: "",
+            phoneNumber: ""
+        }
+    }
 
     const customerInDB = await Customer.findOne({email: req.body.email});
     if (customerInDB) return res.status(400).send("Email already exists");

@@ -101,7 +101,7 @@ const CommonFacility = () => {
                                       itemsPerPage={itemsPerPage}
                                       totalItems={facilities.length}/>
 
-                        <Button as={Link} to="/branch">Back</Button>
+                        <Button as={Link} to="/branch/manage">Back</Button>
                         <Button onClick={handleAdd} className="mx-3">Add</Button>
                     </Card.Body>
                 </Card>
