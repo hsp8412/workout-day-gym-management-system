@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 const LoginPrompt = ({ ifVisible, onClose }) => {
   return (

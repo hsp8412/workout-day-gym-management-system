@@ -11,26 +11,13 @@ class Login extends Component {
     this.setState({ invalidCredential: false });
   };
 
-  handleSubmit = async (email, password, rememberMe) => {
-    // console.log(email);
-    // console.log(password);
-    // console.log(rememberMe);
-    await axios
-      .post("http://localhost:4000/auth", { email, password })
-      .then((res) => {
-        localStorage.setItem("token", res.data.token);
-      })
-      .catch(() => {
-        console.log("Invalid credential");
-        console.log(email);
-        console.log(password);
-        this.setState({ invalidCredential: true });
-      });
-  };
-
   handleLogOut = () => {
     console.log("Hi");
     localStorage.clear();
+  };
+
+  handleInvalidCredential = () => {
+    this.setState({ invalidCredential: true });
   };
 
   render() {
@@ -39,7 +26,7 @@ class Login extends Component {
     } else {
       return (
         <div>
-          <LoginForm onSubmit={this.handleSubmit} />
+          <LoginForm onInvalidCredential={this.handleInvalidCredential} />
           <InvalidCredential
             ifVisible={this.state.invalidCredential}
             onClose={this.handleInvalidClose}

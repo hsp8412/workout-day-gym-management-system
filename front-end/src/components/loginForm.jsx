@@ -2,17 +2,38 @@ import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+// const handleSubmit = async (email, password, rememberMe) => {
+//   // console.log(email);
+//   // console.log(password);
+//   // console.log(rememberMe);
+//
+// };
 
 const LoginForm = (props) => {
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
       rememberMe: false,
     },
-    onSubmit: (values) => {
-      props.onSubmit(values.email, values.password, values.rememberMe);
+    onSubmit: async ({ email, password }) => {
+      await axios
+        .post("http://localhost:4000/auth", { email, password })
+        .then((res) => {
+          localStorage.setItem("token", res.data.token);
+          navigate("/shopping");
+        })
+        .catch(() => {
+          console.log("Invalid credential");
+          console.log(email);
+          console.log(password);
+          props.onInvalidCredential();
+        });
     },
     validationSchema: Yup.object({
       email: Yup.string()
