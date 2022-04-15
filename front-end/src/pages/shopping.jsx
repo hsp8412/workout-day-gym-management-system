@@ -132,13 +132,28 @@ class Shopping extends Component {
     } else {
       this.setState({ orderConfirmVisible: true });
     }
-    console.log(this.state.emptyCartVisibility);
   };
 
   handleOrderConfirm = () => {
-    const shoppingCartItems = [];
-    this.setState({ shoppingCartItems });
-    this.setState({ orderConfirmVisible: false });
+    const products = this.state.shoppingCartItems.map((item) => {
+      const product = {
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+      };
+      return product;
+    });
+    const customerId = localStorage.getItem("id");
+    axios
+      .post("http://localhost:4000/order", {
+        products,
+        customerId,
+      })
+      .then(function (response) {})
+      .catch(function (error) {
+        console.log(error);
+      });
+    this.setState({ shoppingCartItems: [], orderConfirmVisible: false });
   };
 
   handleCloseEmptyCart = () => {

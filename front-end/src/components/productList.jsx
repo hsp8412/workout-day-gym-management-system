@@ -8,7 +8,7 @@ const ProductList = (props) => {
   return (
     <Container>
       {products.map((productRow, index) => (
-        <Row key={index} className={index == 1 ? "mt-5" : "mt-2"}>
+        <Row key={index} className={index != 1 ? "mt-2" : "mt-2"}>
           {productRow.map((product) => (
             <ProductCard
               id={product.id}
