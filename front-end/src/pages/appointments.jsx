@@ -3,10 +3,8 @@ import ATable from "../components/atable";
 import { Container } from "react-bootstrap";
 import NewAppointment from "../components/newAppointment";
 import CancelAppointmentConfirm from "../components/cancelAppointmentConfirm";
-import { getAppointments } from "../services/appointments";
-import { getCoachById } from "../services/coach";
-import { getBranchById } from "../services/branch";
 import NoAppSelection from "../components/newAppNoSelectionModal";
+import axios from "axios";
 
 class Appointment extends React.Component {
   state = {
@@ -17,31 +15,51 @@ class Appointment extends React.Component {
     noSelectionVisibility: false,
   };
 
-  componentDidMount() {
-    let appointments = getAppointments();
-    let allAppointments = appointments.map((appointment) => ({
-      _id: appointment._id,
-      coach: getCoachById(appointment.coachId).name,
-      branch: getBranchById(appointment.branchId).name,
-      time: this.getAppointmentTime(appointment),
-      date:
-        appointment.startTime.getFullYear() +
-        "-" +
-        appointment.startTime.getMonth() +
-        "-" +
-        appointment.startTime.getDate(),
-    }));
-    this.setState({
-      allAppointments,
+  getCoachNameById(id) {
+    axios.get(`http://localhost:4000/branch_staff/${id}`).then((res) => {
+      const name = res.data.firstName + res.data.lastName;
+      return name;
     });
-    console.log(allAppointments);
+  }
+
+  getBranchNameById(id) {
+    axios.get(`http://localhost:4000/branch/${id}`).then((res) => {
+      const name = res.data.name;
+      return name;
+    });
+  }
+
+  componentDidMount() {
+    const userId = localStorage.getItem("id");
+    axios.get("http://localhost:4000/timeslot").then((res) => {
+      const timeslots = res.data;
+      const filtered = timeslots.filter((timeslot) => {
+        if (timeslot.customerId == null) {
+          return false;
+        }
+        return timeslot.customerId == userId;
+      });
+      let appointments = filtered.map((appointment) => ({
+        _id: appointment._id,
+        coach: this.getCoachNameById(appointment.coachId),
+        branch: this.getBranchNameById(appointment.branchId),
+        time: this.getAppointmentTime(appointment),
+        date: this.getAppointmentDate(appointment),
+      }));
+      console.log(appointments);
+      this.setState({
+        allAppointments: appointments,
+      });
+    });
   }
 
   getAppointmentTime(appointment) {
-    let startHour = appointment.startTime.getHours().toString();
-    let startMinute = appointment.startTime.getMinutes().toString();
-    let endHour = appointment.endTime.getHours().toString();
-    let endMinute = appointment.endTime.getMinutes().toString();
+    const startTime = new Date(appointment.startTime);
+    const endTime = new Date(appointment.endTime);
+    let startHour = startTime.getHours().toString();
+    let startMinute = startTime.getMinutes().toString();
+    let endHour = endTime.getHours().toString();
+    let endMinute = endTime.getMinutes().toString();
     if (startHour === "0") {
       startHour = "00";
     }
@@ -55,6 +73,11 @@ class Appointment extends React.Component {
       endMinute = "00";
     }
     return startHour + ":" + startMinute + "-" + endHour + ":" + endMinute;
+  }
+
+  getAppointmentDate(appointment) {
+    let date = new Date(appointment.startTime);
+    return date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
   }
 
   handleNewAppointment = () => {

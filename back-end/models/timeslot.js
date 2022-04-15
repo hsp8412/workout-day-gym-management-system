@@ -10,7 +10,7 @@ const timeslotSchema = new mongoose.Schema({
   customerId: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" },
 });
 
-const Timeslot = mongoose.model("TimeSlot", timeslotSchema, "timeSlot");
+const Timeslot = mongoose.model("Timeslot", timeslotSchema, "timeslot");
 
 function validateTimeslot(timeslot) {
   const schema = joi.object({
