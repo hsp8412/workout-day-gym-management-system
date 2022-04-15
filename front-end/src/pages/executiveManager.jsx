@@ -6,6 +6,7 @@ import Pagi from "../components/pagination";
 import { getBranches } from "../services/branch";
 import BranchTable from "../components/branchTable";
 import BranchDeleteConfirm from "../components/branchDeleteConfirm";
+import axios from "axios";
 
 class ExecutiveManager extends Component {
   state = {
@@ -17,8 +18,10 @@ class ExecutiveManager extends Component {
     deleteBranchVisibility: false,
   };
 
-  componentDidMount() {
-    this.setState({ branches: getBranches() });
+  async componentDidMount() {
+    const req = await axios.get(`http://localhost:4000/branch`);
+    console.log(req.data);
+    this.setState({ branches: req.data });
   }
 
   handlePageChange = (page) => {
@@ -41,14 +44,13 @@ class ExecutiveManager extends Component {
   };
 
   handleDeleteConfirm = () => {
-    const branches = this.state.branches.filter((branch) => {
-      return branch._id != this.state.branchDeleting._id;
-    });
-    this.setState({
-      branches,
-      deleteBranchVisibility: false,
-      branchDeleting: null,
-    });
+    const deletingBranchId = this.state.branchDeleting._id;
+    axios
+      .delete(`http://localhost:4000/branch/${deletingBranchId}`)
+      .then(() => {
+        this.setState({ deleteBranchVisibility: false, branchDeleting: null });
+        window.location.reload();
+      });
   };
 
   render() {
