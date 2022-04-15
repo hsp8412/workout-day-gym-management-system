@@ -3,11 +3,10 @@ import { Modal, Col, Button, Row } from "react-bootstrap";
 import DateCalendar from "./dateCalendar";
 import AvailableSlotCard from "./availableSlotCard";
 
-const NewAppointment = ({ show, handleClose, onSubmit }) => {
+const NewAppointment = ({ show, handleClose, onSubmit, timeslots }) => {
   const [dateSelected, setDateSelected] = useState(new Date());
   const [slotSelected, setSlotSelected] = useState(null);
   const handleSubmit = () => {
-    console.log(slotSelected);
     onSubmit(slotSelected);
   };
 
@@ -26,6 +25,7 @@ const NewAppointment = ({ show, handleClose, onSubmit }) => {
             dateSelected={dateSelected}
             slotSelected={slotSelected}
             setSlotSelected={setSlotSelected}
+            timeslots={timeslots}
           />
         </Row>
       </Modal.Body>

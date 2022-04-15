@@ -5,51 +5,74 @@ import NewAppointment from "../components/newAppointment";
 import CancelAppointmentConfirm from "../components/cancelAppointmentConfirm";
 import NoAppSelection from "../components/newAppNoSelectionModal";
 import axios from "axios";
+import data from "bootstrap/js/src/dom/data";
 
 class Appointment extends React.Component {
   state = {
     allAppointments: [],
+    allTimeslots: [],
     newAppVisibility: false,
     cancelAppVisibility: false,
     appointmentDeleting: null,
     noSelectionVisibility: false,
   };
 
-  getCoachNameById(id) {
-    axios.get(`http://localhost:4000/branch_staff/${id}`).then((res) => {
-      const name = res.data.firstName + res.data.lastName;
-      return name;
-    });
-  }
-
-  getBranchNameById(id) {
-    axios.get(`http://localhost:4000/branch/${id}`).then((res) => {
-      const name = res.data.name;
-      return name;
-    });
-  }
-
-  componentDidMount() {
+  async componentDidMount() {
     const userId = localStorage.getItem("id");
-    axios.get("http://localhost:4000/timeslot").then((res) => {
-      const timeslots = res.data;
-      const filtered = timeslots.filter((timeslot) => {
-        if (timeslot.customerId == null) {
-          return false;
-        }
-        return timeslot.customerId == userId;
-      });
-      let appointments = filtered.map((appointment) => ({
-        _id: appointment._id,
-        coach: this.getCoachNameById(appointment.coachId),
-        branch: this.getBranchNameById(appointment.branchId),
-        time: this.getAppointmentTime(appointment),
-        date: this.getAppointmentDate(appointment),
-      }));
-      console.log(appointments);
-      this.setState({
-        allAppointments: appointments,
-      });
+    let res = await axios.get("http://localhost:4000/timeslot");
+    const timeslots = res.data;
+    const filtered = timeslots.filter((timeslot) => {
+      if (timeslot.customerId == null) {
+        return false;
+      }
+      return timeslot.customerId == userId;
+    });
+    console.log(filtered);
+    let allAppointments = [];
+    for (const appointment of filtered) {
+      const _id = appointment._id;
+      const time = this.getAppointmentTime(appointment);
+      const date = this.getAppointmentDate(appointment);
+      let coach;
+      let branch;
+      let res = await axios.get(
+        `http://localhost:4000/branch/${appointment.branchId}`
+      );
+      branch = res.data.name;
+      res = await axios.get(
+        `http://localhost:4000/branch_staff/${appointment.coachId}`
+      );
+      coach = res.data.firstName + " " + res.data.lastName;
+      const app = { _id, time, date, branch, coach };
+      allAppointments.push(app);
+    }
+    console.log(allAppointments);
+    this.setState({
+      allAppointments,
+    });
+
+    let allTimeslots = [];
+    for (const timeslot of timeslots) {
+      const _id = timeslot._id;
+      const startTime = timeslot.startTime;
+      const endTime = timeslot.endTime;
+      const isBooked = timeslot.isBooked;
+      let coach;
+      let branch;
+      let res = await axios.get(
+        `http://localhost:4000/branch/${timeslot.branchId}`
+      );
+      branch = res.data.name;
+      res = await axios.get(
+        `http://localhost:4000/branch_staff/${timeslot.coachId}`
+      );
+      coach = res.data.firstName + " " + res.data.lastName;
+      const app = { _id, isBooked, startTime, endTime, branch, coach };
+      allTimeslots.push(app);
+    }
+    console.log(allTimeslots);
+    this.setState({
+      allTimeslots,
     });
   }
 
@@ -113,11 +136,30 @@ class Appointment extends React.Component {
     });
   };
 
-  handleMakeNewApp = (timeSlot) => {
+  handleMakeNewApp = async (timeSlot) => {
     if (timeSlot === null) {
       this.setState({ noSelectionVisibility: true });
     } else {
-      console.log(timeSlot);
+      //console.log(timeSlot);
+      const id = timeSlot._id;
+      let res = await axios.get(
+        `http://localhost:4000/timeslot/${timeSlot._id}`
+      );
+      const { branchId, coachId, startTime, endTime } = res.data;
+      const customerId = localStorage.getItem("id");
+      const isBooked = true;
+      const result = await axios.put(
+        `http://localhost:4000/timeslot/${timeSlot._id}`,
+        {
+          branchId,
+          coachId,
+          startTime,
+          endTime,
+          customerId,
+          isBooked,
+        }
+      );
+      console.log(result);
       this.setState({ newAppVisibility: false });
     }
   };
@@ -147,6 +189,7 @@ class Appointment extends React.Component {
           show={this.state.newAppVisibility}
           handleClose={this.handleCloseNewApp}
           onSubmit={this.handleMakeNewApp}
+          timeslots={this.state.allTimeslots}
         />
         <CancelAppointmentConfirm
           onClose={this.handleCloseCancelApp}

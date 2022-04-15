@@ -1,21 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import getTimeSlots from "../services/availableTimeSlot";
 import { getCoachById } from "../services/coach";
 import { getBranchById } from "../services/branch";
+import axios from "axios";
 
-const AvailableSlotCard = ({ dateSelected, setSlotSelected, slotSelected }) => {
+const AvailableSlotCard = ({
+  dateSelected,
+  setSlotSelected,
+  slotSelected,
+  timeslots,
+}) => {
+  const [allTimeslots, setTimeSlots] = useState([]);
   function getTimeSlotEntry(timeSlot) {
+    const branch = timeSlot.branch;
     let result = "";
-    let branch = getBranchById(timeSlot.branchId).name;
     result += branch + " ";
 
-    let startTime = toISOLocal(timeSlot.startTime);
-    let endTime = toISOLocal(timeSlot.endTime);
+    let startTimeDate = new Date(timeSlot.startTime);
+    let endTimeDate = new Date(timeSlot.endTime);
+    let startTime = toISOLocal(startTimeDate);
+    let endTime = toISOLocal(endTimeDate);
 
     startTime = startTime.substring(11, 16);
     endTime = endTime.substring(11, 16);
     result += " " + startTime + "-" + endTime;
-    let coach = getCoachById(timeSlot.coachId).name;
+
+    let coach = timeSlot.coach;
     result += " " + coach;
     return result;
   }
@@ -48,14 +58,14 @@ const AvailableSlotCard = ({ dateSelected, setSlotSelected, slotSelected }) => {
     );
   }
 
-  const availableSlots = getTimeSlots();
-  const filtered = availableSlots.filter((timeSlot) => {
-    return (
-      dateSelected.getFullYear() == timeSlot.startTime.getFullYear() &&
-      dateSelected.getMonth() + 1 == timeSlot.startTime.getMonth() &&
-      dateSelected.getDate() == timeSlot.startTime.getDate() &&
-      timeSlot.isBooked == false
-    );
+  const filtered = timeslots.filter((timeslot) => {
+    const startTime = new Date(timeslot.startTime);
+    const flag =
+      dateSelected.getFullYear() == startTime.getFullYear() &&
+      dateSelected.getMonth() == startTime.getMonth() &&
+      dateSelected.getDate() == startTime.getDate() &&
+      timeslot.isBooked == false;
+    return flag;
   });
 
   function renderRadio() {
