@@ -1,23 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import InvalidCredential from "./invalidCredential";
 
 const MyComponent = () => {
+  const [invalidCredentialVisibility, setInvalidCredentialVisibility] =
+    useState(false);
   const formik = useFormik({
     initialValues: {
-      email: "",
+      username: "",
       password: "",
     },
-    onSubmit: (values) => {
-      console.log(values.email, values.password);
+    onSubmit: async (values) => {
+      const username = values.username;
+      const password = values.password;
+      console.log(values);
+      await axios
+        .post(`http://localhost:4000/executiveLogin`, {
+          username,
+          password,
+        })
+        .then((res) => {
+          localStorage.setItem("eToken", res.data.token);
+          localStorage.setItem("eId", res.data.id);
+          window.location.reload();
+        })
+        .catch(() => {
+          setInvalidCredentialVisibility(true);
+        });
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email("Please enter a valid email address.")
-        .required("Email is required."),
-      password: Yup.string("Password is required."),
+      username: Yup.string().required("Username is required."),
+      password: Yup.string().required("Password is required."),
     }),
   });
   return (
@@ -27,15 +44,15 @@ const MyComponent = () => {
         <form onSubmit={formik.handleSubmit}>
           <div className="mb-3">
             <label htmlFor="exampleInputEmail1" className="form-label">
-              Email address
+              Username
             </label>
             <input
-              type="email"
+              type="text"
               className="form-control"
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
-              name="email"
-              value={formik.values.email}
+              name="username"
+              value={formik.values.username}
               onChange={formik.handleChange}
             />
             <p className="text-danger">
@@ -61,11 +78,12 @@ const MyComponent = () => {
           <button type="submit" className="btn btn-primary">
             Submit
           </button>
-          <Link className="btn btn-primary mx-2" to="/register">
-            Register
-          </Link>
         </form>
       </Container>
+      <InvalidCredential
+        ifVisible={invalidCredentialVisibility}
+        onClose={() => setInvalidCredentialVisibility(false)}
+      />
     </div>
   );
 };

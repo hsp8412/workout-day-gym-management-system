@@ -25,15 +25,11 @@ const LoginForm = (props) => {
       await axios
         .post("http://localhost:4000/auth", { email, password })
         .then((res) => {
-          console.log(res.data);
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("id", res.data.id);
           navigate("/shopping");
         })
         .catch(() => {
-          console.log("Invalid credential");
-          console.log(email);
-          console.log(password);
           props.onInvalidCredential();
         });
     },

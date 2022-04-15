@@ -68,22 +68,32 @@ class ExecutiveManager extends Component {
     console.log(branchesToDisplay);
     return (
       <div style={{ marginTop: "20px" }}>
-        <Container className="d-flex flex-column">
-          <Row className="align-self-center">
-            <BranchTable
-              branchesToDisplay={branchesToDisplay}
-              totalCount={allBranches.length}
-              onDelete={this.handleDelete}
-              onSort={this.handleSort}
-              sortColumn={sortColumn}
-            />
-            <Pagi
-              itemsCount={allBranches.length}
-              pageSize={pageSize}
-              onPageChange={this.handlePageChange}
-              currentPage={currentPage}
-            />
-          </Row>
+        <Container>
+          <BranchTable
+            branchesToDisplay={branchesToDisplay}
+            totalCount={allBranches.length}
+            onDelete={this.handleDelete}
+            onSort={this.handleSort}
+            sortColumn={sortColumn}
+          />
+          <Pagi
+            itemsCount={allBranches.length}
+            pageSize={pageSize}
+            onPageChange={this.handlePageChange}
+            currentPage={currentPage}
+          />
+          <div className="d-flex justify-content-center">
+            <button
+              type="button"
+              className="btn btn-primary btn-lg"
+              onClick={() => {
+                localStorage.clear();
+                window.location.reload();
+              }}
+            >
+              Log out
+            </button>
+          </div>
         </Container>
         <BranchDeleteConfirm
           ifVisible={deleteBranchVisibility}

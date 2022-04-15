@@ -24,6 +24,7 @@ import ExecutiveLoginForm from "./components/executiveLoginForm";
 
 function App() {
   let jwt = localStorage.getItem("token");
+  let ejwt = localStorage.getItem("eToken");
   return (
     <div>
       <NavBar />
@@ -38,7 +39,7 @@ function App() {
           <Route
             path="/executive"
             element={
-              jwt != null ? <ExecutiveManager /> : <ExecutiveLoginForm />
+              ejwt != null ? <ExecutiveManager /> : <ExecutiveLoginForm />
             }
           />
           <Route path="/branch" element={<BranchManagement />} />
