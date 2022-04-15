@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
 
     const customer = new Customer({
         gender, firstName, middleName, lastName, phoneNumber, password: passwordHash, email,
-        emergencyContact, fitnessProfile: {},
+        emergencyContact, fitnessProfile: {height: 0, weight: 0, BFP: 0, BMI: 0},
     });
 
     try {
@@ -54,17 +54,14 @@ router.put('/:id', async (req, res) => {
     const { error } = validateCustomer(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     const { gender, firstName, middleName, lastName, phoneNumber, password,
-        emergencyContact: { contact_name, contactPhoneNumber },
-        fitnessProfile: { height, weight, BFP, BMI },email } = req.body;
+        emergencyContact, fitnessProfile, email } = req.body;
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
     const customer = {
         gender, firstName, middleName, lastName, phoneNumber, password: passwordHash,
-        emergencyContact: { contact_name, contactPhoneNumber }, fitnessProfile: { height, weight, BFP, BMI },
-        email
-    };
+        emergencyContact, fitnessProfile, email};
 
     try {
         const result = await Customer.findByIdAndUpdate(req.params.id, customer, { new: true });
