@@ -11,18 +11,13 @@ class Login extends Component {
     this.setState({ invalidCredential: false });
   };
 
-  handleLogOut = () => {
-    console.log("Hi");
-    localStorage.clear();
-  };
-
   handleInvalidCredential = () => {
     this.setState({ invalidCredential: true });
   };
 
   render() {
     if (localStorage.getItem("token")) {
-      return <AlreadyLoggedIn onLogOut={this.handleLogOut} />;
+      return <AlreadyLoggedIn />;
     } else {
       return (
         <div>
