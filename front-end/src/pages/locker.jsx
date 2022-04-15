@@ -31,9 +31,9 @@ const Locker = () => {
     const handleClose = () => setShow(false);
     const handleSave = async () => {
         if (adding)
-            await axios.post(uri, locker);
+            await axios.post(uri, locker, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
         else
-            await axios.put(uri + locker._id, locker);
+            await axios.put(uri + locker._id, locker, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
         const data = await axios.get(uri);
         setLockers(data.data);
         handleClose();
@@ -49,7 +49,7 @@ const Locker = () => {
         setShow(true);
     };
     const handleDelete = async () => {
-        await axios.delete(uri + locker._id);
+        await axios.delete(uri + locker._id, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
         const data = await axios.get(uri);
         setLockers(data.data);
         handleClose();

@@ -1,14 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const { Product, validateProduct} = require('../models/product');
+const auth = require('../middleware/auth');
 
 router.get('/', async (req, res) => {
     const prod = await Product.find();
     res.send(prod);
 });
 
+router.get('/:id', async (req, res) => {
+    try {
+        const result = await Product.findById(req.params.id);
+        res.send(result);
+    } catch (e) {
+        res.status(400).send("Bad Request");
+    }
+});
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const { error } = validateProduct(req.body);
     if (error) {
         console.log(error.details[0].message);
@@ -33,17 +42,7 @@ router.post('/', async (req, res) => {
     res.send(result);
 });
 
-
-router.get('/:id', async (req, res) => {
-    try {
-        const result = await Product.findById(req.params.id);
-        res.send(result);
-    } catch (e) {
-        res.status(400).send("Bad Request");
-    }
-});
-
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     const { error } = validateProduct(req.body);
     if (error) {
         console.log(error.details[0].message);
@@ -73,7 +72,7 @@ router.put('/:id', async (req, res) => {
 });
 
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     try {
         const result = await Product.findByIdAndDelete(req.params.id);
         res.send(result);

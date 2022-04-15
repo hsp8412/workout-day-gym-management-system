@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Facility, validateFacility } = require('../models/facility');
+const auth = require('../middleware/auth');
 
 router.get('/', async (req, res) => {
     const result = await Facility.find();
@@ -17,7 +18,7 @@ router.get('/locker', async (req, res) => {
     res.send(result);
 });
 
-router.post('/common', async (req, res) => {
+router.post('/common', auth, async (req, res) => {
     const { error } = validateFacility(req.body);
     if (error) return res.status(400).send(error.details[0].message);
     const { isEquipment, price, condition, type } = req.body;
@@ -30,7 +31,7 @@ router.post('/common', async (req, res) => {
     }
 });
 
-router.post('/locker', async (req, res) => {
+router.post('/locker', auth, async (req, res) => {
     const { error } = validateFacility(req.body);
     if (error) {
         console.log(error.details[0].message);
@@ -47,7 +48,7 @@ router.post('/locker', async (req, res) => {
     }
 });
 
-router.put('/common/:id', async (req, res) => {
+router.put('/common/:id', auth, async (req, res) => {
     const { error } = validateFacility(req.body);
     if (error) {
         console.log(error.details[0].message);
@@ -63,7 +64,7 @@ router.put('/common/:id', async (req, res) => {
     }
 });
 
-router.put('/locker/:id', async (req, res) => {
+router.put('/locker/:id', auth, async (req, res) => {
     const { error } = validateFacility(req.body);
     if (error) {
         console.log(error.details[0].message);
@@ -80,7 +81,7 @@ router.put('/locker/:id', async (req, res) => {
     }
 });
 
-router.delete('/common/:id', async (req, res) => {
+router.delete('/common/:id', auth, async (req, res) => {
     try {
         const result = await Facility.findByIdAndDelete(req.params.id);
         res.send(result);
@@ -89,7 +90,7 @@ router.delete('/common/:id', async (req, res) => {
     }
 });
 
-router.delete('/locker/:id', async (req, res) => {
+router.delete('/locker/:id', auth, async (req, res) => {
     try {
         const result = await Facility.findByIdAndDelete(req.params.id);
         res.send(result);

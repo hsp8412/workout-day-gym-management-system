@@ -24,9 +24,9 @@ const CommonFacility = () => {
     const handleClose = () => setShow(false);
     const handleSave = async () => {
         if (adding)
-            await axios.post(uri, facility);
+            await axios.post(uri, facility, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
         else
-            await axios.put(uri + facility._id, facility);
+            await axios.put(uri + facility._id, facility, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
         const data = await axios.get(uri);
         setFacilities(data.data);
         handleClose();
@@ -42,7 +42,7 @@ const CommonFacility = () => {
         setShow(true);
     };
     const handleDelete = async () => {
-        await axios.delete(uri + facility._id);
+        await axios.delete(uri + facility._id, {headers: {'x-manager-token': localStorage.getItem('manager_token')}});
         const data = await axios.get(uri);
         setFacilities(data.data);
         handleClose();

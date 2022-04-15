@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const { Customer, validateCustomer } = require("../models/customer");
-const joi = require("joi");
+const auth = require("../middleware/auth");
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   const result = await Customer.find();
   res.send(result);
 });
@@ -18,7 +18,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   const { error } = validateCustomer(req.body);
   if (error) {
     console.log(error.details[0].message);
@@ -69,7 +69,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   const { error } = validateCustomer(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const {
@@ -100,7 +100,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.patch('/profile/:id', async (req, res) => {
+router.patch('/profile/:id', auth, async (req, res) => {
     const { height, weight, BFP, BMI } = req.body
     const lastUpdateDate = Date.now();
     try {
@@ -112,7 +112,7 @@ router.patch('/profile/:id', async (req, res) => {
 });
 
 
-router.patch('/password/:id', async (req, res) => {
+router.patch('/password/:id', auth, async (req, res) => {
     const { password } = req.body;
     if (!password) return res.status(400).send("Bad Request");
     try {
@@ -125,7 +125,7 @@ router.patch('/password/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     try {
         const result = await Customer.findByIdAndDelete(req.params.id);
         res.send(result);
