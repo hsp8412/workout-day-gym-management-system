@@ -24,19 +24,16 @@ class Orders extends Component {
 
   handleDelete = (order) => {
     console.log(order);
-    let orderDeleting = order;
-    const deleteVisible = true;
-    this.setState({ orderDeleting, deleteVisible });
+
+    this.setState({ orderDeleting: order, deleteVisible: true });
   };
 
   handleDeleteConfirm = () => {
-    let orders = [...this.state.orders];
-    let index = orders.findIndex((order) => {
-      return order._id == order._id;
-    });
-    orders.splice(index, 1);
-    const deleteVisible = false;
-    this.setState({ orders, deleteVisible });
+    const deleteOrderId = this.state.orderDeleting._id;
+    axios
+      .delete(`http://localhost:4000/order/${deleteOrderId}`)
+      .then(() => this.setState({ deleteVisible: false, orderDeleting: null }));
+    window.location.reload();
   };
 
   handleClose = () => {
