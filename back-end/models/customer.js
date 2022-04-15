@@ -60,10 +60,6 @@ function validateCustomer(customer) {
       phoneNumber: joi.string().required().max(10).min(10),
       email: joi.string().email().required(),
       password: joi.string().required(),
-      emergencyContact: {
-        name: joi.string().optional(),
-        phoneNumber: joi.string().optional(),
-      },
       fitnessProfile: {
         height: joi.number().optional(),
         weight: joi.number().optional(),
