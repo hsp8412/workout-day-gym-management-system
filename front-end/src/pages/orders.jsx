@@ -10,15 +10,13 @@ class Orders extends Component {
     orderDeleting: null,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const userId = localStorage.getItem("id");
-    http.get("http://localhost:4000/order").then((res) => {
-      const allOrders = res.data;
-      const orders = allOrders.filter((order) => {
-        return order.customerId == userId;
-      });
-      this.setState({ orders });
-    });
+    const res = await http.get(
+      `http://localhost:4000/order/customer/${userId}`
+    );
+    const orders = res.data;
+    this.setState({ orders });
   }
 
   handleDelete = (order) => {
