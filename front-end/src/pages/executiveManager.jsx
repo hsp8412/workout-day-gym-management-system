@@ -3,11 +3,10 @@ import _ from "lodash";
 import { paginate } from "../utils/paginate";
 import { Container, Row } from "react-bootstrap";
 import Pagi from "../components/pagination";
-import { getBranches } from "../services/branch";
 import BranchTable from "../components/branchTable";
 import BranchDeleteConfirm from "../components/branchDeleteConfirm";
-import axios from "axios";
 import EditBranch from "../components/editBranchModal";
+import http from "../services/httpService";
 
 class ExecutiveManager extends Component {
   state = {
@@ -27,7 +26,7 @@ class ExecutiveManager extends Component {
   };
 
   async componentDidMount() {
-    const req = await axios.get(`http://localhost:4000/branch`);
+    const req = await http.get(`http://localhost:4000/branch`);
     console.log(req.data);
     this.setState({ branches: req.data });
   }
@@ -53,12 +52,10 @@ class ExecutiveManager extends Component {
 
   handleDeleteConfirm = () => {
     const deletingBranchId = this.state.branchDeleting._id;
-    axios
-      .delete(`http://localhost:4000/branch/${deletingBranchId}`)
-      .then(() => {
-        this.setState({ deleteBranchVisibility: false, branchDeleting: null });
-        window.location.reload();
-      });
+    http.delete(`http://localhost:4000/branch/${deletingBranchId}`).then(() => {
+      this.setState({ deleteBranchVisibility: false, branchDeleting: null });
+      window.location.reload();
+    });
   };
 
   handleEdit = (branch) => {
@@ -74,7 +71,7 @@ class ExecutiveManager extends Component {
     const id = this.state.branchEditing._id;
     const { name, yearlyProfit, numberOfMembers, location } = values;
     const data = { name, yearlyProfit, numberOfMembers, location };
-    const req = await axios.patch(`http://localhost:4000/branch/${id}`, data);
+    const req = await http.patch(`http://localhost:4000/branch/${id}`, data);
     this.setState({
       branchEditing: {
         name: "",

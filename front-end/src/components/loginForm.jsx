@@ -39,6 +39,7 @@ const LoginForm = (props) => {
   return (
     <div className="mt-3">
       <Container className="px-5">
+        <h3>Login as a customer</h3>
         <form onSubmit={formik.handleSubmit}>
           <div className="mb-3">
             <label htmlFor="exampleInputEmail1" className="form-label">
