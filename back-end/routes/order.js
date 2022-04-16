@@ -5,18 +5,27 @@ const customerAuth = require("../middleware/customerAuth");
 const managerAuth = require("../middleware/managerAuth");
 const customerOrManagerAuth = require("../middleware/customerOrManagerAuth");
 
-router.get("/", customerOrManagerAuth, async (req, res) => {
-  const result = await Order.find();
-  res.send(result);
+router.get('/customer/:id', customerAuth, async (req, res) => {
+  try {
+    const result = await Order.find({customerId: req.params.id});
+    res.send(result);
+  } catch (e) {
+    res.status(400).send("Bad Request");
+  }
 });
 
-router.get("/:id", customerAuth, async (req, res) => {
+router.get("/:id", customerOrManagerAuth, async (req, res) => {
   try {
     const result = await Order.findById(req.params.id);
     res.send(result);
   } catch (e) {
     res.status(400).send("Bad Request");
   }
+});
+
+router.get("/", managerAuth, async (req, res) => {
+  const result = await Order.find();
+  res.send(result);
 });
 
 router.post("/", customerOrManagerAuth, async (req, res) => {

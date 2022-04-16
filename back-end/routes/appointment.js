@@ -1,27 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const {Appointment} = require('../models/appointment');
+const customerAuth = require('../middleware/customerAuth');
+const managerAuth = require('../middleware/managerAuth');
+const customerOrManagerAuth = require('../middleware/customerOrManagerAuth');
 
 // Get all occupied slots for a coach
-router.get('/:date/:id', async (req, res) => {
+router.get('/:date/:id', customerAuth, async (req, res) => {
     const result = await Appointment.find({coachId: req.params.id, date: req.params.date});
     res.send(result.map(a => a.slot));
 });
 
 // Get all occupied slots for a customer
-router.get('/:id', async (req, res) => {
+router.get('/:id', customerAuth, async (req, res) => {
     const result = await Appointment.find({customerId: req.params.id});
     res.send(result);
 });
 
 // Get all appointments
-router.get('/', async (req, res) => {
+router.get('/', managerAuth, async (req, res) => {
     const result = await Appointment.find();
     res.send(result);
 });
 
 // Create a new appointment
-router.post('/', async (req, res) => {
+router.post('/', customerAuth, async (req, res) => {
     const {coachId, date, slot, customerId} = req.body;
     const appointment = new Appointment({coachId, date, slot, customerId});
     try {
@@ -33,7 +36,7 @@ router.post('/', async (req, res) => {
 });
 
 // Modify an appointment
-router.put('/:id', async (req, res) => {
+router.put('/:id', managerAuth, async (req, res) => {
     const {coachId, date, slot, customerId} = req.body;
     try {
         const result = await Appointment.findByIdAndUpdate(req.params.id, {coachId, date, slot, customerId});
@@ -44,7 +47,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Delete an appointment
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', customerOrManagerAuth, async (req, res) => {
     const result = await Appointment.findByIdAndDelete(req.params.id);
     res.send(result);
 });

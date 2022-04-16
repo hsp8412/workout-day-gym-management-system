@@ -1,7 +1,7 @@
 const express = require('express');
-const joi = require('joi');
 const bcrypt = require('bcrypt')
 const {BranchManager, validateBranchManager} = require("../models/branchManager");
+const executiveAuth = require("../middleware/executiveAuth");
 const router = express.Router();
 
 router.post('/', async (req, res) => {
@@ -22,13 +22,13 @@ router.post('/', async (req, res) => {
 
 
 // Used to generate manager
-// router.post('/generate', async (req, res) => {
-//     const { username, password } = req.body;
-//     const salt = await bcrypt.genSalt();
-//     const passwordHash = await bcrypt.hash(password, salt);
-//     const manager = new BranchManager({username, password: passwordHash});
-//     await manager.save();
-//     res.send(manager);
-// })
+router.post('/generate', executiveAuth, async (req, res) => {
+    const { username, password } = req.body;
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+    const manager = new BranchManager({username, password: passwordHash});
+    await manager.save();
+    res.send(manager);
+})
 
 module.exports = router;

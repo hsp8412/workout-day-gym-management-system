@@ -4,13 +4,14 @@ const bcrypt = require("bcrypt");
 const { Customer, validateCustomer } = require("../models/customer");
 const managerAuth = require("../middleware/managerAuth");
 const customerAuth = require("../middleware/customerAuth");
+const customerOrManagerAuth = require('../middleware/customerOrManagerAuth');
 
 router.get("/", managerAuth, async (req, res) => {
   const result = await Customer.find();
   res.send(result);
 });
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", customerOrManagerAuth, async (req, res) => {
   try {
     const result = await Customer.findById(req.params.id);
     res.send(result);
@@ -129,7 +130,7 @@ router.patch("/profile/:id", customerAuth, async (req, res) => {
   }
 });
 
-router.patch("/password/:id", async (req, res) => {
+router.patch("/password/:id", customerAuth, async (req, res) => {
   const { password } = req.body;
   if (!password) return res.status(400).send("Bad Request");
   try {

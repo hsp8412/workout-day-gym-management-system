@@ -12,7 +12,6 @@ const customer = require("../routes/customer");
 const branch = require("../routes/branch");
 const auth = require("../routes/auth");
 const order = require("../routes/order");
-const timeslot = require("../routes/timeslot");
 const executiveManager = require("../routes/executiveManager");
 const executiveManagerLogin = require("../routes/executiveManagerLogin");
 const appointment = require("../routes/appointment");
@@ -37,7 +36,6 @@ module.exports = function (app) {
   app.use("/branch", branch);
   app.use("/auth", auth);
   app.use("/order", order);
-  app.use("/timeslot", timeslot);
   app.use("/executive", executiveManager);
   app.use("/executiveLogin", executiveManagerLogin);
   app.use('/branch_manager', branchManager);

@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const { BranchStaff, validateBranchStaff } = require('../models/branchStaff');
 const managerAuth = require('../middleware/managerAuth');
+const customerAuth = require('../middleware/customerAuth')
 
-router.get('/coach', async (req, res) => {
+router.get('/coach', customerAuth, async (req, res) => {
     try {
         const result = await BranchStaff.find({isCoach: true});
         res.send(result.map(c => {
@@ -14,7 +15,7 @@ router.get('/coach', async (req, res) => {
     }
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', managerAuth, async (req, res) => {
     try {
         const result = await BranchStaff.findById(req.params.id);
         res.send(result);
