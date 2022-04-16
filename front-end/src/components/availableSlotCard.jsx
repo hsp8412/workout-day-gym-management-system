@@ -1,8 +1,4 @@
 import React, { useState } from "react";
-import getTimeSlots from "../services/availableTimeSlot";
-import { getCoachById } from "../services/coach";
-import { getBranchById } from "../services/branch";
-import axios from "axios";
 
 const AvailableSlotCard = ({
   dateSelected,

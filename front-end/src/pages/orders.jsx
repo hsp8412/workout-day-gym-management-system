@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { getOrders } from "../services/orders";
 import OrderCard from "../components/orderCard";
 import DeleteOrderConfirm from "../components/deleteOrderConfirm";
 import http from "../services/httpService";

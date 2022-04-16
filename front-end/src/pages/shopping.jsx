@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Products from "./browseProducts";
 import ShoppingCart from "./shoppingCart";
 import { Container, Tab, Tabs } from "react-bootstrap";
-import { getProducts } from "../services/products";
 import LoginPrompt from "../components/loginPrompt";
 import http from "../services/httpService";
 
