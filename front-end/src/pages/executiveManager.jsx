@@ -7,6 +7,7 @@ import BranchTable from "../components/branchTable";
 import BranchDeleteConfirm from "../components/branchDeleteConfirm";
 import EditBranch from "../components/editBranchModal";
 import http from "../services/httpService";
+import AddBranch from "../components/addBranchModal";
 
 class ExecutiveManager extends Component {
   state = {
@@ -23,6 +24,7 @@ class ExecutiveManager extends Component {
       location: " ",
     },
     editBranchVisibility: false,
+    addBranchVisibility: false,
   };
 
   async componentDidMount() {
@@ -84,6 +86,14 @@ class ExecutiveManager extends Component {
     window.location.reload();
   };
 
+  handleAddClose = () => {
+    this.setState({ addBranchVisibility: false });
+  };
+
+  handleAddOpen = () => {
+    this.setState({ addBranchVisibility: true });
+  };
+
   render() {
     const {
       pageSize,
@@ -128,8 +138,8 @@ class ExecutiveManager extends Component {
             </button>
             <button
               type="button"
-              className="btn btn-primary btn-lg"
-              onClick={() => {}}
+              className="btn btn-primary btn-lg mx-2"
+              onClick={this.handleAddOpen}
             >
               Add
             </button>
@@ -145,6 +155,10 @@ class ExecutiveManager extends Component {
           isVisible={this.state.editBranchVisibility}
           branchEditing={this.state.branchEditing}
           onSubmitUpdate={this.handleSubmitUpdate}
+        />
+        <AddBranch
+          isVisible={this.state.addBranchVisibility}
+          onClose={this.handleAddClose}
         />
       </div>
     );
