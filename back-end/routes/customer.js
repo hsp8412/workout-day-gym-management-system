@@ -13,7 +13,6 @@ router.get("/:id", async (req, res) => {
   try {
     const result = await Customer.findById(req.params.id);
     res.send(result);
-
   } catch (e) {
     res.status(400).send("Bad Request");
   }
