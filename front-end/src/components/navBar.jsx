@@ -1,9 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import { Nav, Navbar, Container } from "react-bootstrap";
 
-class NavBar extends React.Component {
-  render() {
-    return (
+const getToken = () => {  return  localStorage.getItem("token");};
+
+const NavBar = () => {
+    const token = getToken();
+  return (
       <Navbar bg="light" variant="light">
         <Container>
           <Navbar.Brand href="/shopping">
@@ -11,15 +13,16 @@ class NavBar extends React.Component {
           </Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="/shopping">Shopping</Nav.Link>
-            <Nav.Link href="/orders">Orders</Nav.Link>
-            <Nav.Link href="/fitnessProfiles">My Profile</Nav.Link>
-            <Nav.Link href="/appointments">My Appointments</Nav.Link>
-            <Nav.Link href="/login"> Login</Nav.Link>
+            {getToken() && <Nav.Link href="/orders">Orders</Nav.Link>}
+            {getToken() && <Nav.Link href="/fitnessProfiles">My Profile</Nav.Link>}
+            {getToken() && <Nav.Link href="/appointments">My Appointments</Nav.Link>}
+            {getToken() && <Nav.Link href="/login" onClick={() => localStorage.removeItem('token')} >Logout</Nav.Link>}
+            {!getToken() && <Nav.Link href="/register" >Register</Nav.Link>}
+            {!getToken() && <Nav.Link href="/login"> Login</Nav.Link>}
           </Nav>
         </Container>
       </Navbar>
-    );
-  }
-}
+  );
+};
 
 export default NavBar;

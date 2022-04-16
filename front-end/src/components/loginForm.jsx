@@ -21,6 +21,7 @@ const LoginForm = (props) => {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("id", res.data.id);
           navigate("/shopping");
+          window.location.reload();
         })
         .catch(() => {
           props.onInvalidCredential();
