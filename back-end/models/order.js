@@ -10,7 +10,6 @@ const orderSchema = new mongoose.Schema({
     },
   ],
   createDate: { type: Date },
-  branchId: { type: mongoose.Schema.Types.ObjectId, ref: "Branch" },
   customerId: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" },
   isFulfilled: { type: Boolean },
 });
@@ -27,8 +26,8 @@ function validateOrder(order) {
     createDate: joi.date(),
     branchId: joi.string(),
     customerId: joi.string().required(),
-    isFulfilled: joi.string(),
-  });
+    isFulfilled: joi.bool(),
+  }).unknown(true);
   return schema.validate(order);
 }
 

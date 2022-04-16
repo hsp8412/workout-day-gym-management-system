@@ -126,12 +126,12 @@ const CommonFacility = () => {
                                 <Form.Control type="text"
                                               placeholder=" "
                                               value={facility.price}
-                                              onChange={(e) => {setFacility({...facility, price: parseFloat(e.currentTarget.value)})}}/>
+                                              onChange={(e) => {setFacility({...facility, price: e.currentTarget.value})}}/>
                             </FloatingLabel>
                         </Form.Group>
                         <Form.Group className="mb-2">
                             <Form.Select value={facility.condition}
-                                         onChange={(e) => {setFacility({...facility, condition: parseInt(e.currentTarget.value)})}}
+                                         onChange={(e) => {setFacility({...facility, condition: e.currentTarget.value})}}
                                          size="lg"
                                          style={{fontSize: "16px", paddingLeft: "12px", paddingTop: "16px", paddingBottom: "16px"}}>
                                 <option>Select Condition</option>

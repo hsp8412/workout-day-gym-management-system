@@ -3,8 +3,9 @@ const router = express.Router();
 const { Order, validateOrder } = require("../models/order");
 const customerAuth = require("../middleware/customerAuth");
 const managerAuth = require("../middleware/managerAuth");
+const customerOrManagerAuth = require("../middleware/customerOrManagerAuth");
 
-router.get("/", async (req, res) => {
+router.get("/", customerOrManagerAuth, async (req, res) => {
   const result = await Order.find();
   res.send(result);
 });
@@ -18,7 +19,7 @@ router.get("/:id", customerAuth, async (req, res) => {
   }
 });
 
-router.post("/", customerAuth, async (req, res) => {
+router.post("/", customerOrManagerAuth, async (req, res) => {
   const { error } = validateOrder(req.body);
   if (error) return res.status(400).send(error.details[0].message);
   const { products, customerId } = req.body;
@@ -38,7 +39,7 @@ router.post("/", customerAuth, async (req, res) => {
   }
 });
 
-router.delete("/:id", customerAuth, async (req, res) => {
+router.delete("/:id", customerOrManagerAuth, async (req, res) => {
   try {
     const result = await Order.findByIdAndDelete(req.params.id);
     res.send(result);
@@ -47,9 +48,10 @@ router.delete("/:id", customerAuth, async (req, res) => {
   }
 });
 
-router.delete("/branch/:id", managerAuth, async (req, res) => {
+router.patch('/:id', managerAuth, async (req, res) => {
+  const { isFulfilled } = req.body;
   try {
-    const result = await Order.findByIdAndDelete(req.params.id);
+    const result = await Order.findByIdAndUpdate(req.params.id, {$set: { isFulfilled }});
     res.send(result);
   } catch (e) {
     res.status(400).send("Bad Request");

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Form, Container, Card, Pagination, Col, Row, ListGroup, Button, Modal, FloatingLabel } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import MyPagination from "../utils/pagination";
+import http from "../services/httpService";
 
 const uri = process.env.REACT_APP_API_ENDPOINT + "/product/";
 const itemsPerPage = 3;
@@ -37,10 +37,10 @@ const Product = () => {
     const handleClose = () => setShow(false);
     const handleSave = async () => {
         if (adding)
-            await axios.post(uri, product);
+            await http.post(uri, product);
         else
-            await axios.put(uri + product._id, product);
-        const data = await axios.get(uri);
+            await http.put(uri + product._id, product);
+        const data = await http.get(uri);
         setProducts(data.data);
         handleClose();
     };
@@ -58,8 +58,8 @@ const Product = () => {
         setShow(true);
     };
     const handleDelete = async () => {
-        await axios.delete(uri + product._id);
-        const data = await axios.get(uri);
+        await http.delete(uri + product._id);
+        const data = await http.get(uri);
         setProducts(data.data);
         handleClose();
     };
@@ -85,7 +85,7 @@ const Product = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const data = await axios.get(uri);
+            const data = await http.get(uri);
             setProducts(data.data);
             setAllProducts(data.data);
         }

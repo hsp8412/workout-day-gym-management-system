@@ -2,14 +2,15 @@ import React from 'react';
 import { Col, Row, Card, Container, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPeopleGroup, faCartShopping, faDumbbell, faClipboardUser } from "@fortawesome/free-solid-svg-icons";
+import { faPeopleGroup, faCartShopping, faDumbbell, faClipboardUser, faList } from "@fortawesome/free-solid-svg-icons";
 
 
 const entries = [
     { name: "Customer", icon: faPeopleGroup },
     { name: "Product", icon: faCartShopping },
     { name: "Facility", icon: faDumbbell},
-    { name: "Staff", icon: faClipboardUser}
+    { name: "Staff", icon: faClipboardUser},
+    { name: "Order", icon: faList}
 ];
 
 const getCards = () => {
