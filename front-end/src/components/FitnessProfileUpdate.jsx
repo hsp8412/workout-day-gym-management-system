@@ -4,14 +4,18 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { getFitnessProfileById } from "../services/fitnessProfiles";
 
-const FitnessProfileUpdate = ({ isVisible, onClose, onSubmitUpdate }) => {
-  const member_id = 1;
+const FitnessProfileUpdate = ({
+  isVisible,
+  onClose,
+  onSubmitUpdate,
+  profile,
+}) => {
   const formik = useFormik({
     initialValues: {
-      weight: getFitnessProfileById(member_id).weight,
-      height: getFitnessProfileById(member_id).height,
-      BFP: getFitnessProfileById(member_id).BFP,
-      BMI: getFitnessProfileById(member_id).BMI,
+      weight: profile.fitnessProfile.weight,
+      height: profile.fitnessProfile.height,
+      BFP: profile.fitnessProfile.BFP,
+      BMI: profile.fitnessProfile.BMI,
     },
     onSubmit: (values) => {
       onSubmitUpdate(values);
@@ -34,6 +38,9 @@ const FitnessProfileUpdate = ({ isVisible, onClose, onSubmitUpdate }) => {
         .min(1, "Please enter the correct BMI.")
         .required(),
     }),
+    validateOnBlur: true,
+    validateOnChange: false,
+    enableReinitialize: true,
   });
 
   return (

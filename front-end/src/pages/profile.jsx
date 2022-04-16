@@ -5,7 +5,7 @@ import http from "../services/httpService";
 
 class Profile extends React.Component {
   state = {
-    profile: null,
+    profile: { fitnessProfile: { weight: 0, height: 0, BMI: 0, BFP: 0 } },
     updateVisible: false,
   };
 
@@ -21,7 +21,6 @@ class Profile extends React.Component {
     const { BMI, BFP, height, weight } = values;
     const id = localStorage.getItem("id");
     const data = { BMI, BFP, height, weight };
-    console.log(data);
     let req = await http.patch(
       `http://localhost:4000/customer/profile/${id}`,
       data
@@ -53,6 +52,7 @@ class Profile extends React.Component {
           isVisible={this.state.updateVisible}
           onSubmitUpdate={this.handleSubmitUpdate}
           onClose={this.handleClose}
+          profile={this.state.profile}
         />
       </div>
     );
