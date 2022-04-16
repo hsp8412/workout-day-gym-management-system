@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { getFitnessProfileById } from "../services/fitnessProfiles";
 
 const FitnessProfileUpdate = ({
   isVisible,

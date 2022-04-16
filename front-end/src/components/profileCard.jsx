@@ -1,10 +1,5 @@
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { getProfileById } from "../services/profiles";
-import {
-  getFitnessProfile,
-  getFitnessProfileById,
-} from "../services/fitnessProfiles";
 
 const ProfileCard = ({ onSubmitUpdate, onUpdate, profile }) => {
   if (profile == null) {
