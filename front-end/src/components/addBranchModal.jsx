@@ -118,7 +118,7 @@ const AddBranch = ({ isVisible, onClose }) => {
             </div>
             <div className="mb-3">
               <label htmlFor="exampleInputPassword1" className="form-label">
-                managerId
+                Manager ID
               </label>
               <input
                 type="text"

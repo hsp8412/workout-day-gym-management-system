@@ -17,6 +17,7 @@ class BranchTable extends React.Component {
     { path: "yearlyProfit", label: "Yearly profit" },
     { path: "numberOfMembers", label: "Number of members" },
     { path: "location", label: "Location " },
+    { path: "managerId", label: "Manager ID" },
     {
       key: "edit",
       content: (branch) => (

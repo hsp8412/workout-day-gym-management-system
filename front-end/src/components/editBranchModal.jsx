@@ -11,6 +11,7 @@ const EditBranch = ({ isVisible, onClose, branchEditing, onSubmitUpdate }) => {
       yearlyProfit: branchEditing.yearlyProfit,
       location: branchEditing.location,
       numberOfMembers: branchEditing.numberOfMembers,
+      managerId: branchEditing.managerId,
     },
     onSubmit: (values) => {
       onSubmitUpdate(values);
@@ -22,6 +23,7 @@ const EditBranch = ({ isVisible, onClose, branchEditing, onSubmitUpdate }) => {
       numberOfMembers: Yup.number()
         .max(10000, "Please enter the correct number of members.")
         .required(),
+      managerId: Yup.string(),
     }),
     validateOnChange: false,
     validateOnBlur: true,
@@ -102,6 +104,23 @@ const EditBranch = ({ isVisible, onClose, branchEditing, onSubmitUpdate }) => {
                 {formik.errors.numberOfMembers
                   ? formik.errors.numberOfMembers
                   : null}
+              </p>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="exampleInputPassword1" className="form-label">
+                Manager ID
+              </label>
+              <input
+                type="string"
+                className="form-control"
+                id="BMI"
+                name="managerId"
+                aria-describedby="BMIHelp"
+                value={formik.values.managerId}
+                onChange={formik.handleChange}
+              />
+              <p className="text-danger">
+                {formik.errors.managerId ? formik.errors.managerId : null}
               </p>
             </div>
           </Modal.Body>

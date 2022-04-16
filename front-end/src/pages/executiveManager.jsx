@@ -22,6 +22,7 @@ class ExecutiveManager extends Component {
       yearlyProfit: 0,
       numberOfMembers: 0,
       location: " ",
+      managerId: " ",
     },
     editBranchVisibility: false,
     addBranchVisibility: false,
@@ -71,15 +72,16 @@ class ExecutiveManager extends Component {
 
   handleSubmitUpdate = async (values) => {
     const id = this.state.branchEditing._id;
-    const { name, yearlyProfit, numberOfMembers, location } = values;
-    const data = { name, yearlyProfit, numberOfMembers, location };
-    const req = await http.patch(`http://localhost:4000/branch/${id}`, data);
+    const { name, yearlyProfit, numberOfMembers, location, managerId } = values;
+    const data = { name, yearlyProfit, numberOfMembers, location, managerId };
+    const req = await http.put(`http://localhost:4000/branch/${id}`, data);
     this.setState({
       branchEditing: {
         name: "",
         yearlyProfit: 0,
         numberOfMembers: 0,
         location: " ",
+        managerId: " ",
       },
       editBranchVisibility: false,
     });
