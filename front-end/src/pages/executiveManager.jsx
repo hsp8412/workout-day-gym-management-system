@@ -126,6 +126,13 @@ class ExecutiveManager extends Component {
             >
               Log out
             </button>
+            <button
+              type="button"
+              className="btn btn-primary btn-lg"
+              onClick={() => {}}
+            >
+              Add
+            </button>
           </div>
         </Container>
         <BranchDeleteConfirm

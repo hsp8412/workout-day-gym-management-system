@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Order, validateOrder } = require("../models/order");
 const customerAuth = require("../middleware/customerAuth");
-const { custom } = require("joi");
+const managerAuth = require("../middleware/managerAuth");
 
 router.get("/", async (req, res) => {
   const result = await Order.find();
@@ -39,6 +39,15 @@ router.post("/", customerAuth, async (req, res) => {
 });
 
 router.delete("/:id", customerAuth, async (req, res) => {
+  try {
+    const result = await Order.findByIdAndDelete(req.params.id);
+    res.send(result);
+  } catch (e) {
+    res.status(400).send("Bad Request");
+  }
+});
+
+router.delete("/branch/:id", managerAuth, async (req, res) => {
   try {
     const result = await Order.findByIdAndDelete(req.params.id);
     res.send(result);
