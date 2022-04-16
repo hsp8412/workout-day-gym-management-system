@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { Branch, validateBranch } = require("../models/branch");
-const auth = require("../middleware/managerAuth");
-const { Customer } = require("../models/customer");
 const executiveAuth = require("../middleware/executiveAuth");
 
 router.get("/", executiveAuth, async (req, res) => {
