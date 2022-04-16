@@ -27,6 +27,7 @@ import ExecutiveManager from "./pages/executiveManager";
 import ExecutiveLoginForm from "./components/executiveLoginForm";
 import "react-toastify/dist/ReactToastify.css";
 import OrderManagement from "./pages/orderManagement";
+import AppointmentManagement from "./pages/appointmentManagement";
 
 function App() {
   let jwt = localStorage.getItem("token");
@@ -63,29 +64,20 @@ function App() {
           <Route exact path="/branch/facility" element={<ProtectedRoute />}>
             <Route exact path="/branch/facility" element={<Facility />} />
           </Route>
-          <Route
-            exact
-            path="/branch/facility/locker"
-            element={<ProtectedRoute />}
-          >
+          <Route exact path="/branch/facility/locker" element={<ProtectedRoute />}>
             <Route exact path="/branch/facility/locker" element={<Locker />} />
           </Route>
-          <Route
-            exact
-            path="/branch/facility/common"
-            element={<ProtectedRoute />}
-          >
-            <Route
-              exact
-              path="/branch/facility/common"
-              element={<CommonFacility />}
-            />
+          <Route exact path="/branch/facility/common" element={<ProtectedRoute />}>
+            <Route exact path="/branch/facility/common" element={<CommonFacility />}/>
           </Route>
           <Route exact path="/branch/staff" element={<ProtectedRoute />}>
             <Route exact path="/branch/staff" element={<Staff />} />
           </Route>
           <Route exact path="/branch/order" element={<ProtectedRoute />}>
             <Route exact path="/branch/order" element={<OrderManagement />} />
+          </Route>
+          <Route exact path="/branch/appointment" element={<ProtectedRoute />}>
+            <Route exact path="/branch/appointment" element={<AppointmentManagement />} />
           </Route>
           <Route
             path="/fitnessProfiles"

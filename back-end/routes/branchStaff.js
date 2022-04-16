@@ -3,9 +3,15 @@ const router = express.Router();
 const { BranchStaff, validateBranchStaff } = require('../models/branchStaff');
 const managerAuth = require('../middleware/managerAuth');
 
-router.get('/', managerAuth, async (req, res) => {
-    const result = await BranchStaff.find();
-    res.send(result);
+router.get('/coach', async (req, res) => {
+    try {
+        const result = await BranchStaff.find({isCoach: true});
+        res.send(result.map(c => {
+            return {coachId: c._id, firstName: c.firstName, lastName: c.lastName}
+        }));
+    } catch (e) {
+        res.status(500).send("Internal Error");
+    }
 });
 
 router.get('/:id', async (req, res) => {
@@ -15,6 +21,11 @@ router.get('/:id', async (req, res) => {
     } catch (e) {
         res.status(400).send("Bad Request")
     }
+});
+
+router.get('/', managerAuth, async (req, res) => {
+    const result = await BranchStaff.find();
+    res.send(result);
 });
 
 router.post('/', managerAuth, async (req, res) => {

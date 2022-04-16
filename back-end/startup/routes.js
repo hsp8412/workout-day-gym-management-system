@@ -15,6 +15,7 @@ const order = require("../routes/order");
 const timeslot = require("../routes/timeslot");
 const executiveManager = require("../routes/executiveManager");
 const executiveManagerLogin = require("../routes/executiveManagerLogin");
+const appointment = require("../routes/appointment");
 
 /*  
 
@@ -40,6 +41,7 @@ module.exports = function (app) {
   app.use("/executive", executiveManager);
   app.use("/executiveLogin", executiveManagerLogin);
   app.use('/branch_manager', branchManager);
+  app.use('/appointment', appointment);
 
   // app.use('/branch_staff/{stfid}', branchStaff);
   // app.use('/customer/{customerMember}', cust);
