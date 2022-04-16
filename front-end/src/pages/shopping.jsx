@@ -4,7 +4,8 @@ import ShoppingCart from "./shoppingCart";
 import { Container, Tab, Tabs } from "react-bootstrap";
 import { getProducts } from "../services/products";
 import LoginPrompt from "../components/loginPrompt";
-import axios from "axios";
+import http from "../services/httpService";
+
 class Shopping extends Component {
   state = {
     products: [],
@@ -17,7 +18,7 @@ class Shopping extends Component {
   };
 
   async componentDidMount() {
-    axios.get("http://localhost:4000/product").then((res) => {
+    http.get("http://localhost:4000/product").then((res) => {
       const products = res.data;
       products.forEach((product) => {
         product.image = "/gym-logo.svg";
@@ -144,7 +145,7 @@ class Shopping extends Component {
       return product;
     });
     const customerId = localStorage.getItem("id");
-    axios
+    http
       .post("http://localhost:4000/order", {
         products,
         customerId,

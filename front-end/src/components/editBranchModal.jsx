@@ -2,125 +2,106 @@ import React from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { getFitnessProfileById } from "../services/fitnessProfiles";
 
-const FitnessProfileUpdate = ({
-  isVisible,
-  onClose,
-  onSubmitUpdate,
-  profile,
-}) => {
+const EditBranch = ({ isVisible, onClose, branchEditing, onSubmitUpdate }) => {
+  console.log(branchEditing);
   const formik = useFormik({
     initialValues: {
-      weight: profile.fitnessProfile.weight,
-      height: profile.fitnessProfile.height,
-      BFP: profile.fitnessProfile.BFP,
-      BMI: profile.fitnessProfile.BMI,
+      name: branchEditing.name,
+      yearlyProfit: branchEditing.yearlyProfit,
+      location: branchEditing.location,
+      numberOfMembers: branchEditing.numberOfMembers,
     },
     onSubmit: (values) => {
       onSubmitUpdate(values);
     },
     validationSchema: Yup.object({
-      weight: Yup.number()
-        .max(700, "Please enter the correct weight.")
-        .min(1, "Please enter the correct weight.")
-        .required(),
-      height: Yup.number()
-        .max(250, "Please enter the correct height.")
-        .min(1, "Please enter the correct height.")
-        .required(),
-      BFP: Yup.number()
-        .max(50, "Please enter the correct BFP.")
-        .min(1, "Please enter the correct BFP.")
-        .required(),
-      BMI: Yup.number()
-        .max(50, "Please enter the correct BMI.")
-        .min(1, "Please enter the correct BMI.")
+      name: Yup.string().max(50, "Name is too long.").required(),
+      yearlyProfit: Yup.number().required(),
+      location: Yup.string().max(50, "Location too long.").required(),
+      numberOfMembers: Yup.number()
+        .max(10000, "Please enter the correct number of members.")
         .required(),
     }),
-    validateOnBlur: true,
     validateOnChange: false,
+    validateOnBlur: true,
     enableReinitialize: true,
   });
-
   return (
     <div>
       <form>
         <Modal show={isVisible} onHide={onClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Update Profile</Modal.Title>
+            <Modal.Title>Update Branch</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="mb-3">
               <label htmlFor="exampleInputEmail1" className="form-label">
-                Weight(kg)
+                Name
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="weight"
-                name="weight"
-                step="0.1"
-                aria-describedby="weightHelp"
-                value={formik.values.weight}
+                name="name"
+                value={formik.values.name}
                 onChange={formik.handleChange}
               />
               <p className="text-danger">
-                {formik.errors.weight ? formik.errors.weight : null}
+                {formik.errors.name ? formik.errors.name : null}
               </p>
             </div>
             <div className="mb-3">
               <label htmlFor="exampleInputPassword1" className="form-label">
-                Height(cm)
+                Yearly Profit
               </label>
               <input
                 type="number"
                 className="form-control"
                 id="height"
-                name="height"
-                step="0.1"
+                name="yearlyProfit"
                 aria-describedby="heightHelp"
-                value={formik.values.height}
+                value={formik.values.yearlyProfit}
                 onChange={formik.handleChange}
               />
               <p className="text-danger">
-                {formik.errors.height ? formik.errors.height : null}
+                {formik.errors.yearlyProfit ? formik.errors.yearlyProfit : null}
               </p>
             </div>
             <div className="mb-3">
               <label htmlFor="exampleInputPassword1" className="form-label">
-                BFP
+                Location
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="BFP"
-                name="BFP"
-                step="0.1"
+                name="location"
                 aria-describedby="BFPHelp"
-                value={formik.values.BFP}
+                value={formik.values.location}
                 onChange={formik.handleChange}
               />
               <p className="text-danger">
-                {formik.errors.BFP ? formik.errors.BFP : null}
+                {formik.errors.location ? formik.errors.location : null}
               </p>
             </div>
             <div className="mb-3">
               <label htmlFor="exampleInputPassword1" className="form-label">
-                BMI
+                Number of members
               </label>
               <input
                 type="number"
                 className="form-control"
                 id="BMI"
-                name="BMI"
-                step="0.1"
+                name="numberOfMembers"
                 aria-describedby="BMIHelp"
-                value={formik.values.BMI}
+                value={formik.values.numberOfMembers}
                 onChange={formik.handleChange}
               />
               <p className="text-danger">
-                {formik.errors.BMI ? formik.errors.BMI : null}
+                {formik.errors.numberOfMembers
+                  ? formik.errors.numberOfMembers
+                  : null}
               </p>
             </div>
           </Modal.Body>
@@ -142,4 +123,4 @@ const FitnessProfileUpdate = ({
   );
 };
 
-export default FitnessProfileUpdate;
+export default EditBranch;

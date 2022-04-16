@@ -25,12 +25,13 @@ import RegisterPage from "./pages/registerPage";
 import AlreadyLoggedIn from "./pages/alreadyLoggedIn";
 import ExecutiveManager from "./pages/executiveManager";
 import ExecutiveLoginForm from "./components/executiveLoginForm";
-import 'react-toastify/dist/ReactToastify.css';
-
+import "react-toastify/dist/ReactToastify.css";
+import OrderManagement from "./pages/orderManagement";
 
 function App() {
   let jwt = localStorage.getItem("token");
   let ejwt = localStorage.getItem("eToken");
+  const mjwt = localStorage.getItem("");
   return (
     <div>
       <ToastContainer />
@@ -50,26 +51,41 @@ function App() {
             }
           />
           <Route path="/branch" element={<MangerLogin />} />
-          <Route exact path="/branch/manage" element={<ProtectedRoute/>}>
-            <Route exact path="/branch/manage" element={<BranchManagement/>}/>
+          <Route exact path="/branch/manage" element={<ProtectedRoute />}>
+            <Route exact path="/branch/manage" element={<BranchManagement />} />
           </Route>
-          <Route exact path="/branch/customer" element={<ProtectedRoute/>}>
-            <Route exact path="/branch/customer" element={<Customer />}/>
+          <Route exact path="/branch/customer" element={<ProtectedRoute />}>
+            <Route exact path="/branch/customer" element={<Customer />} />
           </Route>
-          <Route exact path="/branch/product" element={<ProtectedRoute/>}>
-            <Route exact path="/branch/product" element={<Product />}/>
+          <Route exact path="/branch/product" element={<ProtectedRoute />}>
+            <Route exact path="/branch/product" element={<Product />} />
           </Route>
-          <Route exact path="/branch/facility" element={<ProtectedRoute/>}>
-            <Route exact path="/branch/facility" element={<Facility />}/>
+          <Route exact path="/branch/facility" element={<ProtectedRoute />}>
+            <Route exact path="/branch/facility" element={<Facility />} />
           </Route>
-          <Route exact path="/branch/facility/locker" element={<ProtectedRoute/>}>
-            <Route exact path="/branch/facility/locker" element={<Locker />}/>
+          <Route
+            exact
+            path="/branch/facility/locker"
+            element={<ProtectedRoute />}
+          >
+            <Route exact path="/branch/facility/locker" element={<Locker />} />
           </Route>
-          <Route exact path="/branch/facility/common" element={<ProtectedRoute/>}>
-            <Route exact path="/branch/facility/common" element={<CommonFacility />}/>
+          <Route
+            exact
+            path="/branch/facility/common"
+            element={<ProtectedRoute />}
+          >
+            <Route
+              exact
+              path="/branch/facility/common"
+              element={<CommonFacility />}
+            />
           </Route>
-          <Route exact path="/branch/staff" element={<ProtectedRoute/>}>
-            <Route exact path="/branch/staff" element={<Staff />}/>
+          <Route exact path="/branch/staff" element={<ProtectedRoute />}>
+            <Route exact path="/branch/staff" element={<Staff />} />
+          </Route>
+          <Route exact path="/branch/order" element={<ProtectedRoute />}>
+            <Route exact path="/branch/order" element={<OrderManagement />} />
           </Route>
           <Route
             path="/fitnessProfiles"
@@ -85,8 +101,6 @@ function App() {
             element={jwt != null ? <AlreadyLoggedIn /> : <RegisterPage />}
           />
           <Route path="/not_found" element={<NotFound />} />
-              
-
         </Routes>
       </div>
     </div>

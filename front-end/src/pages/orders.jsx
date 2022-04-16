@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { getOrders } from "../services/orders";
 import OrderCard from "../components/orderCard";
 import DeleteOrderConfirm from "../components/deleteOrderConfirm";
-import axios from "axios";
+import http from "../services/httpService";
 
 class Orders extends Component {
   state = {
@@ -13,7 +13,7 @@ class Orders extends Component {
 
   componentDidMount() {
     const userId = localStorage.getItem("id");
-    axios.get("http://localhost:4000/order").then((res) => {
+    http.get("http://localhost:4000/order").then((res) => {
       const allOrders = res.data;
       const orders = allOrders.filter((order) => {
         return order.customerId == userId;
@@ -30,7 +30,7 @@ class Orders extends Component {
 
   handleDeleteConfirm = () => {
     const deleteOrderId = this.state.orderDeleting._id;
-    axios
+    http
       .delete(`http://localhost:4000/order/${deleteOrderId}`)
       .then(() => this.setState({ deleteVisible: false, orderDeleting: null }));
     window.location.reload();

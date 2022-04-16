@@ -4,8 +4,7 @@ import { Container } from "react-bootstrap";
 import NewAppointment from "../components/newAppointment";
 import CancelAppointmentConfirm from "../components/cancelAppointmentConfirm";
 import NoAppSelection from "../components/newAppNoSelectionModal";
-import axios from "axios";
-import data from "bootstrap/js/src/dom/data";
+import http from "../services/httpService";
 
 class Appointment extends React.Component {
   state = {
@@ -19,7 +18,7 @@ class Appointment extends React.Component {
 
   async componentDidMount() {
     const userId = localStorage.getItem("id");
-    let res = await axios.get("http://localhost:4000/timeslot");
+    let res = await http.get("http://localhost:4000/timeslot");
     const timeslots = res.data;
     const filtered = timeslots.filter((timeslot) => {
       if (timeslot.customerId == null) {
@@ -35,11 +34,11 @@ class Appointment extends React.Component {
       const date = this.getAppointmentDate(appointment);
       let coach;
       let branch;
-      let res = await axios.get(
+      let res = await http.get(
         `http://localhost:4000/branch/${appointment.branchId}`
       );
       branch = res.data.name;
-      res = await axios.get(
+      res = await http.get(
         `http://localhost:4000/branch_staff/${appointment.coachId}`
       );
       coach = res.data.firstName + " " + res.data.lastName;
@@ -59,11 +58,11 @@ class Appointment extends React.Component {
       const isBooked = timeslot.isBooked;
       let coach;
       let branch;
-      let res = await axios.get(
+      let res = await http.get(
         `http://localhost:4000/branch/${timeslot.branchId}`
       );
       branch = res.data.name;
-      res = await axios.get(
+      res = await http.get(
         `http://localhost:4000/branch_staff/${timeslot.coachId}`
       );
       coach = res.data.firstName + " " + res.data.lastName;
@@ -128,12 +127,12 @@ class Appointment extends React.Component {
 
   handleConfirmDelete = async () => {
     const id = this.state.appointmentDeleting._id;
-    let res = await axios.get(`http://localhost:4000/timeslot/${id}`);
+    let res = await http.get(`http://localhost:4000/timeslot/${id}`);
     console.log(res.data);
     const { branchId, coachId, startTime, endTime } = res.data;
     const customerId = null;
     const isBooked = false;
-    const result = await axios.put(`http://localhost:4000/timeslot/${id}`, {
+    const result = await http.put(`http://localhost:4000/timeslot/${id}`, {
       branchId,
       coachId,
       startTime,
@@ -152,13 +151,13 @@ class Appointment extends React.Component {
     } else {
       //console.log(timeSlot);
       const id = timeSlot._id;
-      let res = await axios.get(
+      let res = await http.get(
         `http://localhost:4000/timeslot/${timeSlot._id}`
       );
       const { branchId, coachId, startTime, endTime } = res.data;
       const customerId = localStorage.getItem("id");
       const isBooked = true;
-      const result = await axios.put(
+      const result = await http.put(
         `http://localhost:4000/timeslot/${timeSlot._id}`,
         {
           branchId,

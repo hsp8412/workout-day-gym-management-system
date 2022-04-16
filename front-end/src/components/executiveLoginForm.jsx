@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import axios from "axios";
 import InvalidCredential from "./invalidCredential";
+import http from "../services/httpService";
 
 const MyComponent = () => {
   const [invalidCredentialVisibility, setInvalidCredentialVisibility] =
@@ -18,12 +17,13 @@ const MyComponent = () => {
       const username = values.username;
       const password = values.password;
       console.log(values);
-      await axios
+      await http
         .post(`http://localhost:4000/executiveLogin`, {
           username,
           password,
         })
         .then((res) => {
+          console.log();
           localStorage.setItem("eToken", res.data.token);
           localStorage.setItem("eId", res.data.id);
           window.location.reload();
@@ -36,6 +36,8 @@ const MyComponent = () => {
       username: Yup.string().required("Username is required."),
       password: Yup.string().required("Password is required."),
     }),
+    validateOnChange: false,
+    validateOnBlur: true,
   });
   return (
     <div className="mt-3">

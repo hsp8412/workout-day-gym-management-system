@@ -3,10 +3,10 @@ import _ from "lodash";
 import { paginate } from "../utils/paginate";
 import { Container, Row } from "react-bootstrap";
 import Pagi from "../components/pagination";
-import { getBranches } from "../services/branch";
 import BranchTable from "../components/branchTable";
 import BranchDeleteConfirm from "../components/branchDeleteConfirm";
-import axios from "axios";
+import EditBranch from "../components/editBranchModal";
+import http from "../services/httpService";
 
 class ExecutiveManager extends Component {
   state = {
@@ -16,10 +16,17 @@ class ExecutiveManager extends Component {
     sortColumn: { path: "name", order: "asc" },
     branchDeleting: null,
     deleteBranchVisibility: false,
+    branchEditing: {
+      name: "",
+      yearlyProfit: 0,
+      numberOfMembers: 0,
+      location: " ",
+    },
+    editBranchVisibility: false,
   };
 
   async componentDidMount() {
-    const req = await axios.get(`http://localhost:4000/branch`);
+    const req = await http.get(`http://localhost:4000/branch`);
     console.log(req.data);
     this.setState({ branches: req.data });
   }
@@ -45,12 +52,36 @@ class ExecutiveManager extends Component {
 
   handleDeleteConfirm = () => {
     const deletingBranchId = this.state.branchDeleting._id;
-    axios
-      .delete(`http://localhost:4000/branch/${deletingBranchId}`)
-      .then(() => {
-        this.setState({ deleteBranchVisibility: false, branchDeleting: null });
-        window.location.reload();
-      });
+    http.delete(`http://localhost:4000/branch/${deletingBranchId}`).then(() => {
+      this.setState({ deleteBranchVisibility: false, branchDeleting: null });
+      window.location.reload();
+    });
+  };
+
+  handleEdit = (branch) => {
+    console.log(branch);
+    this.setState({ branchEditing: branch, editBranchVisibility: true });
+  };
+
+  handleEditClose = () => {
+    this.setState({ editBranchVisibility: false });
+  };
+
+  handleSubmitUpdate = async (values) => {
+    const id = this.state.branchEditing._id;
+    const { name, yearlyProfit, numberOfMembers, location } = values;
+    const data = { name, yearlyProfit, numberOfMembers, location };
+    const req = await http.patch(`http://localhost:4000/branch/${id}`, data);
+    this.setState({
+      branchEditing: {
+        name: "",
+        yearlyProfit: 0,
+        numberOfMembers: 0,
+        location: " ",
+      },
+      editBranchVisibility: false,
+    });
+    window.location.reload();
   };
 
   render() {
@@ -67,7 +98,6 @@ class ExecutiveManager extends Component {
 
     const branchesToDisplay = paginate(sorted, pageSize, currentPage);
 
-    console.log(branchesToDisplay);
     return (
       <div style={{ marginTop: "20px" }}>
         <Container>
@@ -77,6 +107,7 @@ class ExecutiveManager extends Component {
             onDelete={this.handleDelete}
             onSort={this.handleSort}
             sortColumn={sortColumn}
+            onEdit={this.handleEdit}
           />
           <Pagi
             itemsCount={allBranches.length}
@@ -95,12 +126,25 @@ class ExecutiveManager extends Component {
             >
               Log out
             </button>
+            <button
+              type="button"
+              className="btn btn-primary btn-lg"
+              onClick={() => {}}
+            >
+              Add
+            </button>
           </div>
         </Container>
         <BranchDeleteConfirm
           ifVisible={deleteBranchVisibility}
           onConfirm={this.handleDeleteConfirm}
           onClose={this.handleDeleteClose}
+        />
+        <EditBranch
+          onClose={this.handleEditClose}
+          isVisible={this.state.editBranchVisibility}
+          branchEditing={this.state.branchEditing}
+          onSubmitUpdate={this.handleSubmitUpdate}
         />
       </div>
     );
