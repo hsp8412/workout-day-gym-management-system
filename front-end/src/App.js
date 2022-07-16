@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import NavBar from "./components/navBar";
+import NavBar from "./components/nav";
 import Home from "./pages/client/home";
 import Products from "./pages/client/browseProducts";
 import Login from "./pages/client/login";
@@ -28,6 +28,8 @@ import ExecutiveLoginForm from "./components/executive/executiveLoginForm";
 import "react-toastify/dist/ReactToastify.css";
 import OrderManagement from "./pages/manager/orderManagement";
 import AppointmentManagement from "./pages/manager/appointmentManagement";
+import Index from "./pages/client";
+import Footer from "./components/footer";
 
 function App() {
   let jwt = localStorage.getItem("token");
@@ -39,7 +41,7 @@ function App() {
       <NavBar />
       <div className="content">
         <Routes>
-          <Route path="/" element={jwt != null ? <Products /> : <Login />} />
+          <Route path="/" element={jwt != null ? <Products /> : <Index />} />
           <Route path="/login" element={<Login />} />
           <Route
             path="/orders"
@@ -64,11 +66,23 @@ function App() {
           <Route exact path="/branch/facility" element={<ProtectedRoute />}>
             <Route exact path="/branch/facility" element={<Facility />} />
           </Route>
-          <Route exact path="/branch/facility/locker" element={<ProtectedRoute />}>
+          <Route
+            exact
+            path="/branch/facility/locker"
+            element={<ProtectedRoute />}
+          >
             <Route exact path="/branch/facility/locker" element={<Locker />} />
           </Route>
-          <Route exact path="/branch/facility/common" element={<ProtectedRoute />}>
-            <Route exact path="/branch/facility/common" element={<CommonFacility />}/>
+          <Route
+            exact
+            path="/branch/facility/common"
+            element={<ProtectedRoute />}
+          >
+            <Route
+              exact
+              path="/branch/facility/common"
+              element={<CommonFacility />}
+            />
           </Route>
           <Route exact path="/branch/staff" element={<ProtectedRoute />}>
             <Route exact path="/branch/staff" element={<Staff />} />
@@ -77,7 +91,11 @@ function App() {
             <Route exact path="/branch/order" element={<OrderManagement />} />
           </Route>
           <Route exact path="/branch/appointment" element={<ProtectedRoute />}>
-            <Route exact path="/branch/appointment" element={<AppointmentManagement />} />
+            <Route
+              exact
+              path="/branch/appointment"
+              element={<AppointmentManagement />}
+            />
           </Route>
           <Route
             path="/fitnessProfiles"
@@ -94,6 +112,7 @@ function App() {
           />
           <Route path="/not_found" element={<NotFound />} />
         </Routes>
+        <Footer />
       </div>
     </div>
   );
