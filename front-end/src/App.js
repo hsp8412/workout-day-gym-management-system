@@ -111,6 +111,7 @@ function App() {
             element={jwt != null ? <AlreadyLoggedIn /> : <RegisterPage />}
           />
           <Route path="/not_found" element={<NotFound />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
       </div>

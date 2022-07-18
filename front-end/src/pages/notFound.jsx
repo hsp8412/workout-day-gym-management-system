@@ -1,11 +1,14 @@
-import React from 'react';
+import React from "react";
 
 const NotFound = () => {
-    return (
-        <div>
-            <h1>Page not found.</h1>
-        </div>
-    );
+  return (
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{ height: "70vh" }}
+    >
+      <h1>Sorry, page not found.</h1>
+    </div>
+  );
 };
 
 export default NotFound;
