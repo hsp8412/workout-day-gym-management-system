@@ -62,13 +62,15 @@ const Register = () => {
 
   return (
     <div className="mb-5">
-      <Container className="row justify-content-center">
-        <div className="card mt-5" style={{ width: "40rem" }}>
+      <Container className="d-flex justify-content-center">
+        <div className="card mt-5 register-card" style={{ width: "40rem" }}>
           <div className="card-body">
-            <h3 className="card-title">Register</h3>
+            <div className="d-flex justify-content-center mb-3">
+              <h3 className="card-title">Register</h3>
+            </div>
             <form>
               <div className="row">
-                <div className="col">
+                <div className="col-12 col-md-6">
                   <label htmlFor="exampleInputEmail1">First name</label>
                   <input
                     type="text"
@@ -82,7 +84,7 @@ const Register = () => {
                     {formik.errors.firstName ? formik.errors.firstName : null}
                   </p>
                 </div>
-                <div className="col">
+                <div className="col-12 col-md-6">
                   <label htmlFor="exampleInputEmail1">Last name</label>
                   <input
                     type="text"
@@ -98,7 +100,7 @@ const Register = () => {
                 </div>
               </div>
               <div className="row mt-3">
-                <div className="col">
+                <div className="col-12 col-md-6">
                   <label htmlFor="exampleInputEmail1">Phone number</label>
                   <input
                     type="text"
@@ -114,7 +116,7 @@ const Register = () => {
                       : null}
                   </p>
                 </div>
-                <div className="col">
+                <div className="col-12 col-md-6">
                   <label htmlFor="exampleInputEmail1">Gender</label>
                   <input
                     type="text"

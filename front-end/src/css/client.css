@@ -3,12 +3,12 @@
 
 .nav-button{
     font-size: 25px;
-    font-family: "Roboto", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-weight: 500;
 }
 
 header{
-    font-family: "Roboto", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-weight: 500;
     background-image: url("https://files.123freevectors.com/wp-content/original/114420-red-diagonal-stripes-background-vector.jpg");
     bacground-size: cover;
@@ -124,3 +124,18 @@ footer{
     }
 }
 
+
+.login-card{
+    border-radius: 10%;
+    padding: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    background-color:lightblue;
+}
+
+
+.register-card{
+    border-radius: 10%;
+    padding: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    background-color:lightblue;
+}

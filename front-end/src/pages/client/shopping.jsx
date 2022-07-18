@@ -174,8 +174,14 @@ class Shopping extends Component {
     http.get("http://localhost:4000/product").then((res) => {
       const products = res.data;
       products.forEach((product) => {
-        product.image = "/gym-logo.svg";
-        product.description = "This is a product provided by the gym.";
+        if (!product.image) {
+          product.image = "/gym-logo.svg";
+        }
+        if (!product.description) {
+          {
+            product.description = "This is a product provided by the gym.";
+          }
+        }
       });
       this.setState({ products });
     });
