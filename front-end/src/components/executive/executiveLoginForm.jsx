@@ -18,7 +18,7 @@ const MyComponent = () => {
       const password = values.password;
       console.log(values);
       await http
-        .post(`http://localhost:4000/executiveLogin`, {
+        .post(process.env.REACT_APP_API_ENDPOINT + '/executiveLogin', {
           username,
           password,
         })

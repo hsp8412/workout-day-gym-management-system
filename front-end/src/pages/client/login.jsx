@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import LoginForm from "../../components/client/login/loginForm";
-import axios from "axios";
 import InvalidCredential from "../../components/client/login/invalidCredential";
 import AlreadyLoggedIn from "./alreadyLoggedIn";
 

@@ -12,9 +12,7 @@ class Orders extends Component {
 
   async componentDidMount() {
     const userId = localStorage.getItem("id");
-    const res = await http.get(
-      `http://localhost:4000/order/customer/${userId}`
-    );
+    const res = await http.get(process.env.REACT_APP_API_ENDPOINT + '/order/customer/' + userId);
     const orders = res.data;
     this.setState({ orders });
   }
@@ -28,7 +26,7 @@ class Orders extends Component {
   handleDeleteConfirm = () => {
     const deleteOrderId = this.state.orderDeleting._id;
     http
-      .delete(`http://localhost:4000/order/${deleteOrderId}`)
+      .delete(process.env.REACT_APP_API_ENDPOINT + '/order/' + deleteOrderId)
       .then(() => this.setState({ deleteVisible: false, orderDeleting: null }));
     window.location.reload();
   };

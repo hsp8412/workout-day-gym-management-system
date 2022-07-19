@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import shopping from "../../../pages/client/shopping";
 const Purchase = ({
   product,
   ifPurchasing,

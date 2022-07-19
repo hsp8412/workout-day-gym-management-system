@@ -171,7 +171,7 @@ class Shopping extends Component {
   };
 
   async componentDidMount() {
-    http.get("http://localhost:4000/product").then((res) => {
+    http.get(process.env.REACT_APP_API_ENDPOINT + '/product').then((res) => {
       const products = res.data;
       products.forEach((product) => {
         if (!product.image) {
@@ -305,7 +305,7 @@ class Shopping extends Component {
     });
     const customerId = localStorage.getItem("id");
     http
-      .post("http://localhost:4000/order", {
+      .post(process.env.REACT_APP_API_ENDPOINT + '/order', {
         products,
         customerId,
       })

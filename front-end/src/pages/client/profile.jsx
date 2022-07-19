@@ -11,7 +11,7 @@ class Profile extends React.Component {
 
   async componentDidMount() {
     const id = localStorage.getItem("id");
-    const res = await http.get(`http://localhost:4000/customer/${id}`);
+    const res = await http.get(process.env.REACT_APP_API_ENDPOINT + '/customer/' + id);
     const profile = res.data;
     console.log(profile);
     this.setState({ profile });
@@ -21,10 +21,7 @@ class Profile extends React.Component {
     const { BMI, BFP, height, weight } = values;
     const id = localStorage.getItem("id");
     const data = { BMI, BFP, height, weight };
-    let req = await http.patch(
-      `http://localhost:4000/customer/profile/${id}`,
-      data
-    );
+    let req = await http.patch(process.env.REACT_APP_API_ENDPOINT + '/customer/profile/' + id, data);
     this.setState({ updateVisible: false });
     window.location.reload();
   };

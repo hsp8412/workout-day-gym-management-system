@@ -29,7 +29,7 @@ class ExecutiveManager extends Component {
   };
 
   async componentDidMount() {
-    const req = await http.get(`http://localhost:4000/branch`);
+    const req = await http.get(process.env.REACT_APP_API_ENDPOINT + '/branch');
     console.log(req.data);
     this.setState({ branches: req.data });
   }

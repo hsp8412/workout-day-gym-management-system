@@ -16,7 +16,7 @@ const LoginForm = (props) => {
     },
     onSubmit: async ({ email, password }) => {
       await http
-        .post("http://localhost:4000/auth", { email, password })
+        .post(process.env.REACT_APP_API_ENDPOINT + '/auth', { email, password })
         .then((res) => {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("id", res.data.id);
