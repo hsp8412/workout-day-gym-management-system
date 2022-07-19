@@ -17,6 +17,7 @@ const Register = () => {
       lastName: "",
       phoneNumber: "",
       gender: "",
+      image: null,
     },
     onSubmit: async (values) => {
       const { firstName, lastName, gender, phoneNumber, email, password } =
@@ -65,10 +66,32 @@ const Register = () => {
       <Container className="d-flex justify-content-center">
         <div className="card mt-5 register-card" style={{ width: "40rem" }}>
           <div className="card-body">
-            <div className="d-flex justify-content-center mb-3">
-              <h3 className="card-title">Register</h3>
+            <div className="d-flex align-items-center flex-column mb-3">
+              <h3 className="card-title mb-3">Register</h3>
+              {formik.values.image ? (
+                <img
+                  src={URL.createObjectURL(formik.values.image)}
+                  alt="avatar"
+                  style={{ width: "80px", height: "80px", borderRadius: "50%" }}
+                />
+              ) : (
+                <img src="/login.png" alt="avatar" style={{ width: "80px" }} />
+              )}
             </div>
             <form>
+              <div className="mb-3">
+                <label htmlFor="formFile" className="form-label">
+                  Upload your profile picture
+                </label>
+                <input
+                  className="form-control"
+                  type="file"
+                  id="formFile"
+                  onChange={(e) => {
+                    formik.setFieldValue("image", e.currentTarget.files[0]);
+                  }}
+                />
+              </div>
               <div className="row">
                 <div className="col-12 col-md-6">
                   <label htmlFor="exampleInputEmail1">First name</label>
