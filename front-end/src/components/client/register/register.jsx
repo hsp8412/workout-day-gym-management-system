@@ -1,12 +1,19 @@
-import React, { Component, useState } from "react";
+import React from "react";
 import { Container } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { First } from "react-bootstrap/PageItem";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const FILE_SIZE = 5 * 1024 * 1024;
+  const SUPPORTED_FORMATS = [
+    "image/jpg",
+    "image/jpeg",
+    "image/gif",
+    "image/png",
+  ];
+
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -20,8 +27,28 @@ const Register = () => {
       image: null,
     },
     onSubmit: async (values) => {
-      const { firstName, lastName, gender, phoneNumber, email, password } =
-        values;
+      const {
+        firstName,
+        lastName,
+        gender,
+        phoneNumber,
+        email,
+        password,
+        image,
+      } = values;
+
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("upload_preset", "Workout-day");
+
+      const res = await axios.post(
+        "https://api.cloudinary.com/v1_1/hesipeng/image/upload",
+        formData
+      );
+
+      const imgUrl = res.data.secure_url;
+      console.log(imgUrl);
+
       const result = await axios.post("http://localhost:4000/customer", {
         firstName,
         lastName,
@@ -56,9 +83,21 @@ const Register = () => {
       confirmPassword: Yup.string()
         .required("Please re-enter the password.")
         .oneOf([Yup.ref("password")], "Passwords do not match"),
+      image: Yup.mixed()
+        .required("A file is required")
+        .test(
+          "fileSize",
+          "File too large",
+          (value) => value && value.size <= FILE_SIZE
+        )
+        .test(
+          "fileFormat",
+          "Unsupported Format",
+          (value) => value && SUPPORTED_FORMATS.includes(value.type)
+        ),
     }),
     validateOnBlur: true,
-    validateOnChange: false,
+    validateOnChange: true,
   });
 
   return (
@@ -68,7 +107,7 @@ const Register = () => {
           <div className="card-body">
             <div className="d-flex align-items-center flex-column mb-3">
               <h3 className="card-title mb-3">Register</h3>
-              {formik.values.image ? (
+              {formik.values.image && !formik.errors.image ? (
                 <img
                   src={URL.createObjectURL(formik.values.image)}
                   alt="avatar"
@@ -91,6 +130,9 @@ const Register = () => {
                     formik.setFieldValue("image", e.currentTarget.files[0]);
                   }}
                 />
+                <p className="text-danger">
+                  {formik.errors.image ? formik.errors.image : null}
+                </p>
               </div>
               <div className="row">
                 <div className="col-12 col-md-6">
