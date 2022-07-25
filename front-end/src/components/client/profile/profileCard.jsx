@@ -7,7 +7,7 @@ const ProfileCard = ({ onSubmitUpdate, onUpdate, profile }) => {
   }
   console.log(profile);
   return (
-    <div>
+    <div className="align-self-center">
       <Container className="d-flex flex-column justify-content-center">
         <div className="card align-self-center mt-4" style={{ width: "50rem" }}>
           <div className="card-body">
@@ -25,7 +25,7 @@ const ProfileCard = ({ onSubmitUpdate, onUpdate, profile }) => {
                   />
                 ) : (
                   <img
-                    src="avatar.jpeg"
+                    src="login.png"
                     style={{ width: "15rem", height: "15rem" }}
                     className="align-self-center"
                   />
