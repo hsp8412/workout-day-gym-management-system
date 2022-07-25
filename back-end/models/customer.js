@@ -32,6 +32,10 @@ const customerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  avatarUrl: {
+    type: String,
+    required: false,
+  },
   emergencyContact: {
     name: { type: String, required: false },
     phoneNumber: { type: String, required: false },

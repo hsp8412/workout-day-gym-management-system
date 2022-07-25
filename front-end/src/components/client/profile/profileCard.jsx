@@ -13,11 +13,19 @@ const ProfileCard = ({ onSubmitUpdate, onUpdate, profile }) => {
           <div className="card-body">
             <Row className="d-flex">
               <Col className="d-flex flex-column">
-                <img
-                  src="avatar.jpeg"
-                  style={{ width: "15rem", height: "15rem" }}
-                  className="align-self-center"
-                />
+                {profile.avatarUrl ? (
+                  <img
+                    src={profile.avatarUrl}
+                    style={{ width: "15rem", height: "15rem" }}
+                    className="align-self-center"
+                  />
+                ) : (
+                  <img
+                    src="avatar.jpeg"
+                    style={{ width: "15rem", height: "15rem" }}
+                    className="align-self-center"
+                  />
+                )}
                 <p className="align-self-center mt-2 mb-0">
                   Name: {profile.firstName} {profile.lastName}
                 </p>

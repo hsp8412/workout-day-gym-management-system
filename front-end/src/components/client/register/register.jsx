@@ -37,17 +37,19 @@ const Register = () => {
         image,
       } = values;
 
+      const instance = axios.create();
+
       const formData = new FormData();
       formData.append("file", image);
       formData.append("upload_preset", "Workout-day");
 
-      const res = await axios.post(
+      const res = await instance.post(
         "https://api.cloudinary.com/v1_1/hesipeng/image/upload",
         formData
       );
 
-      const imgUrl = res.data.secure_url;
-      console.log(imgUrl);
+      const avatarUrl = res.data.secure_url;
+      console.log(avatarUrl);
 
       const result = await axios.post("http://localhost:4000/customer", {
         firstName,
@@ -56,6 +58,7 @@ const Register = () => {
         email,
         password,
         gender,
+        avatarUrl,
       });
       console.log(result);
       navigate("/login");
@@ -97,7 +100,7 @@ const Register = () => {
         ),
     }),
     validateOnBlur: true,
-    validateOnChange: true,
+    validateOnChange: false,
   });
 
   return (

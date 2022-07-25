@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const { Customer, validateCustomer } = require("../models/customer");
 const managerAuth = require("../middleware/managerAuth");
 const customerAuth = require("../middleware/customerAuth");
-const customerOrManagerAuth = require('../middleware/customerOrManagerAuth');
+const customerOrManagerAuth = require("../middleware/customerOrManagerAuth");
 
 router.get("/", managerAuth, async (req, res) => {
   const result = await Customer.find();
@@ -35,6 +35,7 @@ router.post("/", async (req, res) => {
     password,
     email,
     emergencyContact,
+    avatarUrl,
   } = req.body;
 
   if (!emergencyContact) {
@@ -59,6 +60,7 @@ router.post("/", async (req, res) => {
     password: passwordHash,
     email,
     emergencyContact,
+    avatarUrl,
     fitnessProfile: {
       height: 0,
       weight: 0,
