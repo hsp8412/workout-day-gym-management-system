@@ -20,7 +20,7 @@ const LoginForm = (props) => {
         .then((res) => {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("id", res.data.id);
-          navigate("/shopping");
+          navigate("/");
           window.location.reload();
         })
         .catch(() => {

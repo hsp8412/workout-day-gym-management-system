@@ -41,7 +41,7 @@ function App() {
       <NavBar />
       <div className="content">
         <Routes>
-          <Route path="/" element={jwt != null ? <Products /> : <Index />} />
+          <Route path="/" element={<Index />} />
           <Route path="/login" element={<Login />} />
           <Route
             path="/orders"
