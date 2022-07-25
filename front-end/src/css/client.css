@@ -19,6 +19,7 @@ header{
 }
 
 .motion{
+    text-align: left;
     position: absolute;
     bottom: 40px;
     left: 40px;
@@ -121,6 +122,20 @@ footer{
     }
     .service-card{
         margin: 30px 0;
+    }
+    header{
+        display: flex;
+        flex-direction: column;
+        position: static;
+        justify-content: center;
+    }
+    .motion{
+        align-self: center;
+        position: static;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
     }
 }
 
