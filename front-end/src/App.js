@@ -36,7 +36,7 @@ function App() {
   let ejwt = localStorage.getItem("eToken");
   const mjwt = localStorage.getItem("");
   return (
-    <div>
+    <div className="wrapper">
       <ToastContainer />
       <NavBar />
       <div className="content">
@@ -113,8 +113,8 @@ function App() {
           <Route path="/not_found" element={<NotFound />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 }

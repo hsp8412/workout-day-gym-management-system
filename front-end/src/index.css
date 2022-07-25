@@ -8,3 +8,14 @@ body{
     background-color: #f3f3f3;
     font-family: Poppins, sans-serif;
 }
+
+.wrapper{
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+}
+
+.content{
+    flex:1
+}

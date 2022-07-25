@@ -16,7 +16,11 @@ const ProfileCard = ({ onSubmitUpdate, onUpdate, profile }) => {
                 {profile.avatarUrl ? (
                   <img
                     src={profile.avatarUrl}
-                    style={{ width: "15rem", height: "15rem" }}
+                    style={{
+                      width: "15rem",
+                      height: "15rem",
+                      borderRadius: "50%",
+                    }}
                     className="align-self-center"
                   />
                 ) : (
