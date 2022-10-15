@@ -28,7 +28,6 @@ router.post("/", executiveAuth, async (req, res) => {
     yearlyProfit,
     managerId,
   });
-  console.log(branch);
   try {
     const result = await branch.save();
     res.send(result);

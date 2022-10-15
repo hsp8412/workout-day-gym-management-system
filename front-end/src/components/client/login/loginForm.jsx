@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import http from "../../../services/httpService";
 
 const LoginForm = (props) => {
+  const uri = process.env.REACT_APP_API_ENDPOINT + "/auth";
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -16,7 +17,11 @@ const LoginForm = (props) => {
     },
     onSubmit: async ({ email, password }) => {
       await http
-        .post("http://localhost:4000/auth", { email, password })
+        .post(
+          // "http://localhost:4000/auth"
+          uri,
+          { email, password }
+        )
         .then((res) => {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("id", res.data.id);

@@ -11,9 +11,12 @@ class Profile extends React.Component {
 
   async componentDidMount() {
     const id = localStorage.getItem("id");
-    const res = await http.get(`http://localhost:4000/customer/${id}`);
+    const uri = process.env.REACT_APP_API_ENDPOINT + "/customer/";
+    const res = await http.get(
+      // `http://localhost:4000/customer/${id}`
+      uri + id
+    );
     const profile = res.data;
-    console.log(profile);
     this.setState({ profile });
   }
 
@@ -21,8 +24,10 @@ class Profile extends React.Component {
     const { BMI, BFP, height, weight } = values;
     const id = localStorage.getItem("id");
     const data = { BMI, BFP, height, weight };
+    const uri = process.env.REACT_APP_API_ENDPOINT + "/customer/profile/";
     let req = await http.patch(
-      `http://localhost:4000/customer/profile/${id}`,
+      // `http://localhost:4000/customer/profile/${id}`,
+      uri + id,
       data
     );
     this.setState({ updateVisible: false });

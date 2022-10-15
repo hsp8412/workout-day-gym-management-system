@@ -4,7 +4,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const EditBranch = ({ isVisible, onClose, branchEditing, onSubmitUpdate }) => {
-  console.log(branchEditing);
   const formik = useFormik({
     initialValues: {
       name: branchEditing.name,

@@ -5,7 +5,6 @@ const ProfileCard = ({ onSubmitUpdate, onUpdate, profile }) => {
   if (profile == null) {
     return <div></div>;
   }
-  console.log(profile);
   return (
     <div className="align-self-center">
       <Container className="d-flex flex-column justify-content-center">

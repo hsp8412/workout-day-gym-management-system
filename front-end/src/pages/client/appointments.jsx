@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import http from "../../services/httpService";
 import { Button, Card, Col, Container, ListGroup, Row } from "react-bootstrap";
-import { toast } from "react-toastify";
 
 const coachUri = process.env.REACT_APP_API_ENDPOINT + "/branch_staff/coach";
 const apUri = process.env.REACT_APP_API_ENDPOINT + "/appointment";

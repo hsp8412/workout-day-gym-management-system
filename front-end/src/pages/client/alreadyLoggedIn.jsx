@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
-function handleLogOut(navigate) {
+function handleLogOut() {
   localStorage.clear();
   window.location.reload();
 }

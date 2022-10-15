@@ -23,7 +23,6 @@ router.get("/:id", customerOrManagerAuth, async (req, res) => {
 router.post("/", async (req, res) => {
   const { error } = validateCustomer(req.body);
   if (error) {
-    console.log(error.details[0].message);
     return res.status(400).send(error.details[0].message);
   }
   let {

@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const uri = process.env.REACT_APP_API_ENDPOINT + "/customer";
   const FILE_SIZE = 5 * 1024 * 1024;
   const SUPPORTED_FORMATS = [
     "image/jpg",
@@ -44,23 +45,26 @@ const Register = () => {
       formData.append("upload_preset", "Workout-day");
 
       const res = await instance.post(
-        "https://api.cloudinary.com/v1_1/hesipeng/image/upload",
+        // "https://api.cloudinary.com/v1_1/hesipeng/image/upload"
+        process.env.REACT_APP_AVATAR_UPLOAD_URL,
         formData
       );
 
       const avatarUrl = res.data.secure_url;
-      console.log(avatarUrl);
 
-      const result = await axios.post("http://localhost:4000/customer", {
-        firstName,
-        lastName,
-        phoneNumber,
-        email,
-        password,
-        gender,
-        avatarUrl,
-      });
-      console.log(result);
+      const result = await axios.post(
+        // "http://localhost:4000/customer"
+        uri,
+        {
+          firstName,
+          lastName,
+          phoneNumber,
+          email,
+          password,
+          gender,
+          avatarUrl,
+        }
+      );
       navigate("/login");
     },
     validationSchema: Yup.object({

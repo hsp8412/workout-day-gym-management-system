@@ -30,7 +30,6 @@ class ExecutiveManager extends Component {
 
   async componentDidMount() {
     const req = await http.get(`http://localhost:4000/branch`);
-    console.log(req.data);
     this.setState({ branches: req.data });
   }
 
@@ -62,7 +61,6 @@ class ExecutiveManager extends Component {
   };
 
   handleEdit = (branch) => {
-    console.log(branch);
     this.setState({ branchEditing: branch, editBranchVisibility: true });
   };
 
@@ -71,10 +69,15 @@ class ExecutiveManager extends Component {
   };
 
   handleSubmitUpdate = async (values) => {
+    const uri = process.env.REACT_APP_API_ENDPOINT + "/branch/";
     const id = this.state.branchEditing._id;
     const { name, yearlyProfit, numberOfMembers, location, managerId } = values;
     const data = { name, yearlyProfit, numberOfMembers, location, managerId };
-    const req = await http.put(`http://localhost:4000/branch/${id}`, data);
+    const req = await http.put(
+      // `http://localhost:4000/branch/${id}`
+      uri + id,
+      data
+    );
     this.setState({
       branchEditing: {
         name: "",

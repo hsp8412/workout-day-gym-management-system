@@ -16,14 +16,13 @@ const MyComponent = () => {
     onSubmit: async (values) => {
       const username = values.username;
       const password = values.password;
-      console.log(values);
+      const uri = process.env.REACT_APP_API_ENDPOINT + "/executiveLogin";
       await http
-        .post(`http://localhost:4000/executiveLogin`, {
+        .post(uri, {
           username,
           password,
         })
         .then((res) => {
-          console.log();
           localStorage.setItem("eToken", res.data.token);
           localStorage.setItem("eId", res.data.id);
           window.location.reload();
