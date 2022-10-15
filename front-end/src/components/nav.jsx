@@ -18,43 +18,57 @@ const NavBar = () => {
         <Navbar.Toggle />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0">
-            <Nav.Link href="/shopping" className="nav-button">
-              Shopping
-            </Nav.Link>
-            {getToken() && (
-              <Nav.Link href="/orders" className="nav-button">
-                Orders
+            <Nav.Item>
+              <Nav.Link href="/shopping" className="nav-button">
+                Shopping
               </Nav.Link>
+            </Nav.Item>
+            {getToken() && (
+              <Nav.Item>
+                <Nav.Link href="/orders" className="nav-button">
+                  Orders
+                </Nav.Link>
+              </Nav.Item>
             )}
             {getToken() && (
-              <Nav.Link href="/fitnessProfiles" className="nav-button">
-                My Profile
-              </Nav.Link>
+              <Nav.Item>
+                <Nav.Link href="/fitnessProfiles" className="nav-button">
+                  My Profile
+                </Nav.Link>
+              </Nav.Item>
             )}
             {getToken() && (
-              <Nav.Link href="/appointments" className="nav-button">
-                My Appointments
-              </Nav.Link>
+              <Nav.Item>
+                <Nav.Link href="/appointments" className="nav-button">
+                  My Appointments
+                </Nav.Link>
+              </Nav.Item>
             )}
             {getToken() && (
-              <Nav.Link
-                href="/login"
-                onClick={() => localStorage.removeItem("token")}
-                className="nav-button"
-              >
-                Logout
-              </Nav.Link>
+              <Nav.Item>
+                <Nav.Link
+                  href="/login"
+                  onClick={() => localStorage.removeItem("token")}
+                  className="nav-button"
+                >
+                  Logout
+                </Nav.Link>
+              </Nav.Item>
             )}
             {!getToken() && (
-              <Nav.Link href="/register" className="nav-button">
-                Register
-              </Nav.Link>
+              <Nav.Item>
+                <Nav.Link href="/register" className="nav-button">
+                  Register
+                </Nav.Link>
+              </Nav.Item>
             )}
             {!getToken() && (
-              <Nav.Link href="/login" className="nav-button">
-                {" "}
-                Login
-              </Nav.Link>
+              <Nav.Item>
+                <Nav.Link href="/login" className="nav-button">
+                  {" "}
+                  Login
+                </Nav.Link>
+              </Nav.Item>
             )}
           </Nav>
         </Navbar.Collapse>
