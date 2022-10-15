@@ -132,9 +132,12 @@ const Register = () => {
                   onChange={(e) => {
                     formik.setFieldValue("image", e.currentTarget.files[0]);
                   }}
+                  onBlur={formik.handleBlur}
                 />
                 <p className="text-danger">
-                  {formik.errors.image ? formik.errors.image : null}
+                  {formik.errors.image && formik.touched.image
+                    ? formik.errors.image
+                    : null}
                 </p>
               </div>
               <div className="row">
@@ -147,9 +150,12 @@ const Register = () => {
                     name="firstName"
                     value={formik.values.firstName}
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
                   <p className="text-danger">
-                    {formik.errors.firstName ? formik.errors.firstName : null}
+                    {formik.errors.firstName && formik.touched.firstName
+                      ? formik.errors.firstName
+                      : null}
                   </p>
                 </div>
                 <div className="col-12 col-md-6">
@@ -161,9 +167,12 @@ const Register = () => {
                     name="lastName"
                     value={formik.values.lastName}
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
                   <p className="text-danger">
-                    {formik.errors.lastName ? formik.errors.lastName : null}
+                    {formik.errors.lastName && formik.touched.lastName
+                      ? formik.errors.lastName
+                      : null}
                   </p>
                 </div>
               </div>
@@ -177,9 +186,10 @@ const Register = () => {
                     name="phoneNumber"
                     value={formik.values.phoneNumber}
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
                   <p className="text-danger">
-                    {formik.errors.phoneNumber
+                    {formik.errors.phoneNumber && formik.touched.phoneNumber
                       ? formik.errors.phoneNumber
                       : null}
                   </p>
@@ -193,9 +203,12 @@ const Register = () => {
                     name="gender"
                     value={formik.values.gender}
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
                   <p className="text-danger">
-                    {formik.errors.gender ? formik.errors.gender : null}
+                    {formik.errors.gender && formik.touched.gender
+                      ? formik.errors.gender
+                      : null}
                   </p>
                 </div>
               </div>
@@ -210,9 +223,12 @@ const Register = () => {
                   aria-describedby="emailHelp"
                   value={formik.values.email}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
                 <p className="text-danger">
-                  {formik.errors.email ? formik.errors.email : null}
+                  {formik.errors.email && formik.touched.email
+                    ? formik.errors.email
+                    : null}
                 </p>
               </div>
               <div className="form-group mt-3">
@@ -225,9 +241,12 @@ const Register = () => {
                   placeholder="Password"
                   value={formik.values.password}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
                 <p className="text-danger">
-                  {formik.errors.password ? formik.errors.password : null}
+                  {formik.errors.password && formik.touched.password
+                    ? formik.errors.password
+                    : null}
                 </p>
               </div>
               <div className="form-group mt-3">
@@ -240,9 +259,11 @@ const Register = () => {
                   placeholder="Confirm Password"
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                 />
                 <p className="text-danger">
-                  {formik.errors.confirmPassword
+                  {formik.errors.confirmPassword &&
+                  formik.touched.confirmPassword
                     ? formik.errors.confirmPassword
                     : null}
                 </p>

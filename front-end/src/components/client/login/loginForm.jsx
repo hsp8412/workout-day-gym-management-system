@@ -34,7 +34,6 @@ const LoginForm = (props) => {
       password: Yup.string("Password is required."),
       rememberMe: Yup.boolean(),
     }),
-    validateOnChange: false,
     validateOnBlur: true,
   });
   return (
@@ -60,9 +59,12 @@ const LoginForm = (props) => {
                 name="email"
                 value={formik.values.email}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
               <p className="text-danger">
-                {formik.errors.email ? formik.errors.email : null}
+                {formik.errors.email && formik.touched.email
+                  ? formik.errors.email
+                  : null}
               </p>
             </div>
             <div className="mb-3">
@@ -76,9 +78,12 @@ const LoginForm = (props) => {
                 id="exampleInputPassword1"
                 value={formik.values.password}
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
               <p className="text-danger">
-                {formik.errors.password ? formik.errors.password : null}
+                {formik.errors.password && formik.touched.password
+                  ? formik.errors.password
+                  : null}
               </p>
             </div>
             <div className="mb-3 form-check">
